@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head}"></head>
+<body>
+<nav th:replace="~{fragments/navigation}"></nav>
+
+<div class="container-fluid">
+    <section class="welcome">
+        <h2>Добре дошли в моята страничка</h2>
+        <p>Тук ще намерите различни видове био зеленчуци, домашно консервирани лютеници, сосове и много други.</p>
+    </section>
+    <section class="offers">
+        <a href="/products/all">Нашите продукти</a>
+        <ul>
+            <li><a href="/categories/veggies">
+                <img src="/images/pepper.jpg" alt="pic">
+                <h3>Зеленчуци</h3>
+                <p></p>
+            </a></li>
+            <li><a href="/categories/spices">
+                <img src="/images/basil.jpg" alt="pic">
+                <h3>Подправки</h3>
+                <p></p>
+            </a></li>
+            <li><a href="/categories/homemades">
+                <img src="/images/lutenica.jpg" alt="pic">
+                <h3>Консерви</h3>
+                <p></p>
+            </a></li>
+            <li><a href="/categories/others">
+                <img src="/images/haselnut1.jpg" alt="pic">
+                <h3>Други</h3>
+                <p></p>
+            </a></li>
+        </ul>
+    </section>
+</div>
+</body>
+</html>

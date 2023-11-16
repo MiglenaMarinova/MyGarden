@@ -1,0 +1,106 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns="http://www.w3.org/1999/xhtml"-->
+<!--      xmlns:th="http://www.thymeleaf.org">-->
+<!--<head th:replace="~{fragments/head}">-->
+<!--</head>-->
+<!--<body>-->
+<!--<nav th:replace="~{fragments/navigation}"></nav>-->
+
+<!--<div class="container-fluid">-->
+<!--    <div class="container text-light text-center">-->
+<!--        <h2 class="text-center text-dark mt-5">Products</h2>-->
+<!--    </div>-->
+<!--    <div class="row mx-auto d-flex flex-row justify-content-center">-->
+<!--        <div th:each="v : ${allVeggies}" th:object="${v}">-->
+<!--            <div class="card" style="width: 18rem;">-->
+<!--                <img th:src="*{picUrl}" class="card-img-top" alt="pic">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 th:text="*{name}" class="card-title">Домати</h5>-->
+<!--                    <p th:text="*{price}" class="card-text">1.50 лв/кг</p>-->
+<!--                    <a href="#" class="btn btn-primary">Купи</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}">
+</head>
+<body>
+<nav th:replace="~{fragments/navigation}"></nav>
+
+<div class="container-fluid">
+    <div class="container text-light text-center">
+        <h2 class="text-center text-dark mt-5">Products</h2>
+    </div>
+    <div th:each="c : ${allCat}" th:object="${c}">
+        <th:block th:if="*{name.name() == 'VEGETABLE'}">
+            <div class="row mx-auto d-flex flex-row justify-content-center">
+                <div th:each="v : ${allVeggies}" th:object="${v}">
+                    <div class="card" style="width: 18rem;">
+                        <img th:src="${v.picUrl}" class="card-img-top" alt="pic">
+                        <div class="card-body">
+                            <h5 th:text="*{name}" class="card-title">Домати</h5>
+                            <p th:text="*{price}" class="card-text">1.50 лв/кг</p>
+                            <a href="#" class="btn btn-primary">Купи</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+        <th:block th:if="*{name.name() == 'OTHER'}">
+            <div class="row mx-auto d-flex flex-row justify-content-center">
+                <div th:each="o : ${allOther}" th:object="${o}">
+                    <div class="card" style="width: 18rem;">
+                        <img th:src="${o.picUrl}" class="card-img-top" alt="pic">
+                        <div class="card-body">
+                            <h5 th:text="*{name}" class="card-title">Домати</h5>
+                            <p th:text="*{price}" class="card-text">1.50 лв/кг</p>
+                            <a href="#" class="btn btn-primary">Купи</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+        <th:block th:if="*{name.name() == 'SPICE'}">
+            <div class="row mx-auto d-flex flex-row justify-content-center">
+                <div th:each="s : ${allSpices}" th:object="${s}">
+                    <div class="card" style="width: 18rem;">
+                        <img th:src="${s.picUrl}" class="card-img-top" alt="pic">
+                        <div class="card-body">
+                            <h5 th:text="*{name}" class="card-title">Домати</h5>
+                            <p th:text="*{price}" class="card-text">1.50 лв/кг</p>
+                            <a href="#" class="btn btn-primary">Купи</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+        <th:block th:if="*{name.name() == 'HOMEMADE'}">
+            <div class="row mx-auto d-flex flex-row justify-content-center">
+                <div th:each="h : ${allHomemade}" th:object="${h}">
+                    <div class="card" style="width: 18rem;">
+                        <img th:src="${h.picUrl}" class="card-img-top" alt="pic">
+                        <div class="card-body">
+                            <h5 th:text="*{name}" class="card-title">Домати</h5>
+                            <p th:text="*{price}" class="card-text">1.50 лв/кг</p>
+                            <a href="#" class="btn btn-primary">Купи</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+
+    </div>
+</div>
+</body>
+</html>
+
+

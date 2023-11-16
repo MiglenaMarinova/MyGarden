@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/head}">
+</head>
+<body>
+<div>
+  <nav th:replace="~{fragments/navigation}"></nav>
+</div>
+
+<div class="container">
+
+  <form th:method="post" th:action="@{/users/login}">
+    <section class="form">
+      <div>
+        <h1 class="text-center mt-2">Login</h1>
+      </div>
+      <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input type="text" id="email" name="email" th:value="${email}" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" class="form-control">
+      </div>
+
+      <p th:if="${badCredentials}" class="errors alert alert-danger">
+        Invalid username or password
+      </p>
+
+      <div class="button-holder d-flex justify-content-center">
+        <button type="submit" class="btn w-50" value="Submit">Submit</button>
+      </div>
+
+    </section>
+  </form>
+</div>
+
+</body>
+</html>
