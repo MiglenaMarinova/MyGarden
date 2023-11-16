@@ -4,8 +4,10 @@ import com.example.mygarden.model.dto.UserRegisterDto;
 import com.example.mygarden.model.entity.Role;
 import com.example.mygarden.model.entity.User;
 import com.example.mygarden.model.enums.RoleEnum;
+import com.example.mygarden.model.events.UsersRegisteredEvent;
 import com.example.mygarden.repository.RoleRepository;
 import com.example.mygarden.repository.UserRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +22,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, ApplicationEventPublisher applicationEventPublisher) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public void init() {
@@ -76,7 +80,11 @@ public class UserService {
         List<Role> roles = new ArrayList<>();
         roles.add(userRole);
         user.setRoles(roles);
-        user.setEnabled(true);
+        user.setEnabled(false);
         userRepository.save(user);
+
+        applicationEventPublisher.publishEvent(new UsersRegisteredEvent(
+                "UserService", userRegisterDto.getEmail(), userRegisterDto.getFirstName()
+        ));
     }
 }

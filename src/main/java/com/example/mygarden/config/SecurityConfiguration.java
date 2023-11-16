@@ -26,6 +26,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/products/add", "/admin/manage").hasRole("ADMIN")
                         .requestMatchers("/pictures/add").hasRole("MODERATOR")
                         .requestMatchers("/products/all").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
         ).formLogin(
                 formLogin ->{

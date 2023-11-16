@@ -8,6 +8,7 @@ import com.example.mygarden.model.enums.CategoryEnum;
 import com.example.mygarden.repository.CategoryRepository;
 import com.example.mygarden.repository.PictureRepository;
 import com.example.mygarden.repository.ProductRepository;
+import com.example.mygarden.service.exeption.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,8 @@ public class ProductService {
 
 
         Product product = modelMapper.map(productAddDto, Product.class);
-        Category category = categoryRepository.findByName(productAddDto.getCategory()).orElse(null);
+        Category category = categoryRepository.findByName(productAddDto.getCategory())
+                .orElseThrow(() -> new ObjectNotFoundException("Category not found"));
         if (category != null) {
             product.setCategory(category);
         }

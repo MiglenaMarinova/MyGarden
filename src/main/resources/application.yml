@@ -3,6 +3,14 @@ logging:
         blog: WARN
         org: WARN
         org.hibernate.SQL: DEBUG
+
+mail:
+    mygarden: "mygarden@example.com"
+    host: localhost
+    port: 1025
+    username: ${MAIL_USER:mygarden}
+    password: ${MAIL_PASSWORD:mygarden}
+
 spring:
     datasource:
         driverClassName: com.mysql.cj.jdbc.Driver
