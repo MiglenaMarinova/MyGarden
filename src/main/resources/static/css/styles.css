@@ -142,3 +142,100 @@ body > div.container > form > div > button{
     font-family: Alegreya Sans, sans-serif;
 }
 
+/*about page*/
+body > div.about-section{
+    text-align: center;
+    font-family: "Segoe Print", sans-serif;
+    color: green;
+}
+body > div.about-section > h1{
+    font-size: 40px;
+    color: darkorange;
+    font-family: Alegreya Sans, sans-serif;
+    padding-top: 30px;
+}
+body > h2{
+    font-size: 35px;
+    color: darkorange;
+    font-family: Alegreya Sans, sans-serif;
+    padding-top: 30px;
+}
+body > div.about-section > p{
+    margin: 20px 60px 10px 60px;
+    font-size: 20px;
+}
+
+body > div.container > div{
+    text-align: center;
+    margin-left: 155px;
+    column-gap: 200px;
+    padding-top: 30px;
+
+}
+body > div.container > div > div:nth-child(1) > div{
+    border: none;
+}
+body > div.container > div > div:nth-child(2) > div{
+    border: none;
+}
+body > div.container > div > div:nth-child(1) > div > img{
+    border-radius: 50%;
+}
+body > div.container > div > div:nth-child(2) > div > img{
+    border-radius: 50%;
+}
+body > div.container > div > div:nth-child(1) > div > div{
+    padding-top: 40px;
+}
+body > div.container > div > div:nth-child(2) > div > div{
+    padding-top: 40px;
+}
+body > div.container > div > div:nth-child(1) > div > div > h2{
+    font-size: 27px;
+    color: green;
+    font-family: "Segoe Print", sans-serif;
+}
+body > div.container > div > div:nth-child(1) > div > div > p.title{
+    padding-top: 20px;
+    font-size: 20px;
+    font-family: "Segoe Print", sans-serif;
+    color: darkorange;
+}
+body > div.container > div > div:nth-child(1) > div > div > p:nth-child(3){
+    padding-top: 10px;
+    font-size: 15px;
+    color: darkorange;
+    font-family: "Segoe Print", sans-serif;
+}
+body > div.container > div > div:nth-child(1) > div > div > p:nth-child(4){
+    padding-top: 20px;
+    font-size: 20px;
+    color: green;
+    font-family: Alegreya Sans, sans-serif;
+}
+body > div.container > div > div:nth-child(2) > div > div > h2{
+    font-size: 27px;
+    color: green;
+    font-family: "Segoe Print", sans-serif;
+}
+body > div.container > div > div:nth-child(2) > div > div > p.title{
+    padding-top: 20px;
+    font-size: 20px;
+    font-family: "Segoe Print", sans-serif;
+    color: darkorange;
+}
+body > div.container > div > div:nth-child(2) > div > div > p:nth-child(3){
+    padding-top: 10px;
+    font-size: 15px;
+    color: darkorange;
+    font-family: "Segoe Print", sans-serif;
+}
+body > div.container > div > div:nth-child(2) > div > div > p:nth-child(4){
+    padding-top: 20px;
+    font-size: 20px;
+    color: green;
+    font-family: Alegreya Sans, sans-serif;
+}
+
+
+

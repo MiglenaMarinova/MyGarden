@@ -38,7 +38,7 @@
         </li>
         <li sec:authorize="isAuthenticated()" class="nav-item">
           <form th:method="post" th:action="@{/users/logout}">
-            <input type="submit" class="btn btn-link" value="Logout"></input>
+            <input type="submit" class="btn btn-link" value="Logout">
           </form>
         </li>
 

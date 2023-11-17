@@ -30,7 +30,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/about").permitAll()
                         .anyRequest().authenticated()
         ).formLogin(
-                formLogin ->{
+                formLogin -> {
                     formLogin
                             .loginPage("/users/login")
                             .usernameParameter("email")
@@ -39,7 +39,7 @@ public class SecurityConfiguration {
                             .failureForwardUrl("/users/login-error");
                 }
         ).logout(
-                logout ->{
+                logout -> {
                     logout
                             .logoutUrl("/users/logout")
                             .logoutSuccessUrl("/")
