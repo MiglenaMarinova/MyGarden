@@ -23,7 +23,7 @@ public class EmailService {
         this.mygardenEmail = mygardenEmail;
     }
 
-    void sendRegistrationEmail(String userEmail, String userName){
+    void sendRegistrationEmail(String userEmail, String userName, String activationCode){
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
@@ -34,7 +34,7 @@ public class EmailService {
             mimeMessageHelper.setFrom(mygardenEmail);
             mimeMessageHelper.setReplyTo(mygardenEmail);
             mimeMessageHelper.setSubject("Welcome to my garden!");
-            mimeMessageHelper.setText(generateRegistrationEmailBody(userName), true);
+            mimeMessageHelper.setText(generateRegistrationEmailBody(userName, activationCode), true);
 
             javaMailSender.send(mimeMessageHelper.getMimeMessage());
 
@@ -45,10 +45,11 @@ public class EmailService {
 
     }
 
-    private String generateRegistrationEmailBody(String userName){
+    private String generateRegistrationEmailBody(String userName, String activationCode){
 
         Context context = new Context();
         context.setVariable("username", userName);
+        context.setVariable("activation_code", activationCode);
 
         return templateEngine.process("email/registration-email", context);
     }
