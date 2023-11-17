@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}">
+</head>
+<body>
+<nav th:replace="~{fragments/navigation}"></nav>
+
+<div class="about-section">
+    <h1>About Us</h1>
+    <p>Здравейте! Аз и майка ми сме земеделски производители, срартирали дейността си през 2013 год.
+        Отглеждаме традиционни и "странни" зеленчуци с любов, специално за вашата трапеза!
+        Малка семейна градина, в коята се отглеждат зеленчуци, за тези които нямат възможност за това. :)</p>
+</div>
+
+<h2 style="text-align:center">Our Team</h2>
+<div class="row">
+    <div class="column">
+        <div class="card">
+            <img src="/images/cwetanka.jpg" alt="Cwetanka" style="width:100%">
+            <div class="container">
+                <h2>Цветанка Зеленчукова</h2>
+                <p class="title">Аз</p>
+                <p>Малко по-млад земеделски производител</p>
+                <p>admin@admin.com</p>
+<!--                <p><button class="button">Contact</button></p>-->
+            </div>
+        </div>
+    </div>
+
+    <div class="column">
+        <div class="card">
+            <img src="/images/radka.jpg" alt="Radka" style="width:100%">
+            <div class="container">
+                <h2>Радка Зеленчукова</h2>
+                <p class="title">Майка ми</p>
+                <p>Млад земеделски производител</p>
+                <p>moderator@moderator.com</p>
+<!--                <p><button class="button">Contact</button></p>-->
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

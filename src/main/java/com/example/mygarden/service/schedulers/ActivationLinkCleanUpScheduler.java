@@ -4,7 +4,6 @@ import com.example.mygarden.service.UserActivationService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 
 @Component
 public class ActivationLinkCleanUpScheduler {

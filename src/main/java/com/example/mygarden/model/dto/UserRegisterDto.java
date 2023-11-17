@@ -1,11 +1,14 @@
 package com.example.mygarden.model.dto;
 
+import com.example.mygarden.validation.FieldMatch;
 import com.example.mygarden.validation.UniqueUserEmail;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-
+@FieldMatch(first = "password",
+        second = "confirmPassword",
+        message = "passwords should match")
 public class UserRegisterDto {
 
     @NotNull
