@@ -21,6 +21,7 @@ public class PicturesUploadedController {
 
     @GetMapping("/all")
     public String allUploadedPic(Model model){
+
         List<PictureViewDto> pictures = pictureService.findAll();
         model.addAttribute("pictures", pictures);
 

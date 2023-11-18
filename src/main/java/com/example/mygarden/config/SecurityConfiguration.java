@@ -24,7 +24,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/", "/users/register", "/users/login", "/users/login-error").permitAll()
                         .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
                         .requestMatchers("/products/add", "/admin/manage").hasRole("ADMIN")
-                        .requestMatchers("/pictures/add").hasRole("MODERATOR")
+                        .requestMatchers("/pictures/add", "/pictures/all").hasRole("MODERATOR")
                         .requestMatchers("/products/all").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/about").permitAll()
