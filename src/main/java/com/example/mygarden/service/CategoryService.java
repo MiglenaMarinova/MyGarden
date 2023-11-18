@@ -1,6 +1,7 @@
 package com.example.mygarden.service;
 
 import com.example.mygarden.model.dto.CategoryPicDto;
+import com.example.mygarden.model.dto.PictureViewDto;
 import com.example.mygarden.model.dto.ProductViewDto;
 import com.example.mygarden.model.entity.Category;
 import com.example.mygarden.model.enums.CategoryEnum;
@@ -48,14 +49,22 @@ public class CategoryService {
             categoryPicDto.setName(category.getName());
             List<ProductViewDto> products = category.getProducts()
                     .stream()
-                    .map(product -> modelMapper.map(product, ProductViewDto.class)).collect(Collectors.toList());
+                    .map(product -> {
+                        ProductViewDto productViewDto = modelMapper.map(product, ProductViewDto.class);
+                        List<PictureViewDto> pictureViewDtos =
+                                product.getPictures()
+                                        .stream()
+                                        .map(picture -> modelMapper.map(picture, PictureViewDto.class))
+                                        .collect(Collectors.toList());
+                        productViewDto.setPictureViewList(pictureViewDtos);
+                        return productViewDto;
+                    }).collect(Collectors.toList());
+
             categoryPicDto.setProductViewDtoList(products);
         }
-
-
         return categoryPicDto;
-
     }
+
 
     public List<CategoryPicDto> findAll() {
         return categoryRepository.findAll()
@@ -79,10 +88,19 @@ public class CategoryService {
             categoryPicDto.setName(category.getName());
             List<ProductViewDto> products = category.getProducts()
                     .stream()
-                    .map(product -> modelMapper.map(product, ProductViewDto.class)).collect(Collectors.toList());
+                    .map(product -> {
+                        ProductViewDto productViewDto = modelMapper.map(product, ProductViewDto.class);
+                        List<PictureViewDto> pictureViewDtos =
+                                product.getPictures()
+                                        .stream()
+                                        .map(picture -> modelMapper.map(picture, PictureViewDto.class))
+                                        .collect(Collectors.toList());
+                        productViewDto.setPictureViewList(pictureViewDtos);
+                        return productViewDto;
+                    }).collect(Collectors.toList());
+
             categoryPicDto.setProductViewDtoList(products);
         }
-
 
         return categoryPicDto;
     }
@@ -95,10 +113,19 @@ public class CategoryService {
             categoryPicDto.setName(category.getName());
             List<ProductViewDto> products = category.getProducts()
                     .stream()
-                    .map(product -> modelMapper.map(product, ProductViewDto.class)).collect(Collectors.toList());
+                    .map(product -> {
+                        ProductViewDto productViewDto = modelMapper.map(product, ProductViewDto.class);
+                        List<PictureViewDto> pictureViewDtos =
+                                product.getPictures()
+                                        .stream()
+                                        .map(picture -> modelMapper.map(picture, PictureViewDto.class))
+                                        .collect(Collectors.toList());
+                        productViewDto.setPictureViewList(pictureViewDtos);
+                        return productViewDto;
+                    }).collect(Collectors.toList());
+
             categoryPicDto.setProductViewDtoList(products);
         }
-
 
         return categoryPicDto;
     }
@@ -110,10 +137,19 @@ public class CategoryService {
             categoryPicDto.setName(category.getName());
             List<ProductViewDto> products = category.getProducts()
                     .stream()
-                    .map(product -> modelMapper.map(product, ProductViewDto.class)).collect(Collectors.toList());
+                    .map(product -> {
+                        ProductViewDto productViewDto = modelMapper.map(product, ProductViewDto.class);
+                        List<PictureViewDto> pictureViewDtos =
+                                product.getPictures()
+                                        .stream()
+                                        .map(picture -> modelMapper.map(picture, PictureViewDto.class))
+                                        .collect(Collectors.toList());
+                        productViewDto.setPictureViewList(pictureViewDtos);
+                        return productViewDto;
+                    }).collect(Collectors.toList());
+
             categoryPicDto.setProductViewDtoList(products);
         }
-
 
         return categoryPicDto;
 

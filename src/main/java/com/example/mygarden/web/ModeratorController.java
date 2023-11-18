@@ -1,6 +1,8 @@
 package com.example.mygarden.web;
 
+import com.example.mygarden.model.dto.PictureViewDto;
 import com.example.mygarden.model.dto.ProductViewDto;
+import com.example.mygarden.service.PictureService;
 import com.example.mygarden.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,9 +16,12 @@ import java.util.List;
 public class ModeratorController {
 
     private final ProductService productService;
+    private final PictureService pictureService;
 
-    public ModeratorController(ProductService productService) {
+
+    public ModeratorController(ProductService productService, PictureService pictureService) {
         this.productService = productService;
+        this.pictureService = pictureService;
     }
 
 
@@ -26,10 +31,12 @@ public class ModeratorController {
 
     List<ProductViewDto> allProducts = productService.findAll();
     model.addAttribute("allProducts", allProducts);
-
+    List<PictureViewDto> allAvailablePic = pictureService.findAll();
+    model.addAttribute("allAvailablePic", allAvailablePic);
 
         return "moderator-page";
     }
+
 
 
 

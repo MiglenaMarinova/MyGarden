@@ -45,7 +45,13 @@
             <div class="row mx-auto d-flex flex-row justify-content-center">
                 <div th:each="v : ${allVeggies}" th:object="${v}">
                     <div class="card" style="width: 18rem;">
-                        <img th:src="${v.picUrl}" class="card-img-top" alt="pic">
+                        <section class="gallery">
+                            <img th:each="pic : ${v.getPictureViewList()}" th:object="${pic}" th:src="${pic.imgUrl}"
+                                 class="rounded" alt="">
+                            <th:block th:if="${v.getPictureViewList().size() == 0}">
+                                <img src="/images/comming-soon-%20photo.jpg" class="rounded" alt="coming">
+                            </th:block>
+                        </section>
                         <div class="card-body">
                             <h5 th:text="*{name}" class="card-title">Домати</h5>
                             <p th:text="*{price}" class="card-text">1.50 лв/кг</p>
@@ -59,7 +65,13 @@
             <div class="row mx-auto d-flex flex-row justify-content-center">
                 <div th:each="o : ${allOther}" th:object="${o}">
                     <div class="card" style="width: 18rem;">
-                        <img th:src="${o.picUrl}" class="card-img-top" alt="pic">
+                        <section class="gallery">
+                            <img th:each="pic : ${o.getPictureViewList()}" th:object="${pic}" th:src="${pic.imgUrl}"
+                                 class="rounded" alt="">
+                            <th:block th:if="${o.getPictureViewList().size() == 0}">
+                                <img src="/images/comming-soon-%20photo.jpg" class="rounded" alt="coming">
+                            </th:block>
+                        </section>
                         <div class="card-body">
                             <h5 th:text="*{name}" class="card-title">Домати</h5>
                             <p th:text="*{price}" class="card-text">1.50 лв/кг</p>
@@ -73,7 +85,13 @@
             <div class="row mx-auto d-flex flex-row justify-content-center">
                 <div th:each="s : ${allSpices}" th:object="${s}">
                     <div class="card" style="width: 18rem;">
-                        <img th:src="${s.picUrl}" class="card-img-top" alt="pic">
+                        <section class="gallery">
+                            <img th:each="pic : ${s.getPictureViewList()}" th:object="${pic}" th:src="${pic.imgUrl}"
+                                 class="rounded" alt="">
+                            <th:block th:if="${s.getPictureViewList().size() == 0}">
+                                <img src="/images/comming-soon-%20photo.jpg" class="rounded" alt="coming">
+                            </th:block>
+                        </section>
                         <div class="card-body">
                             <h5 th:text="*{name}" class="card-title">Домати</h5>
                             <p th:text="*{price}" class="card-text">1.50 лв/кг</p>
@@ -87,7 +105,13 @@
             <div class="row mx-auto d-flex flex-row justify-content-center">
                 <div th:each="h : ${allHomemade}" th:object="${h}">
                     <div class="card" style="width: 18rem;">
-                        <img th:src="${h.picUrl}" class="card-img-top" alt="pic">
+                        <section class="gallery">
+                            <img th:each="pic : ${h.getPictureViewList()}" th:object="${pic}" th:src="${pic.imgUrl}"
+                                 class="rounded" alt="">
+                            <th:block th:if="${h.getPictureViewList().size() == 0}">
+                                <img src="/images/comming-soon-%20photo.jpg" class="rounded" alt="coming">
+                            </th:block>
+                        </section>
                         <div class="card-body">
                             <h5 th:text="*{name}" class="card-title">Домати</h5>
                             <p th:text="*{price}" class="card-text">1.50 лв/кг</p>

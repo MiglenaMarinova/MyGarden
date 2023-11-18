@@ -39,36 +39,17 @@
         </div>
 
         <div class="col-5">
-            <h3 class="mySticky bg-gray text-dark  mb-0 mt-2">All Pictures</h3>
-            <h6 class="mySticky bg-gray text-dark  mb-0 mt-0"></h6>
-            <div class="bg-dark rounded m-auto" style="height: 67vh; overflow: auto">
-                <th:block>
-                    <ul class="list-group list-group-horizontal text-dark">
-                        <li class="list-group-item bg-warning">
-                            <table>
-                                <tr class="container-fluid">
-                                    <td class="container text-light text-center">
-                                        <a href="#">
-                                            <h2 class="text-center text-dark mt-5">Users</h2>
-                                        </a>
-                                    </td>
-                                    <td class="card" style="width: 18rem;">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
-                                            <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-                                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                            <a href="#" class="card-link">Card link</a>
-                                            <a href="#" class="card-link">Another link</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </li>
-<!--                        <li class="list-group-item list-group-item-warning text-dark">-->
-<!--                            <a th:text="${task.description}">{description}</a>-->
-<!--                        </li>-->
-                    </ul>
-                </th:block>
+            <h3 class="mySticky bg-gray text-dark  mb-0 mt-2">Available Pictures</h3>
+            <div class="bg-light rounded m-auto" style="overflow: auto">
+                <div th:each="pic : ${allAvailablePic}" th:object="${pic}">
+                    <div class="card" style="width: 18rem;">
+                        <img th:src="*{imgUrl}" class="card-img-top" alt="pic">
+                        <div class="card-body">
+                            <h5 th:text="*{title}" class="card-title">Домати</h5>
+                            <!--          <a href="#" class="btn btn-primary">Купи</a>-->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

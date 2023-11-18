@@ -75,23 +75,23 @@ public class ProductService {
         return all;
     }
 
-    public List<ProductViewDto> findByCategoryName(CategoryEnum categoryEnum) {
-        return productRepository.findAllByCategory_Name(categoryEnum)
-                .stream()
-                .map(product -> modelMapper
-                        .map(product, ProductViewDto.class))
-                .collect(Collectors.toList());
-
-    }
-
-    public List<ProductViewDto> findByCategoryOther(CategoryEnum categoryEnum) {
-
-        return productRepository.findAllByCategory_Name(categoryEnum)
-                .stream()
-                .map(product -> modelMapper
-                        .map(product, ProductViewDto.class))
-                .collect(Collectors.toList());
-    }
+//    public List<ProductViewDto> findByCategoryName(CategoryEnum categoryEnum) {
+//        return productRepository.findAllByCategory_Name(categoryEnum)
+//                .stream()
+//                .map(product -> modelMapper
+//                        .map(product, ProductViewDto.class))
+//                .collect(Collectors.toList());
+//
+//    }
+//
+//    public List<ProductViewDto> findByCategoryOther(CategoryEnum categoryEnum) {
+//
+//        return productRepository.findAllByCategory_Name(categoryEnum)
+//                .stream()
+//                .map(product -> modelMapper
+//                        .map(product, ProductViewDto.class))
+//                .collect(Collectors.toList());
+//    }
 
 
     public void changePic(Long id) {
