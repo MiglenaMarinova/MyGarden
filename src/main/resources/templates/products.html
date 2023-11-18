@@ -10,10 +10,16 @@
     <div class="container text-light text-center">
         <h2 class="text-center text-dark mt-5">Products</h2>
     </div>
-    <div class="row mx-auto d-flex flex-row justify-content-center">
-        <div th:each="p : ${products}" th:object="${p}">
+    <div th:each="p : ${products}" th:object="${p}" class="row mx-auto d-flex flex-row justify-content-center">
+        <div>
             <div class="card" style="width: 18rem;">
-                <img th:src="*{picUrl}" class="card-img-top" alt="pic">
+                <section class="gallery">
+                    <img th:each="pic : ${p.getPictureViewList()}" th:object="${pic}" th:src="${pic.imgUrl}"
+                         class="rounded" alt="">
+                    <th:block th:if="${p.getPictureViewList().size() == 0}">
+                        <img src="/images/comming-soon-%20photo.jpg" class="rounded" alt="coming">
+                    </th:block>
+                </section>
                 <div class="card-body">
                     <h5 th:text="*{name}" class="card-title">Домати</h5>
                     <p th:text="*{price}" class="card-text">1.50 лв/кг</p>

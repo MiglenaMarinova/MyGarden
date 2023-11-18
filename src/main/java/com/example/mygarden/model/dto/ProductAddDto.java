@@ -18,7 +18,7 @@ public class ProductAddDto {
     @NotNull(message = "Please select a category")
     private CategoryEnum category;
 
-    public String picUrl;
+
 
 
     public ProductAddDto() {
@@ -38,13 +38,7 @@ public class ProductAddDto {
 
     public Integer amount;
 
-    public String getPicUrl() {
-        return picUrl;
-    }
 
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl;
-    }
 
     public void setPrice(BigDecimal price) {
         this.price = price;

@@ -11,11 +11,11 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/pictures")
-public class PicturesUploadedController {
+public class GalleryController {
 
     private final PictureService pictureService;
 
-    public PicturesUploadedController(PictureService pictureService) {
+    public GalleryController(PictureService pictureService) {
         this.pictureService = pictureService;
     }
 
@@ -25,7 +25,7 @@ public class PicturesUploadedController {
         List<PictureViewDto> pictures = pictureService.findAll();
         model.addAttribute("pictures", pictures);
 
-        return "uploaded-pictures";
+        return "gallery";
     }
 
 }

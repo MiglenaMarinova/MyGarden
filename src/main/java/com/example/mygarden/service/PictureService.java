@@ -50,4 +50,9 @@ public class PictureService {
                 .map(picture -> modelMapper.map(picture, PictureViewDto.class))
                 .collect(Collectors.toList());
     }
+
+    public List<Picture> findAllByTittle(String name) {
+
+        return pictureRepository.findAllByTitle(name);
+    }
 }

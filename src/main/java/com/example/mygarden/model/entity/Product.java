@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -15,8 +16,11 @@ public class Product extends BaseEntity {
     private Category category;
 
     private BigDecimal price;
+    public Integer amount;
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    private Set<Picture> pictures;
 
-    private String picUrl;
+
 
     public Product() {
     }
@@ -46,11 +50,19 @@ public class Product extends BaseEntity {
         this.category = category;
     }
 
-    public String getPicUrl() {
-        return picUrl;
+    public Set<Picture> getPictures() {
+        return pictures;
     }
 
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl;
+    public void setPictures(Set<Picture> pictures) {
+        this.pictures = pictures;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 }

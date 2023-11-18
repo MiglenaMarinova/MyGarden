@@ -22,13 +22,16 @@
           <a class="nav-link" href="/admin/manage">Admin</a>
         </li>
         <li sec:authorize="hasRole('MODERATOR')" class="nav-item">
+          <a class="nav-link" href="/moderator/manage">Moderator</a>
+        </li>
+        <li sec:authorize="hasRole('MODERATOR')" class="nav-item">
           <a class="nav-link" href="/pictures/add">Add Picture</a>
         </li>
         <li sec:authorize="hasRole('MODERATOR')" class="nav-item">
           <a class="nav-link" href="/products/all">All Products</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/pictures/all">All Pictures</a>
+          <a class="nav-link" href="/pictures/all">Gallery</a>
         </li>
         <li sec:authorize="!isAuthenticated()" class="nav-item">
           <a class="nav-link" href="/users/login">Login</a>

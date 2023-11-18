@@ -5,6 +5,8 @@ import com.example.mygarden.model.entity.Category;
 import com.example.mygarden.model.enums.CategoryEnum;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductViewDto {
 
@@ -12,7 +14,7 @@ public class ProductViewDto {
     private String name;
     private BigDecimal price;
 
-   private String picUrl;
+   private List<PictureViewDto> pictureViewList = new ArrayList<>();
 
 
     public ProductViewDto() {
@@ -43,13 +45,11 @@ public class ProductViewDto {
         this.price = price;
     }
 
-    public String getPicUrl() {
-        return picUrl;
+    public List<PictureViewDto> getPictureViewList() {
+        return pictureViewList;
     }
 
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl;
+    public void setPictureViewList(List<PictureViewDto> pictureViewList) {
+        this.pictureViewList = pictureViewList;
     }
-
-
 }

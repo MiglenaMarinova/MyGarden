@@ -8,6 +8,8 @@ public class Picture extends BaseEntity{
 
     private String title;
     private String imgUrl;
+    @ManyToOne
+    private Product product;
 
 
 
@@ -28,5 +30,13 @@ public class Picture extends BaseEntity{
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }
