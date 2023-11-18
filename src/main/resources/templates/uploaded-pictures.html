@@ -1,0 +1,41 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns="http://www.w3.org/1999/xhtml"-->
+<!--      xmlns:th="http://www.thymeleaf.org">-->
+<!--<head th:replace="~{fragments/head}">-->
+<!--</head>-->
+<!--<body>-->
+<!--<nav th:replace="~{fragments/navigation}"></nav>-->
+
+<!--<div class="container-fluid">-->
+<!--  <div class="container text-light text-center">-->
+<!--    <h2 class="text-center text-dark mt-5">Uploaded Picture</h2>-->
+<!--    <th:block th:each="pic : ${p}" th:object="${pic}">-->
+<!--      <div class="row">-->
+<!--        <h3 th:text="*{title}"></h3>-->
+<!--        <img th:src="*{imgUrl}" alt="img" width="300px">-->
+<!--      </div>-->
+<!--    </th:block>-->
+<!--  </div>-->
+
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+</head>
+<body>
+<h1>Upload Successful</h1>
+<a href="/">Back to Index</a>
+<th:block th:each="pic : ${pictures}" th:object="${pic}">
+  <div class="row">
+    <h3 th:text="*{title}"></h3>
+    <img th:src="*{imgUrl}" alt="Student picture" width="300px">
+  </div>
+</th:block>
+</body>
+</html>

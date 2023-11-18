@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface PictureRepository extends JpaRepository<Picture, Long> {
 
-    Optional<Picture> findByUrl(String url);
+
 }

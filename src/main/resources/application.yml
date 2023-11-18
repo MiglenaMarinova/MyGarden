@@ -31,3 +31,14 @@ spring:
         hiddenmethod:
             filter:
                 enabled: true
+
+    servlet:
+      multipart:
+        max-file-size: 5MB
+        max-request-size: 5MB
+        enabled: true
+
+cloudinary:
+    cloud-name: ds4tkr2vb
+    api-key: 487839896536817
+    api-secret: "${CLOUD_API_SECRET}"

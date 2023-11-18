@@ -1,17 +1,20 @@
-package com.example.mygarden.model.entity;
+package com.example.mygarden.model.dto;
 
-import jakarta.persistence.*;
+public class PictureViewDto {
 
-@Entity
-@Table(name = "pictures")
-public class Picture extends BaseEntity{
-
+    private Long id;
     private String title;
     private String imgUrl;
 
+    public PictureViewDto() {
+    }
 
+    public Long getId() {
+        return id;
+    }
 
-    public Picture() {
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
