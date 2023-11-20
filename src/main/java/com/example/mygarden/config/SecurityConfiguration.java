@@ -1,7 +1,7 @@
 package com.example.mygarden.config;
 
 import com.example.mygarden.repository.UserRepository;
-import com.example.mygarden.service.AppUserDetailsService;
+import com.example.mygarden.service.impl.AppUserDetailsService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
                         .requestMatchers("/products/add", "/admin/manage").hasRole("ADMIN")
                         .requestMatchers("/pictures/add", "/moderator/manage").hasRole("MODERATOR")
-                        .requestMatchers("/products/all").permitAll()
+                        .requestMatchers("/products/all", "/pictures/all").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/about").permitAll()
                         .anyRequest().authenticated()

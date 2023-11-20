@@ -1,7 +1,7 @@
 package com.example.mygarden.web;
 
 import com.example.mygarden.model.dto.UserRegisterDto;
-import com.example.mygarden.service.UserService;
+import com.example.mygarden.service.impl.UserService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;

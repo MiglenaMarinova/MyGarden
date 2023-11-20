@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 public class ProductAddDto {
     @NotNull
-    @Size(min = 5, max = 20, message = "Name length must be between 5 and 20")
+    @Size(min = 3, max = 20, message = "Name length must be between 3 and 20")
     private String name;
     @Positive(message = "The price must be a positive number")
     @NotNull(message = "Please enter the price")

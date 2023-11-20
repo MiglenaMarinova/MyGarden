@@ -1,10 +1,9 @@
 package com.example.mygarden.web;
 
 import com.example.mygarden.model.dto.CategoryPicDto;
-import com.example.mygarden.model.dto.ProductViewDto;
 import com.example.mygarden.model.enums.CategoryEnum;
-import com.example.mygarden.service.CategoryService;
-import com.example.mygarden.service.ProductService;
+import com.example.mygarden.service.impl.CategoryService;
+import com.example.mygarden.service.impl.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

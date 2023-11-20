@@ -1,7 +1,7 @@
 package com.example.mygarden.web;
 
 import com.example.mygarden.model.dto.PictureViewDto;
-import com.example.mygarden.service.PictureService;
+import com.example.mygarden.service.impl.PictureService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

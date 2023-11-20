@@ -1,4 +1,4 @@
-package com.example.mygarden.service;
+package com.example.mygarden.service.impl;
 
 import com.example.mygarden.model.entity.Role;
 import com.example.mygarden.model.entity.User;

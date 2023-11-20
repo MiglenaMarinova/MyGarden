@@ -1,14 +1,14 @@
 package com.example.mygarden.service.schedulers;
 
-import com.example.mygarden.service.UserActivationService;
+import com.example.mygarden.service.impl.UserActivationServiceImpl;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class ActivationLinkCleanUpScheduler {
-    private final UserActivationService userActivationService;
-    public ActivationLinkCleanUpScheduler(UserActivationService userActivationService) {
+    private final UserActivationServiceImpl userActivationService;
+    public ActivationLinkCleanUpScheduler(UserActivationServiceImpl userActivationService) {
         this.userActivationService = userActivationService;
     }
 
