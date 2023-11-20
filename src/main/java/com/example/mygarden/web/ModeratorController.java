@@ -2,8 +2,10 @@ package com.example.mygarden.web;
 
 import com.example.mygarden.model.dto.PictureViewDto;
 import com.example.mygarden.model.dto.ProductViewDto;
-import com.example.mygarden.service.impl.PictureService;
-import com.example.mygarden.service.impl.ProductService;
+import com.example.mygarden.service.PictureService;
+import com.example.mygarden.service.ProductService;
+import com.example.mygarden.service.impl.PictureServiceImpl;
+import com.example.mygarden.service.impl.ProductServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,15 +17,13 @@ import java.util.List;
 @RequestMapping("moderator")
 public class ModeratorController {
 
-    private final ProductService productService;
-    private final PictureService pictureService;
-
+   private final ProductService productService;
+   private final PictureService pictureService;
 
     public ModeratorController(ProductService productService, PictureService pictureService) {
         this.productService = productService;
         this.pictureService = pictureService;
     }
-
 
     @GetMapping("/manage")
     public String managePic(Model model){

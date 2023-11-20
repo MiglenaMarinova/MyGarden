@@ -14,12 +14,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CategoryService implements com.example.mygarden.service.CategoryService {
+public class CategoryServiceImpl implements com.example.mygarden.service.CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final ModelMapper modelMapper;
 
-    public CategoryService(CategoryRepository categoryRepository, ModelMapper modelMapper) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ModelMapper modelMapper) {
         this.categoryRepository = categoryRepository;
         this.modelMapper = modelMapper;
     }

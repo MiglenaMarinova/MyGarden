@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class UserService implements com.example.mygarden.service.UserService {
+public class UserServiceImpl implements com.example.mygarden.service.UserService {
 
 
     private final UserRepository userRepository;
@@ -24,7 +24,7 @@ public class UserService implements com.example.mygarden.service.UserService {
     private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, ApplicationEventPublisher applicationEventPublisher) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, ApplicationEventPublisher applicationEventPublisher) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;

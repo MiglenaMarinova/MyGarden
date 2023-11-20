@@ -11,11 +11,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.stream.Collectors;
 
-public class AppUserDetailsService implements UserDetailsService {
+public class AppUserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public AppUserDetailsService(UserRepository userRepository) {
+    public AppUserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -24,7 +24,7 @@ public class AppUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         return userRepository.findByEmail(email)
-                .map(AppUserDetailsService::map)
+                .map(AppUserDetailsServiceImpl::map)
                 .orElseThrow(() -> new UsernameNotFoundException("User with email " + email + " not found"));
     }
 
@@ -34,7 +34,7 @@ public class AppUserDetailsService implements UserDetailsService {
                 .password(user.getPassword())
                 .authorities(user.getRoles()
                         .stream()
-                        .map(AppUserDetailsService::map)
+                        .map(AppUserDetailsServiceImpl::map)
                         .collect(Collectors.toList())).build();
 
         return userDetails;

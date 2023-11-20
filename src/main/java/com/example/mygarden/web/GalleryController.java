@@ -1,7 +1,8 @@
 package com.example.mygarden.web;
 
 import com.example.mygarden.model.dto.PictureViewDto;
-import com.example.mygarden.service.impl.PictureService;
+import com.example.mygarden.service.PictureService;
+import com.example.mygarden.service.impl.PictureServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +14,7 @@ import java.util.List;
 @RequestMapping("/pictures")
 public class GalleryController {
 
-    private final PictureService pictureService;
+   private final PictureService pictureService;
 
     public GalleryController(PictureService pictureService) {
         this.pictureService = pictureService;

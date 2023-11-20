@@ -2,8 +2,7 @@ package com.example.mygarden.web;
 
 import com.example.mygarden.model.dto.CategoryPicDto;
 import com.example.mygarden.model.enums.CategoryEnum;
-import com.example.mygarden.service.impl.CategoryService;
-import com.example.mygarden.service.impl.ProductService;
+import com.example.mygarden.service.CategoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,16 +13,11 @@ import java.util.List;
 @Controller
 @RequestMapping("/categories")
 public class CategoriesController {
-    private final ProductService productService;
     private final CategoryService categoryService;
 
-
-
-    public CategoriesController(ProductService productService, CategoryService categoryService) {
-        this.productService = productService;
+    public CategoriesController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
-
 
 
     @GetMapping("/veggies")

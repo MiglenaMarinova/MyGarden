@@ -1,7 +1,7 @@
 package com.example.mygarden.config;
 
 import com.example.mygarden.repository.UserRepository;
-import com.example.mygarden.service.impl.AppUserDetailsService;
+import com.example.mygarden.service.impl.AppUserDetailsServiceImpl;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,7 +50,7 @@ public class SecurityConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository){
-        return new AppUserDetailsService(userRepository);
+        return new AppUserDetailsServiceImpl(userRepository);
     }
 
     @Bean

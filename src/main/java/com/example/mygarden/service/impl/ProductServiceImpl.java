@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ProductService implements com.example.mygarden.service.ProductService {
+public class ProductServiceImpl implements com.example.mygarden.service.ProductService {
 
     private final ModelMapper modelMapper;
     private final ProductRepository productRepository;
@@ -25,8 +25,8 @@ public class ProductService implements com.example.mygarden.service.ProductServi
     private final PictureService pictureService;
 
 
-    public ProductService(ModelMapper modelMapper, ProductRepository productRepository,
-                          CategoryRepository categoryRepository, PictureService pictureService) {
+    public ProductServiceImpl(ModelMapper modelMapper, ProductRepository productRepository,
+                              CategoryRepository categoryRepository, PictureService pictureService) {
         this.modelMapper = modelMapper;
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;

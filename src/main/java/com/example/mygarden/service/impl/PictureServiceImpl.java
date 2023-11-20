@@ -15,16 +15,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class PictureService implements com.example.mygarden.service.PictureService {
+public class PictureServiceImpl implements com.example.mygarden.service.PictureService {
 
     private final PictureRepository pictureRepository;
 
     private final ModelMapper modelMapper;
-    private final CloudinaryService cloudinaryService;
+    private final CloudinaryServiceImpl cloudinaryService;
 
 
-    public PictureService(PictureRepository pictureRepository, ModelMapper modelMapper,
-                          CloudinaryService cloudinaryService) {
+    public PictureServiceImpl(PictureRepository pictureRepository, ModelMapper modelMapper,
+                              CloudinaryServiceImpl cloudinaryService) {
         this.pictureRepository = pictureRepository;
         this.modelMapper = modelMapper;
         this.cloudinaryService = cloudinaryService;
