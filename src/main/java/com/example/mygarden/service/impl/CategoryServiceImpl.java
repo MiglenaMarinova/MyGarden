@@ -42,30 +42,6 @@ public class CategoryServiceImpl implements com.example.mygarden.service.Categor
     }
 
 
-    public CategoryPicDto findByNameVeg(CategoryEnum categoryEnum) {
-        Category category = categoryRepository.findByName(categoryEnum).orElse(null);
-        CategoryPicDto categoryPicDto = new CategoryPicDto();
-        if (category != null){
-            categoryPicDto.setName(category.getName());
-            List<ProductViewDto> products = category.getProducts()
-                    .stream()
-                    .map(product -> {
-                        ProductViewDto productViewDto = modelMapper.map(product, ProductViewDto.class);
-                        List<PictureViewDto> pictureViewDtos =
-                                product.getPictures()
-                                        .stream()
-                                        .map(picture -> modelMapper.map(picture, PictureViewDto.class))
-                                        .collect(Collectors.toList());
-                        productViewDto.setPictureViewList(pictureViewDtos);
-                        return productViewDto;
-                    }).collect(Collectors.toList());
-
-            categoryPicDto.setProductViewDtoList(products);
-        }
-        return categoryPicDto;
-    }
-
-
     public List<CategoryPicDto> findAll() {
         return categoryRepository.findAll()
                 .stream()
@@ -82,55 +58,24 @@ public class CategoryServiceImpl implements com.example.mygarden.service.Categor
     }
 
     public CategoryPicDto findByNameOther(CategoryEnum categoryEnum) {
-        Category category = categoryRepository.findByName(categoryEnum).orElse(null);
-        CategoryPicDto categoryPicDto = new CategoryPicDto();
-        if (category != null){
-            categoryPicDto.setName(category.getName());
-            List<ProductViewDto> products = category.getProducts()
-                    .stream()
-                    .map(product -> {
-                        ProductViewDto productViewDto = modelMapper.map(product, ProductViewDto.class);
-                        List<PictureViewDto> pictureViewDtos =
-                                product.getPictures()
-                                        .stream()
-                                        .map(picture -> modelMapper.map(picture, PictureViewDto.class))
-                                        .collect(Collectors.toList());
-                        productViewDto.setPictureViewList(pictureViewDtos);
-                        return productViewDto;
-                    }).collect(Collectors.toList());
+        return getCategoryPicDto(categoryEnum);
+    }
 
-            categoryPicDto.setProductViewDtoList(products);
-        }
-
-        return categoryPicDto;
+    public CategoryPicDto findByNameVeg(CategoryEnum categoryEnum) {
+        return getCategoryPicDto(categoryEnum);
     }
 
     public CategoryPicDto findByNameSpices(CategoryEnum categoryEnum) {
 
-        Category category = categoryRepository.findByName(categoryEnum).orElse(null);
-        CategoryPicDto categoryPicDto = new CategoryPicDto();
-        if (category != null){
-            categoryPicDto.setName(category.getName());
-            List<ProductViewDto> products = category.getProducts()
-                    .stream()
-                    .map(product -> {
-                        ProductViewDto productViewDto = modelMapper.map(product, ProductViewDto.class);
-                        List<PictureViewDto> pictureViewDtos =
-                                product.getPictures()
-                                        .stream()
-                                        .map(picture -> modelMapper.map(picture, PictureViewDto.class))
-                                        .collect(Collectors.toList());
-                        productViewDto.setPictureViewList(pictureViewDtos);
-                        return productViewDto;
-                    }).collect(Collectors.toList());
-
-            categoryPicDto.setProductViewDtoList(products);
-        }
-
-        return categoryPicDto;
+        return getCategoryPicDto(categoryEnum);
     }
 
     public CategoryPicDto findByNameHomemade(CategoryEnum categoryEnum) {
+        return getCategoryPicDto(categoryEnum);
+
+    }
+
+    private CategoryPicDto getCategoryPicDto(CategoryEnum categoryEnum) {
         Category category = categoryRepository.findByName(categoryEnum).orElse(null);
         CategoryPicDto categoryPicDto = new CategoryPicDto();
         if (category != null){
@@ -152,6 +97,5 @@ public class CategoryServiceImpl implements com.example.mygarden.service.Categor
         }
 
         return categoryPicDto;
-
     }
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/head}">
 </head>
 <body>
@@ -24,6 +25,9 @@
                     <h5 th:text="*{name}" class="card-title">Домати</h5>
                     <p th:text="*{price}" class="card-text">1.50 лв/кг</p>
                     <a th:href="@{/products/buy/{id}(id=${p.id})}" class="btn btn-primary">Купи</a>
+                    <form sec:authorize="hasRole('ADMIN')" th:method="delete" >
+                        <input type="submit" class="btn btn-danger" value="Delete">
+                    </form>
                 </div>
             </div>
         </div>

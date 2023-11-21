@@ -81,23 +81,7 @@ public class ProductServiceImpl implements com.example.mygarden.service.ProductS
         return all;
     }
 
-//    public List<ProductViewDto> findByCategoryName(CategoryEnum categoryEnum) {
-//        return productRepository.findAllByCategory_Name(categoryEnum)
-//                .stream()
-//                .map(product -> modelMapper
-//                        .map(product, ProductViewDto.class))
-//                .collect(Collectors.toList());
-//
-//    }
-//
-//    public List<ProductViewDto> findByCategoryOther(CategoryEnum categoryEnum) {
-//
-//        return productRepository.findAllByCategory_Name(categoryEnum)
-//                .stream()
-//                .map(product -> modelMapper
-//                        .map(product, ProductViewDto.class))
-//                .collect(Collectors.toList());
-//    }
+
 
 
     public void changePic(Long id) {
@@ -145,18 +129,7 @@ public class ProductServiceImpl implements com.example.mygarden.service.ProductS
 
     }
 
-//    @Override
-//    @Transactional
-//    public void delete(Long id, UserDetails buyer) {
-//        User userBuyer = userService.findByEmail(buyer.getUsername());
-//        Order order = orderService.findByPlacedBy(userBuyer.getId());
-//        Product toDelete = productRepository.findById(id)
-//                .orElseThrow(() -> new ObjectNotFoundException("Product not available."));
-//        if (order != null && !order.isPlaced()) {
-//            order.getOrderedProducts().remove(toDelete);
-//            orderService.save(order);
-//        }
-//    }
+
 
 
 }

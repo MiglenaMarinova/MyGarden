@@ -1,6 +1,7 @@
 package com.example.mygarden.service.impl;
 
 import com.example.mygarden.model.dto.UserRegisterDto;
+import com.example.mygarden.model.dto.UserViewDto;
 import com.example.mygarden.model.entity.Role;
 import com.example.mygarden.model.entity.User;
 import com.example.mygarden.model.enums.RoleEnum;
@@ -8,6 +9,7 @@ import com.example.mygarden.model.events.UsersRegisteredEvent;
 import com.example.mygarden.repository.RoleRepository;
 import com.example.mygarden.repository.UserRepository;
 import com.example.mygarden.service.exeption.ObjectNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements com.example.mygarden.service.UserService {
@@ -24,12 +27,14 @@ public class UserServiceImpl implements com.example.mygarden.service.UserService
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final ModelMapper modelMapper;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, ApplicationEventPublisher applicationEventPublisher) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, ApplicationEventPublisher applicationEventPublisher, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.modelMapper = modelMapper;
     }
 
     public void init() {
@@ -98,5 +103,14 @@ public class UserServiceImpl implements com.example.mygarden.service.UserService
     @Override
     public void save(User userBuyer) {
         userRepository.save(userBuyer);
+    }
+
+    @Override
+    public List<UserViewDto> findAllUsers() {
+
+        return userRepository.findAll()
+                .stream()
+                .map(user -> modelMapper.map(user, UserViewDto.class))
+                .collect(Collectors.toList());
     }
 }
