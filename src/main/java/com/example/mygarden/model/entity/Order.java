@@ -2,13 +2,14 @@ package com.example.mygarden.model.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
 public class Order extends BaseEntity {
 
-    @OneToMany()
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private List<Product> orderedProducts;
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -40,5 +41,9 @@ public class Order extends BaseEntity {
 
     public boolean isPlaced() {
         return isPlaced;
+    }
+
+    public void setPlaced(boolean placed) {
+        isPlaced = placed;
     }
 }

@@ -40,7 +40,7 @@ public class ProductController {
 
         productService.addProduct(productAddDto);
 
-        return "redirect:/";
+        return "redirect:/products/add";
 
     }
 
@@ -63,8 +63,10 @@ public class ProductController {
 
         this.productService.buy(id, buyer);
 
-        return "redirect:/";
+        return "redirect:/user/orders";
     }
+
+
 
 
 

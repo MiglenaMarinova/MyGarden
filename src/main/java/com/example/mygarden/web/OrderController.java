@@ -29,10 +29,12 @@ public class OrderController {
     }
 
     @GetMapping("place-order/{id}")
-    public String placeOrder(@PathVariable Long id){
+    public String placeOrder(@PathVariable Long id,
+                             @AuthenticationPrincipal UserDetails buyer){
 
-//        this.productService.changePic(id);
+        orderService.placeOrder(id, buyer);
 
-        return "redirect:/";
+
+        return "redirect:/user/orders";
     }
 }

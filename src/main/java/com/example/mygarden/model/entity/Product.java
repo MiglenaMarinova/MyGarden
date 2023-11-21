@@ -19,6 +19,9 @@ public class Product extends BaseEntity {
     private Integer amount;
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private Set<Picture> pictures;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
 
 
@@ -64,5 +67,13 @@ public class Product extends BaseEntity {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

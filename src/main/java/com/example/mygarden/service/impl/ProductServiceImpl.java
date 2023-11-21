@@ -127,23 +127,38 @@ public class ProductServiceImpl implements com.example.mygarden.service.ProductS
         User userBuyer = userService.findByEmail(buyer.getUsername());
         Order order = orderService.findByUser(userBuyer.getId());
 
-        if (order != null && !order.isPlaced()){
+        if (order != null && !order.isPlaced()) {
+            product.setOrder(order);
+            productRepository.save(product);
             order.getOrderedProducts().add(product);
             orderService.save(order);
-
-        }else{
+        }else if (order == null){
             Order newOrder = new Order();
             List<Product> products = new ArrayList<>();
             products.add(product);
             newOrder.setOrderedProducts(products);
             newOrder.setPlacedBy(userBuyer);
             orderService.save(newOrder);
+            product.setOrder(newOrder);
+            productRepository.save(product);
             userBuyer.getOrders().add(newOrder);
             userService.save(userBuyer);
-
         }
 
     }
+
+//    @Override
+//    @Transactional
+//    public void delete(Long id, UserDetails buyer) {
+//        User userBuyer = userService.findByEmail(buyer.getUsername());
+//        Order order = orderService.findByPlacedBy(userBuyer.getId());
+//        Product toDelete = productRepository.findById(id)
+//                .orElseThrow(() -> new ObjectNotFoundException("Product not available."));
+//        if (order != null && !order.isPlaced()) {
+//            order.getOrderedProducts().remove(toDelete);
+//            orderService.save(order);
+//        }
+//    }
 
 
 }

@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT o from Order  o " +
-            "WHERE o.placedBy.id = :id")
+            "WHERE o.placedBy.id = :id AND o.isPlaced = false")
     Order findByPlacedBy(Long id);
 
     @Query("SELECT o FROM Order o " +

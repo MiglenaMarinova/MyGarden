@@ -84,11 +84,49 @@ public class OrderServiceImpl implements OrderService {
                                     .map(product -> modelMapper.map(product, ProductViewDto.class))
                                     .collect(Collectors.toList());
                     orderViewDto.setProducts(productViewDtoList);
+                    BigDecimal total = order.getOrderedProducts()
+                            .stream()
+                            .map(product -> product.getPrice())
+                            .reduce(BigDecimal::add)
+                            .orElse(BigDecimal.ZERO);
+                    orderViewDto.setTotalSum(total);
 
                     return orderViewDto;
                 }).collect(Collectors.toList());
 
         return allPlaced;
+    }
+
+//    @Override
+//    @Transactional
+//    public void delete(Long id, UserDetails buyer) {
+//        User userBuyer = userService.findByEmail(buyer.getUsername());
+//        Order order = orderRepository.findByPlacedBy(userBuyer.getId());
+//        Product toDelete = productRepository.findById(id)
+//                .orElseThrow(() -> new ObjectNotFoundException("Product not available."));
+//        if (order != null && !order.isPlaced()) {
+//            order.getOrderedProducts().remove(toDelete);
+//            orderRepository.save(order);
+//        }
+//    }
+
+    @Override
+    public boolean isOwner(Order order, UserDetails buyer) {
+        return false;
+    }
+
+    @Override
+    public void placeOrder(Long id, UserDetails buyer) {
+        User userBuyer = userService.findByEmail(buyer.getUsername());
+        Order order = orderRepository.findByPlacedBy(userBuyer.getId());
+        order.setPlaced(true);
+        orderRepository.save(order);
+
+    }
+
+    @Override
+    public Order findByPlacedBy(Long id) {
+        return orderRepository.findByPlacedBy(id);
     }
 
     @Override
@@ -99,14 +137,11 @@ public class OrderServiceImpl implements OrderService {
         Product toDelete = productRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Product not available."));
         if (order != null && !order.isPlaced()) {
+            toDelete.setOrder(null);
+            productRepository.save(toDelete);
             order.getOrderedProducts().remove(toDelete);
             orderRepository.save(order);
         }
-    }
-
-    @Override
-    public boolean isOwner(Order order, UserDetails buyer) {
-        return false;
     }
 
 
