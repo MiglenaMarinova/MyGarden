@@ -55,7 +55,7 @@ public class ProductController {
 
         this.productService.changePic(id);
 
-        return "redirect:/";
+        return "redirect:/moderator/manage";
     }
     @GetMapping("buy/{id}")
     public String buy(@PathVariable Long id,

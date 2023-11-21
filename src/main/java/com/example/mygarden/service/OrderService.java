@@ -4,7 +4,6 @@ import com.example.mygarden.model.dto.OrderViewDto;
 import com.example.mygarden.model.entity.Order;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface OrderService {

@@ -1,6 +1,5 @@
 package com.example.mygarden.service.impl;
 
-import com.example.mygarden.model.dto.OrderViewDto;
 import com.example.mygarden.model.dto.PictureViewDto;
 import com.example.mygarden.model.dto.ProductAddDto;
 import com.example.mygarden.model.dto.ProductViewDto;
@@ -11,7 +10,6 @@ import com.example.mygarden.service.OrderService;
 import com.example.mygarden.service.PictureService;
 import com.example.mygarden.service.UserService;
 import com.example.mygarden.service.exeption.ObjectNotFoundException;
-import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
