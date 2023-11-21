@@ -4,6 +4,7 @@ import com.example.mygarden.model.dto.PictureViewDto;
 import com.example.mygarden.model.entity.Picture;
 import com.example.mygarden.model.serviceModel.PictureServiceModel;
 import com.example.mygarden.repository.PictureRepository;
+import com.example.mygarden.service.CloudinaryService;
 import com.example.mygarden.service.exeption.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -20,15 +21,18 @@ public class PictureServiceImpl implements com.example.mygarden.service.PictureS
     private final PictureRepository pictureRepository;
 
     private final ModelMapper modelMapper;
-    private final CloudinaryServiceImpl cloudinaryService;
+    private final CloudinaryService cloudinaryService;
 
-
-    public PictureServiceImpl(PictureRepository pictureRepository, ModelMapper modelMapper,
-                              CloudinaryServiceImpl cloudinaryService) {
+    public PictureServiceImpl(PictureRepository pictureRepository, ModelMapper modelMapper, CloudinaryService cloudinaryService) {
         this.pictureRepository = pictureRepository;
         this.modelMapper = modelMapper;
         this.cloudinaryService = cloudinaryService;
     }
+
+
+
+
+
 
 
     public void addPicture(PictureServiceModel pictureServiceModel) throws IOException {

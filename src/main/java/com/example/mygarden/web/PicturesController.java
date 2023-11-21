@@ -1,7 +1,6 @@
 package com.example.mygarden.web;
 
 import com.example.mygarden.service.PictureService;
-import com.example.mygarden.service.impl.PictureServiceImpl;
 import com.example.mygarden.model.serviceModel.PictureServiceModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

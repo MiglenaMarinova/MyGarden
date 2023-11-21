@@ -2,8 +2,9 @@ package com.example.mygarden.web;
 
 import com.example.mygarden.model.dto.ProductAddDto;
 import com.example.mygarden.service.ProductService;
-import com.example.mygarden.service.impl.ProductServiceImpl;
 import jakarta.validation.Valid;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +57,16 @@ public class ProductController {
 
         return "redirect:/";
     }
+    @GetMapping("buy/{id}")
+    public String buy(@PathVariable Long id,
+                      @AuthenticationPrincipal UserDetails buyer){
+
+        this.productService.buy(id, buyer);
+
+        return "redirect:/";
+    }
+
+
 
 
 }

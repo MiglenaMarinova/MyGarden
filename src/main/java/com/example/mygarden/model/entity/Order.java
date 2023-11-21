@@ -8,11 +8,13 @@ import java.util.List;
 @Table(name = "orders")
 public class Order extends BaseEntity {
 
-    @OneToMany
+    @OneToMany()
     private List<Product> orderedProducts;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User placedBy;
+
+    private boolean isPlaced;
 
 
 
@@ -34,5 +36,9 @@ public class Order extends BaseEntity {
 
     public void setPlacedBy(User placedBy) {
         this.placedBy = placedBy;
+    }
+
+    public boolean isPlaced() {
+        return isPlaced;
     }
 }

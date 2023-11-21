@@ -43,6 +43,9 @@
           <a class="nav-link" href="/about">About</a>
         </li>
         <li sec:authorize="isAuthenticated()" class="nav-item">
+          <a class="nav-link" href="user/orders">MyOrders</a>
+        </li>
+        <li sec:authorize="isAuthenticated()" class="nav-item">
           <form th:method="post" th:action="@{/users/logout}">
             <input type="submit" class="btn btn-link" value="Logout">
           </form>

@@ -1,1 +1,1 @@
-# MyGarden is my very furst project
+# MyGarden is my very first project

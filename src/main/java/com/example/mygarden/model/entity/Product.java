@@ -16,7 +16,7 @@ public class Product extends BaseEntity {
     private Category category;
 
     private BigDecimal price;
-    public Integer amount;
+    private Integer amount;
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private Set<Picture> pictures;
 

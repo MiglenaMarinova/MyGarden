@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="users")
@@ -25,7 +26,8 @@ public class User extends BaseEntity{
     inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "placedBy", fetch = FetchType.EAGER )
+    private List<Order> orders;
 
 
     public User() {
@@ -85,5 +87,13 @@ public class User extends BaseEntity{
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }

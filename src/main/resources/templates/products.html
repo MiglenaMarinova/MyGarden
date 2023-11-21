@@ -23,7 +23,7 @@
                 <div class="card-body">
                     <h5 th:text="*{name}" class="card-title">Домати</h5>
                     <p th:text="*{price}" class="card-text">1.50 лв/кг</p>
-                    <a href="#" class="btn btn-primary">Купи</a>
+                    <a th:href="@{/products/buy/{id}(id=${p.id})}" class="btn btn-primary">Купи</a>
                 </div>
             </div>
         </div>

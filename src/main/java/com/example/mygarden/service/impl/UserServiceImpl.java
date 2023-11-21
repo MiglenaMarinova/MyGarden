@@ -7,6 +7,7 @@ import com.example.mygarden.model.enums.RoleEnum;
 import com.example.mygarden.model.events.UsersRegisteredEvent;
 import com.example.mygarden.repository.RoleRepository;
 import com.example.mygarden.repository.UserRepository;
+import com.example.mygarden.service.exeption.ObjectNotFoundException;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -86,5 +87,16 @@ public class UserServiceImpl implements com.example.mygarden.service.UserService
         applicationEventPublisher.publishEvent(new UsersRegisteredEvent(
                 "UserService", userRegisterDto.getEmail(), userRegisterDto.getFirstName()
         ));
+    }
+
+    @Override
+    public User findByEmail(String username) {
+        return userRepository.findByEmail(username)
+                .orElseThrow(() -> new ObjectNotFoundException("User with email " + username + " not found"));
+    }
+
+    @Override
+    public void save(User userBuyer) {
+        userRepository.save(userBuyer);
     }
 }
