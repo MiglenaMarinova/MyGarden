@@ -25,10 +25,10 @@
                     <h5 th:text="*{name}" class="card-title">Домати</h5>
                     <p th:text="*{price}" class="card-text">1.50 лв/кг</p>
                     <a th:href="@{/products/buy/{id}(id=${p.id})}" class="btn btn-primary">Купи</a>
-                    <form sec:authorize="hasRole('ADMIN')">
-                        <input type="submit" class="btn btn-success" value="Change Price">
-                    </form>
-                    <form sec:authorize="hasRole('ADMIN')" th:method="delete" >
+                    <!--                    <form sec:authorize="hasRole('ADMIN')" th:href="@{/products/change-price/{id}(id=${p.id})}" >-->
+<!--                        <input type="submit" class="btn btn-success" value="Change Price">-->
+<!--                    </form>-->
+                    <form sec:authorize="hasRole('ADMIN')" th:method="delete" th:action="@{/products/delete/{id}(id = *{id})}">
                         <input type="submit" class="btn btn-danger" value="Delete">
                     </form>
                 </div>

@@ -16,6 +16,8 @@ public interface ProductService {
 
     void buy(Long id, UserDetails buyer);
 
+    void delete(Long id);
+
 
 //    void delete(Long id, UserDetails buyer);
 }

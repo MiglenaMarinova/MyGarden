@@ -3,6 +3,7 @@ package com.example.mygarden.web;
 import com.example.mygarden.model.dto.ProductAddDto;
 import com.example.mygarden.service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -65,6 +66,17 @@ public class ProductController {
 
         return "redirect:/user/orders";
     }
+
+    @DeleteMapping("/delete/{id}")
+    public String delete(@PathVariable Long id){
+
+        this.productService.delete(id);
+
+        return "redirect:/products/all";
+    }
+
+
+
 
 
 

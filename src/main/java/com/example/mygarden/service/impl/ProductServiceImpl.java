@@ -10,6 +10,7 @@ import com.example.mygarden.service.OrderService;
 import com.example.mygarden.service.PictureService;
 import com.example.mygarden.service.UserService;
 import com.example.mygarden.service.exeption.ObjectNotFoundException;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -129,7 +130,12 @@ public class ProductServiceImpl implements com.example.mygarden.service.ProductS
 
     }
 
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        productRepository.deleteById(id);
 
+    }
 
 
 }
