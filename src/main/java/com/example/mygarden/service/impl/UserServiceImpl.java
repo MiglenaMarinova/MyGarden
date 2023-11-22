@@ -8,6 +8,7 @@ import com.example.mygarden.model.enums.RoleEnum;
 import com.example.mygarden.model.events.UsersRegisteredEvent;
 import com.example.mygarden.repository.RoleRepository;
 import com.example.mygarden.repository.UserRepository;
+import com.example.mygarden.service.RoleService;
 import com.example.mygarden.service.exeption.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
@@ -25,17 +26,19 @@ public class UserServiceImpl implements com.example.mygarden.service.UserService
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final ModelMapper modelMapper;
 
     public UserServiceImpl(UserRepository userRepository,
-                           RoleRepository roleRepository,
+                           RoleRepository roleRepository, RoleService roleService,
                            PasswordEncoder passwordEncoder,
                            ApplicationEventPublisher applicationEventPublisher,
                            ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
         this.applicationEventPublisher = applicationEventPublisher;
         this.modelMapper = modelMapper;
@@ -43,7 +46,8 @@ public class UserServiceImpl implements com.example.mygarden.service.UserService
 
     public void init() {
 
-        if (userRepository.count() == 0 && roleRepository.count() == 0){
+        if (userRepository.count() == 0 && roleRepository.count() == 0) {
+
             Role adminRole = new Role();
             adminRole.setName(RoleEnum.ADMIN);
             roleRepository.save(adminRole);
@@ -86,7 +90,7 @@ public class UserServiceImpl implements com.example.mygarden.service.UserService
         user.setAddress(userRegisterDto.getAddress());
         user.setEmail(userRegisterDto.getEmail());
         user.setPassword(passwordEncoder.encode(userRegisterDto.getPassword()));
-        Role userRole = roleRepository.findRoleByName(RoleEnum.USER).orElse(null);
+        Role userRole = roleService.findRoleByName(RoleEnum.USER);
         List<Role> roles = new ArrayList<>();
         roles.add(userRole);
         user.setRoles(roles);
@@ -109,12 +113,12 @@ public class UserServiceImpl implements com.example.mygarden.service.UserService
         userRepository.save(userBuyer);
     }
 
+
     @Override
     public List<UserViewDto> findAllModerators() {
         return userRepository.findAll()
                 .stream()
                 .filter(this::hasRoleModerator)
-
                 .map(user -> modelMapper.map(user, UserViewDto.class))
                 .collect(Collectors.toList());
     }
@@ -129,6 +133,47 @@ public class UserServiceImpl implements com.example.mygarden.service.UserService
     }
 
     @Override
+    public void makeAdmin(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("User with ID " + id + " not found"));
+
+        List<Role> usersRoles = user.getRoles();
+        Role admin = roleService.findRoleByName(RoleEnum.ADMIN);
+        if (!usersRoles.contains(admin)) {
+            usersRoles.add(admin);
+            user.setRoles(usersRoles);
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void makeModerator(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("User with ID " + id + " not found"));
+
+        List<Role> usersRoles = user.getRoles();
+        Role moderator = roleService.findRoleByName(RoleEnum.MODERATOR);
+        if (!usersRoles.contains(moderator)) {
+            usersRoles.add(moderator);
+            user.setRoles(usersRoles);
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void removeModerator(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("User with ID " + id + " not found"));
+        List<Role> usersRoles = user.getRoles();
+        Role moderator = roleService.findRoleByName(RoleEnum.MODERATOR);
+        if (usersRoles.contains(moderator)){
+            usersRoles.remove(moderator);
+            user.setRoles(usersRoles);
+            userRepository.save(user);
+        }
+    }
+
+    @Override
     public List<UserViewDto> findAllUsers() {
 
         return userRepository.findAll()
@@ -138,22 +183,26 @@ public class UserServiceImpl implements com.example.mygarden.service.UserService
                 .collect(Collectors.toList());
 
     }
-    private boolean hasRoleUser(User user){
+
+    private boolean hasRoleUser(User user) {
         return user.getRoles()
                 .stream()
                 .map(Role::getName)
                 .noneMatch(roleEnum -> roleEnum == RoleEnum.MODERATOR);
     }
-    private boolean hasRoleModerator(User user){
+
+    private boolean hasRoleModerator(User user) {
         return user.getRoles()
                 .stream()
                 .map(Role::getName)
                 .anyMatch(roleEnum -> roleEnum == RoleEnum.MODERATOR);
     }
-    private boolean hasRoleAdmin(User user){
+
+    private boolean hasRoleAdmin(User user) {
         return user.getRoles()
                 .stream()
                 .map(Role::getName)
                 .anyMatch(roleEnum -> roleEnum == RoleEnum.ADMIN);
     }
 }
+

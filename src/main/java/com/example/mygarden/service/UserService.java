@@ -3,8 +3,6 @@ package com.example.mygarden.service;
 import com.example.mygarden.model.dto.UserRegisterDto;
 import com.example.mygarden.model.dto.UserViewDto;
 import com.example.mygarden.model.entity.User;
-import com.example.mygarden.model.enums.RoleEnum;
-
 import java.util.List;
 
 public interface UserService {
@@ -22,4 +20,10 @@ public interface UserService {
     List<UserViewDto> findAllModerators();
 
     List<UserViewDto> findAllAdmins();
+
+    void makeAdmin(Long id);
+
+    void makeModerator(Long id);
+
+    void removeModerator(Long id);
 }

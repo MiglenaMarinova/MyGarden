@@ -14,8 +14,8 @@
                 <h5 th:text="|*{firstName} *{lastName}|" class="card-title">Card title</h5>
                 <h6 th:text="*{address}" class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
                 <p th:text="*{email}" class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="card-link">Make Admin</a>
-                <a href="#" class="card-link">Make Moderator</a>
+                <a th:href="@{/users/make-admin/{id}(id=${user.id})}" class="card-link">Make Admin</a>
+                <a th:href="@{/users/make-moderator/{id}(id=${user.id})}" class="card-link">Make Moderator</a>
             </div>
         </div>
     </div>
@@ -26,8 +26,8 @@
                 <h5 th:text="|*{firstName} *{lastName}|" class="card-title">Card title</h5>
                 <h6 th:text="*{address}" class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
                 <p th:text="*{email}" class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="card-link">Make Admin</a>
-                <a href="#" class="card-link">Make Moderator</a>
+                <a th:href="@{/users/make-admin/{id}(id=${moderator.id})}" class="card-link">Make Admin</a>
+                <a th:href="@{/users/remove-moderator/{id}(id=${moderator.id})}" class="card-link">Remove Moderator</a>
             </div>
         </div>
     </div>
@@ -38,8 +38,8 @@
                 <h5 th:text="|*{firstName} *{lastName}|" class="card-title">Card title</h5>
                 <h6 th:text="*{address}" class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
                 <p th:text="*{email}" class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="card-link">Make Admin</a>
-                <a href="#" class="card-link">Make Moderator</a>
+<!--                <a href="#" class="card-link">Make Admin</a>-->
+<!--                <a href="#" class="card-link">Make Moderator</a>-->
             </div>
         </div>
     </div>
