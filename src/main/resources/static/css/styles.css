@@ -237,5 +237,10 @@ body > div.container > div > div:nth-child(2) > div > div > p:nth-child(4){
     font-family: Alegreya Sans, sans-serif;
 }
 
+/*USERS VIEW*/
+#big-div{
+    width: fit-content;
+}
+
 
 

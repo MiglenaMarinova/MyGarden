@@ -26,14 +26,11 @@ public class AdminController {
     @GetMapping("/users")
     public String manageUser(Model model){
 
-        List<UserViewDto> allUsers =  userService.findAllUsers();
-        model.addAttribute("allUsers", allUsers);
-
-
         return "admin-page";
     }
     @GetMapping("/products")
     public String manageProduct(){
+
         return "redirect:/products/all";
     }
 }

@@ -6,16 +6,44 @@
 <body>
 <nav th:replace="~{fragments/navigation}"></nav>
 
-<div class="container-fluid">
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
+<div class="container-fluid bg-blur rounded mt-1 mb-4 d-flex justify-content-center" id="big-div">
+    <div class="col-5">
+        <h3 class="text-center text-dark mt-5">Users</h3>
+        <div th:each="user : ${allUsers}" th:object="${user}" class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 th:text="|*{firstName} *{lastName}|" class="card-title">Card title</h5>
+                <h6 th:text="*{address}" class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+                <p th:text="*{email}" class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="card-link">Make Admin</a>
+                <a href="#" class="card-link">Make Moderator</a>
+            </div>
         </div>
     </div>
+    <div class="col-5">
+        <h3 class="text-center text-dark mt-5">Moderators</h3>
+        <div th:each="moderator : ${allModerators}" th:object="${moderator}" class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 th:text="|*{firstName} *{lastName}|" class="card-title">Card title</h5>
+                <h6 th:text="*{address}" class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+                <p th:text="*{email}" class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="card-link">Make Admin</a>
+                <a href="#" class="card-link">Make Moderator</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-5">
+        <h3 class="text-center text-dark mt-5">Admins</h3>
+        <div th:each="admin : ${allAdmins}" th:object="${admin}" class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 th:text="|*{firstName} *{lastName}|" class="card-title">Card title</h5>
+                <h6 th:text="*{address}" class="card-subtitle mb-2 text-body-secondary">Card subtitle</h6>
+                <p th:text="*{email}" class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="card-link">Make Admin</a>
+                <a href="#" class="card-link">Make Moderator</a>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 

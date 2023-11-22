@@ -29,7 +29,11 @@ public class UserServiceImpl implements com.example.mygarden.service.UserService
     private final ApplicationEventPublisher applicationEventPublisher;
     private final ModelMapper modelMapper;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, ApplicationEventPublisher applicationEventPublisher, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           PasswordEncoder passwordEncoder,
+                           ApplicationEventPublisher applicationEventPublisher,
+                           ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -106,11 +110,50 @@ public class UserServiceImpl implements com.example.mygarden.service.UserService
     }
 
     @Override
+    public List<UserViewDto> findAllModerators() {
+        return userRepository.findAll()
+                .stream()
+                .filter(this::hasRoleModerator)
+
+                .map(user -> modelMapper.map(user, UserViewDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserViewDto> findAllAdmins() {
+        return userRepository.findAll()
+                .stream()
+                .filter(this::hasRoleAdmin)
+                .map(user -> modelMapper.map(user, UserViewDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<UserViewDto> findAllUsers() {
 
         return userRepository.findAll()
                 .stream()
-                .map(user -> modelMapper.map(user, UserViewDto.class))
+                .filter(this::hasRoleUser)
+                .map(user1 -> modelMapper.map(user1, UserViewDto.class))
                 .collect(Collectors.toList());
+
+    }
+    private boolean hasRoleUser(User user){
+        return user.getRoles()
+                .stream()
+                .map(Role::getName)
+                .noneMatch(roleEnum -> roleEnum == RoleEnum.MODERATOR);
+    }
+    private boolean hasRoleModerator(User user){
+        return user.getRoles()
+                .stream()
+                .map(Role::getName)
+                .anyMatch(roleEnum -> roleEnum == RoleEnum.MODERATOR);
+    }
+    private boolean hasRoleAdmin(User user){
+        return user.getRoles()
+                .stream()
+                .map(Role::getName)
+                .anyMatch(roleEnum -> roleEnum == RoleEnum.ADMIN);
     }
 }
