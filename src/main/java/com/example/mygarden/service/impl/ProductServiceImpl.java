@@ -137,5 +137,30 @@ public class ProductServiceImpl implements com.example.mygarden.service.ProductS
 
     }
 
+    @Override
+    public ProductViewDto findById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(()-> new ObjectNotFoundException("Product not found"));
+
+        return modelMapper.map(product, ProductViewDto.class);
+    }
+
+    @Override
+    @Transactional
+    public void update(ProductViewDto productToUpdate) {
+        Product product = modelMapper.map(productToUpdate, Product.class);
+        productRepository.save(product);
+    }
+
+    @Override
+    public Product findProduct(Long id) {
+        return productRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Not found"));
+    }
+
+    @Override
+    public void saveChanges(Product existingProduct) {
+        productRepository.save(existingProduct);
+    }
+
 
 }

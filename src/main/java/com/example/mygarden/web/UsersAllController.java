@@ -1,7 +1,6 @@
 package com.example.mygarden.web;
 
 import com.example.mygarden.model.dto.UserViewDto;
-import com.example.mygarden.model.enums.RoleEnum;
 import com.example.mygarden.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

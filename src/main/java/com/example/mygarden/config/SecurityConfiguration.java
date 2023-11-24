@@ -20,7 +20,9 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.authorizeHttpRequests(
+        return httpSecurity
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(
                 authorizeRequest -> authorizeRequest
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/", "/users/register", "/users/login", "/users/login-error").permitAll()
@@ -31,6 +33,10 @@ public class SecurityConfiguration {
                         .requestMatchers("/products/all", "/pictures/all").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/about").permitAll()
+                        .requestMatchers(HttpMethod.GET, ("/api/products/**")).permitAll()
+                        .requestMatchers(HttpMethod.PUT, ("/api/products/**")).permitAll()
+                        .requestMatchers(HttpMethod.GET, ("products/change-price/**")).hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, ("products/**")).hasRole("ADMIN")
                         .anyRequest().authenticated()
         ).formLogin(
                 formLogin -> {

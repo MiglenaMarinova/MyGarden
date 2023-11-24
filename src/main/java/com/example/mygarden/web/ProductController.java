@@ -1,12 +1,15 @@
 package com.example.mygarden.web;
 
 import com.example.mygarden.model.dto.ProductAddDto;
+import com.example.mygarden.model.dto.ProductViewDto;
+import com.example.mygarden.model.entity.Product;
 import com.example.mygarden.service.ProductService;
 import jakarta.validation.Valid;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -16,9 +19,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ProductController {
 
     private final ProductService productService;
+    private final ModelMapper modelMapper;
 
-    public ProductController(ProductService productService) {
+
+    public ProductController(ProductService productService, ModelMapper modelMapper) {
         this.productService = productService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping("/add")
@@ -71,6 +77,28 @@ public class ProductController {
     public String delete(@PathVariable Long id){
 
         this.productService.delete(id);
+
+        return "redirect:/products/all";
+    }
+
+    @GetMapping("/change-price/{id}")
+    public String changePrice(@PathVariable Long id, Model model){
+
+        model.addAttribute("product", productService.findById(id));
+
+        return "update-product";
+    }
+
+
+    @PostMapping("/{id}")
+    public String updateProduct(@PathVariable Long id,
+                                @ModelAttribute("product")ProductViewDto productViewDto,
+                                Model model){
+//        model.addAttribute("product", productViewDto);
+        Product existingProduct = productService.findProduct(id);
+        existingProduct.setId(productViewDto.getId());
+        existingProduct.setPrice(productViewDto.getPrice());
+        productService.saveChanges(existingProduct);
 
         return "redirect:/products/all";
     }
