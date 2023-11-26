@@ -1,16 +1,18 @@
+cloudinary:
+    api-key: 487839896536817
+    api-secret: ${CLOUD_API_SECRET}
+    cloud-name: ds4tkr2vb
 logging:
     level:
         blog: WARN
         org: WARN
         org.hibernate.SQL: DEBUG
-
 mail:
-    mygarden: "mygarden@example.com"
     host: localhost
+    mygarden: mygarden@example.com
+    password: ${MAIL_PASSWORD:mygarden}
     port: 1025
     username: ${MAIL_USER:mygarden}
-    password: ${MAIL_PASSWORD:mygarden}
-
 spring:
     datasource:
         driverClassName: com.mysql.cj.jdbc.Driver
@@ -24,21 +26,15 @@ spring:
             hibernate:
                 dialect: org.hibernate.dialect.MySQL8Dialect
                 format_sql: true
-    sql:
-        init:
-            mode: never
     mvc:
         hiddenmethod:
             filter:
                 enabled: true
-
     servlet:
-      multipart:
-        max-file-size: 5MB
-        max-request-size: 5MB
-        enabled: true
-
-cloudinary:
-    cloud-name: ds4tkr2vb
-    api-key: 487839896536817
-    api-secret: "${CLOUD_API_SECRET}"
+        multipart:
+            enabled: true
+            max-file-size: 5MB
+            max-request-size: 5MB
+    sql:
+        init:
+            mode: never

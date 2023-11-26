@@ -1,0 +1,36 @@
+cloudinary:
+  api-key: 487839896536817
+  api-secret: test
+  cloud-name: ds4tkr2vb
+#logging:
+#  level:
+#    blog: WARN
+#    org: WARN
+#    org.hibernate.SQL: DEBUG
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: never
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+
+mail:
+  host: localhost
+  mygarden: test@example.com
+  password: test
+  port: 7777
+  username: test@test.com
+#  servlet:
+#    multipart:
+#      enabled: true
+#      max-file-size: 5MB
+#      max-request-size: 5MB
+
