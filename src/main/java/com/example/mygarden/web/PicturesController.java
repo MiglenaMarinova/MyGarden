@@ -29,7 +29,7 @@ public class PicturesController {
 
         this.pictureService.addPicture(pictureServiceModel);
 
-        return "redirect:/";
+        return "redirect:/pictures/add";
     }
 
 

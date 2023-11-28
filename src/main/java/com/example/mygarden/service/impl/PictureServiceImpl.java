@@ -67,7 +67,7 @@ public class PictureServiceImpl implements com.example.mygarden.service.PictureS
 
     public List<Picture> findAllByTittle(String name) {
 
-        return pictureRepository.findAllByTitle(name)
-                .orElseThrow(()-> new ObjectNotFoundException("Available pictures not found"));
+        return pictureRepository.findAllByTitle(name);
+
     }
 }

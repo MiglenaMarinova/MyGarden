@@ -6,6 +6,7 @@ import com.example.mygarden.model.entity.Product;
 import com.example.mygarden.service.ProductService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -19,12 +20,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ProductController {
 
     private final ProductService productService;
-    private final ModelMapper modelMapper;
 
 
-    public ProductController(ProductService productService, ModelMapper modelMapper) {
+
+    public ProductController(ProductService productService) {
         this.productService = productService;
-        this.modelMapper = modelMapper;
+
     }
 
     @GetMapping("/add")
@@ -91,7 +92,9 @@ public class ProductController {
 
 
     @PostMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String updateProduct(@PathVariable Long id,
+
                                 @ModelAttribute("product")ProductViewDto productViewDto,
                                 Model model){
 //        model.addAttribute("product", productViewDto);

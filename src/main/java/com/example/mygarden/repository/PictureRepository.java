@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface PictureRepository extends JpaRepository<Picture, Long> {
 
-    Optional<List<Picture>> findAllByTitle(String title);
+    List<Picture> findAllByTitle(String title);
 
 
 }
