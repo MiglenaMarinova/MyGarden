@@ -8,7 +8,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
-import static org.mockito.Mockito.mock;
+
+
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 public class ProductAddControllerTest {
@@ -19,7 +21,7 @@ public class ProductAddControllerTest {
 
 
     @BeforeEach
-    void configureSystemUnderTest(){
+    void configureSystemUnderTest() {
         productService = mock(ProductService.class);
 
         MockMvc mockMvc = MockMvcBuilders
@@ -27,9 +29,10 @@ public class ProductAddControllerTest {
                 .build();
         requestBuilder = new ProductRequestBuilder(mockMvc);
     }
+
     @Nested
     @DisplayName("Submit the  add Dto")
-    class SubmitProductAddDto{
+    class SubmitProductAddDto {
 
         private static final int MIN_LENGTH_NAME = 3;
         private static final int MAX_LENGTH_NAME = 20;
@@ -37,20 +40,23 @@ public class ProductAddControllerTest {
         public static final String FORM_OBJECT = "product";
 
         private ProductAddDto testAddDto;
+
+
         @Nested
         @DisplayName("When validation fails")
-        class  WhenValidationFails{
+        class WhenValidationFails {
             private static final String FROM_FIELD_NAME_NAME = "name";
             private static final String FORM_FIELD_NAME_PRICE = "price";
 
             private static final String VALIDATION_ERROR_NOT_NULL = "NotNull";
 
             @BeforeEach
-            void createProductAddDto(){
+            void createProductAddDto() {
                 testAddDto = new ProductAddDto();
                 testAddDto.setName(null);
 
             }
+
             @Test
             @DisplayName("Should redirect to add")
             void shouldRedirectToAdd() throws Exception {
@@ -67,30 +73,9 @@ public class ProductAddControllerTest {
             }
 
 
-//            @Test
-//            @DisplayName("should display one validation error")
-//            void shouldDisplayOneValidationError() throws Exception {
-//                requestBuilder.create(testAddDto)
-//                        .andExpect(model().attributeErrorCount(FORM_OBJECT, 1));
-//            }
-
-//            @Test
-//            @DisplayName("should display validation error about null name")
-//            void shouldDisplayValidationErrorNullName() throws Exception {
-//                requestBuilder.create(testAddDto)
-//                        .andExpect(model().attributeHasFieldErrorCode(
-//                                FORM_OBJECT,
-//                                FROM_FIELD_NAME_NAME,
-//                                VALIDATION_ERROR_NOT_NULL
-//                        ));
-//            }
-
-
         }
-        @Nested
-        @DisplayName("When validation is successful")
-        class  WhenValidationIsSuccessful{
+
 
         }
     }
-}
+

@@ -5,7 +5,6 @@ import com.example.mygarden.model.dto.ProductViewDto;
 import com.example.mygarden.model.entity.Product;
 import com.example.mygarden.service.ProductService;
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

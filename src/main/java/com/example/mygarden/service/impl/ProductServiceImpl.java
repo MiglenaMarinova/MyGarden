@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements com.example.mygarden.service.ProductService {
 
     private final ModelMapper modelMapper;
+
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final PictureService pictureService;
