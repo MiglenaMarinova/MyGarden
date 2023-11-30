@@ -2,8 +2,11 @@ package com.example.mygarden.web;
 import com.example.mygarden.model.entity.Picture;
 import com.example.mygarden.model.entity.Product;
 import com.example.mygarden.repository.ProductRepository;
+import com.example.mygarden.service.ProductService;
 import com.example.mygarden.testUtil.TestData;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +43,17 @@ class ProductsRestControllerTest {
     private ObjectMapper objectMapper;
     @Mock
     private ProductRepository productRepository;
+    @Mock
+    private ProductService productServiceMock;
+
+//    @BeforeEach
+//    void setUp(){
+//        testData.cleanAllTestData();
+//    }
+    @AfterEach
+    void tearDown(){
+        testData.cleanAllTestData();
+    }
 
     @Test
     public void testGetAll() throws Exception {
@@ -89,7 +103,7 @@ class ProductsRestControllerTest {
 
         this.mockMvc.perform(MockMvcRequestBuilders.put("/api/products/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updatedProduct)))
+                        .content(objectMapper.writeValueAsString(updatedProduct)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(updatedProduct.getName()))
                 .andExpect(jsonPath("$.price").value(updatedProduct.getPrice()));
@@ -97,7 +111,6 @@ class ProductsRestControllerTest {
 
 
     }
-
 
 
 

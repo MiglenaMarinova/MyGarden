@@ -1,6 +1,5 @@
 package com.example.mygarden.service.impl;
 
-import com.example.mygarden.model.dto.ProductViewDto;
 import com.example.mygarden.model.entity.Category;
 import com.example.mygarden.model.entity.Picture;
 import com.example.mygarden.model.entity.Product;
@@ -10,18 +9,16 @@ import com.example.mygarden.repository.ProductRepository;
 import com.example.mygarden.service.OrderService;
 import com.example.mygarden.service.PictureService;
 import com.example.mygarden.service.UserService;
+import com.example.mygarden.service.exeption.ObjectNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -111,6 +108,11 @@ public class ProductServiceImplTest {
         Product result = productService.findProduct(id);
 
         Assertions.assertEquals(testProduct1, result);
+    }
+    @Test
+    void shouldTrowException(){
+
+       Assertions.assertThrows(ObjectNotFoundException.class, ()-> productService.findProduct(3L));
     }
 
 

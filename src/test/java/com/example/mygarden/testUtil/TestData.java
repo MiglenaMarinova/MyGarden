@@ -1,9 +1,13 @@
 package com.example.mygarden.testUtil;
 
+import com.example.mygarden.model.entity.Category;
 import com.example.mygarden.model.entity.Picture;
 import com.example.mygarden.model.entity.Product;
+import com.example.mygarden.model.enums.CategoryEnum;
+import com.example.mygarden.repository.CategoryRepository;
 import com.example.mygarden.repository.PictureRepository;
 import com.example.mygarden.repository.ProductRepository;
+import com.example.mygarden.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +19,11 @@ public class TestData {
 
     @Autowired
     private ProductRepository productRepository;
+
     @Autowired
     private PictureRepository pictureRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
 
     public Product createProduct(long id, String name, BigDecimal price, Set<Picture> pictureSet){
@@ -40,10 +47,23 @@ public class TestData {
         return testPic;
     }
 
+    public Category createTestCategory(long id, CategoryEnum name){
+        Category testCategory = new Category();
+        testCategory.setId(id);
+        testCategory.setName(name);
+
+        categoryRepository.save(testCategory);
+
+        return testCategory;
+
+    }
+
 
 
 
     public void cleanAllTestData(){
+
         productRepository.deleteAll();
+
     }
 }

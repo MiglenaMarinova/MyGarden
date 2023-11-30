@@ -19,20 +19,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.lang.Nullable;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -71,7 +66,7 @@ class ProductControllerTest {
 
     private ProductAddDto productAddDto;
     private Product product;
-    private Validator validator;
+
 
     @BeforeEach
     void configureSystemUnderTest(){
@@ -136,16 +131,17 @@ class ProductControllerTest {
     @Test
     @WithMockUser(username = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void testChangeProductPic() throws Exception {
-        userTestData.createTestAdmin(MODERATOR_EMAIL);
+        userTestData.createTestModerator(MODERATOR_EMAIL);
 
         Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
-        long id = 1L;
+        long id = testProduct.getId();
 
-        when(productRepository.findById(id)).thenReturn(Optional.of(testProduct));
+
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/products/change-pic/{id}", id))
-//                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/moderator/manage"));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/moderator/manage"));
+
 
         Assertions.assertEquals(testProduct.getId(), id);
 
