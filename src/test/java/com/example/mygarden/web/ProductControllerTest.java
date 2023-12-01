@@ -13,10 +13,7 @@ import com.example.mygarden.service.ProductService;
 import com.example.mygarden.testUtil.TestData;
 import com.example.mygarden.testUtil.UserTestData;
 import jakarta.servlet.http.HttpServletRequest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +23,12 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.Validator;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -69,14 +63,10 @@ class ProductControllerTest {
 
 
     @BeforeEach
-    void configureSystemUnderTest(){
-
-        MockMvc mockMvc = MockMvcBuilders
-                .standaloneSetup(new ProductController(productServiceMock))
-                .build();
-
+    void setUp(){
+        userTestData.cleanAllTestData();
+        testData.cleanAllTestData();
     }
-
 
     @AfterEach
     void tearDown() {
@@ -88,12 +78,10 @@ class ProductControllerTest {
     @WithMockUser(username = ADMIN_EMAIL, roles = {"ADMIN"})
     void shouldReturnProductAddPage() throws Exception {
         userTestData.createTestAdmin(ADMIN_EMAIL);
-        this.mockMvc.perform(get("/products/add"))
+        this.mockMvc.perform(get("/products/add").principal(() -> ADMIN_EMAIL))
                 .andExpect(status().isOk())
                 .andExpect(view().name("product-add"));
     }
-
-
 
     @Test
     @WithMockUser(username = ADMIN_EMAIL, roles = {"ADMIN"})
@@ -124,10 +112,6 @@ class ProductControllerTest {
                 .andExpect(view().name("redirect:add"));
     }
 
-
-
-
-
     @Test
     @WithMockUser(username = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void testChangeProductPic() throws Exception {
@@ -136,12 +120,10 @@ class ProductControllerTest {
         Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
         long id = testProduct.getId();
 
-
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/products/change-pic/{id}", id))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/moderator/manage"));
-
 
         Assertions.assertEquals(testProduct.getId(), id);
 
@@ -155,11 +137,57 @@ class ProductControllerTest {
 
         doNothing().when(productRepository).deleteById(id);
         mockMvc.perform(
-                MockMvcRequestBuilders.delete("/products/delete/{id}", id))
+                MockMvcRequestBuilders.delete("/products/delete/{id}", id).principal(() -> USER_EMAIL))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/products/all"));
 
         when(productRepository.findById(id)).thenReturn(Optional.empty());
+    }
+
+    @Test
+    @WithMockUser(username = USER_EMAIL, roles = {"USER"})
+    void testBuyProduct() throws Exception {
+        userTestData.createTestUser(USER_EMAIL);
+
+        Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
+        long id = testProduct.getId();
+
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/products/buy/{id}", id).principal(() -> USER_EMAIL))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/user/orders"));
+
+
+        Assertions.assertEquals(testProduct.getId(), id);
+    }
+    @Test
+    @WithMockUser(username = ADMIN_EMAIL, roles = {"ADMIN"})
+    void changePriceTest() throws Exception {
+        userTestData.createTestAdmin(ADMIN_EMAIL);
+        Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
+        long id = testProduct.getId();
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/products/change-price/{id}", id))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("product"))
+                .andExpect(view().name("update-product"));
+
+    }
+    @Test
+    @WithMockUser(username = ADMIN_EMAIL, roles = {"ADMIN"})
+    void changePrice() throws Exception {
+        userTestData.createTestAdmin(ADMIN_EMAIL);
+        Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
+        long id = testProduct.getId();
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post("/products/{id}", id))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/products/all"))
+                .andExpect(view().name("redirect:/products/all"));
+
     }
 
 
