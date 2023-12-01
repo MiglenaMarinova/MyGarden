@@ -11,10 +11,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
-
-
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 public class ProductAddControllerTest {
@@ -38,21 +37,12 @@ public class ProductAddControllerTest {
     @DisplayName("Submit the  add Dto")
     class SubmitProductAddDto {
 
-        private static final int MIN_LENGTH_NAME = 3;
-        private static final int MAX_LENGTH_NAME = 20;
-        private static final int MIN_PRICE = 0;
-        public static final String FORM_OBJECT = "product";
-
         private ProductAddDto testAddDto;
 
 
         @Nested
         @DisplayName("When validation fails")
         class WhenValidationFails {
-            private static final String FROM_FIELD_NAME_NAME = "name";
-            private static final String FORM_FIELD_NAME_PRICE = "price";
-
-            private static final String VALIDATION_ERROR_NOT_NULL = "NotNull";
 
             @BeforeEach
             void createProductAddDto() {
@@ -80,6 +70,6 @@ public class ProductAddControllerTest {
         }
 
 
-        }
     }
+}
 

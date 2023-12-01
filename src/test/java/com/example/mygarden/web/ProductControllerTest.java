@@ -51,15 +51,6 @@ class ProductControllerTest {
 
     @Mock
     private ProductRepository productRepository;
-    @Mock
-    private PictureRepository pictureRepositoryMock;
-    @Mock
-    private ProductService productServiceMock;
-    @Mock
-    private PictureService pictureServiceMock;
-
-    private ProductAddDto productAddDto;
-    private Product product;
 
 
     @BeforeEach
