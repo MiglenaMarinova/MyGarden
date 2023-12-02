@@ -30,6 +30,7 @@ public class TestData {
         testProduct.setName(name);
         testProduct.setPrice(price);
         testProduct.setPictures(pictureSet);
+
         productRepository.save(testProduct);
 
         return testProduct;

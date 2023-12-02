@@ -10,8 +10,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -30,6 +30,12 @@ class UserLoginControllerTest {
     }
 
     @Test
-    void onFailure() {
+    void onFailureTest() throws Exception {
+        this.mockMvc.perform(post("/users/login-error")).
+                andExpect(status().isOk()).
+                andExpect(model().attributeExists("email")).
+                andExpect(model().attributeExists("badCredentials")).
+                andExpect(view().name("login"));
+
     }
 }

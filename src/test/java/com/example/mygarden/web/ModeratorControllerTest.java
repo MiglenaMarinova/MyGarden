@@ -29,10 +29,7 @@ class ModeratorControllerTest {
     private UserTestData userTestData;
     @Autowired
     private MockMvc mockMvc;
-    @Mock
-    private  ProductService productService;
-    @Mock
-    private  PictureService pictureService;
+
 
     @Test
     @WithMockUser(username = MODERATOR_EMAIL, roles = {"MODERATOR"})

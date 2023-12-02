@@ -10,6 +10,7 @@ import com.example.mygarden.service.impl.AppUserDetailsServiceImpl;
 import com.example.mygarden.testUtil.TestData;
 import com.example.mygarden.testUtil.UserTestData;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -48,19 +49,27 @@ class OrderControllerTest {
     @Autowired
     private TestData testData;
 
-    @Mock
-    private OrderService orderService;
-    @Mock
-    private ProductRepository productRepository;
+
     @Mock
     private OrderRepository orderRepository;
+
+//    @BeforeEach
+//    void setUp(){
+//        userTestData.cleanAllTestData();
+//        testData.cleanAllTestData();
+//    }
 
     @Test
     @WithMockUser(username = USER_EMAIL, roles = {"USER"})
     void delete() throws Exception {
-        userTestData.createTestUser(USER_EMAIL);
+        User buyer = new User();
+        buyer.setId(1L);
+        buyer.setEmail(USER_EMAIL);
         long id = 1L;
-        Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
+
+        Product testProduct = testData.createProduct(id, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
+        testData.creatOrder(1L, buyer,List.of(testProduct), false);
+
 
         mockMvc.perform(
                         MockMvcRequestBuilders.delete("/orders/delete/{id}", id)
@@ -78,6 +87,7 @@ class OrderControllerTest {
         User buyer = userTestData.createTestUser(USER_EMAIL);
         List<Product> orderedProducts = new ArrayList<>();
         Order order = testData.creatOrder(1L, buyer, orderedProducts, false);
+
         Long id = order.getId();
 
         when(orderRepository.findByPlacedBy(buyer.getId())).thenReturn((order));

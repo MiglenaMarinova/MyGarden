@@ -41,7 +41,7 @@ public class UserActivationServiceImpl implements UserActivationService {
     }
 
     public void cleanUpObsoleteActivationLinks(){
-        //TODO implement
+        userActivationCodeRepository.deleteAll();
 
 
     }

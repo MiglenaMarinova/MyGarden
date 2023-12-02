@@ -3,8 +3,10 @@ package com.example.mygarden.web;
 import com.example.mygarden.dto.ProductRequestBuilder;
 import com.example.mygarden.model.dto.ProductAddDto;
 import com.example.mygarden.model.entity.Category;
+import com.example.mygarden.model.entity.Order;
 import com.example.mygarden.model.entity.Picture;
 import com.example.mygarden.model.entity.Product;
+import com.example.mygarden.model.entity.User;
 import com.example.mygarden.model.enums.CategoryEnum;
 import com.example.mygarden.repository.PictureRepository;
 import com.example.mygarden.repository.ProductRepository;
@@ -53,23 +55,21 @@ class ProductControllerTest {
     private ProductRepository productRepository;
 
 
+
     @BeforeEach
     void setUp(){
         userTestData.cleanAllTestData();
-        testData.cleanAllTestData();
+//        testData.cleanAllTestData();
+
     }
 
-    @AfterEach
-    void tearDown() {
-        userTestData.cleanAllTestData();
-        testData.cleanAllTestData();
-    }
+
 
     @Test
     @WithMockUser(username = ADMIN_EMAIL, roles = {"ADMIN"})
     void shouldReturnProductAddPage() throws Exception {
         userTestData.createTestAdmin(ADMIN_EMAIL);
-        this.mockMvc.perform(get("/products/add").principal(() -> ADMIN_EMAIL))
+        this.mockMvc.perform(get("/products/add"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("product-add"));
     }
@@ -92,7 +92,6 @@ class ProductControllerTest {
     @WithMockUser(username = ADMIN_EMAIL, roles = {"ADMIN"})
     void testAddInvalidProduct() throws Exception {
         userTestData.createTestAdmin(ADMIN_EMAIL);
-
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/products/add")
                                 .param("name", "Te" )
@@ -107,9 +106,8 @@ class ProductControllerTest {
     @WithMockUser(username = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void testChangeProductPic() throws Exception {
         userTestData.createTestModerator(MODERATOR_EMAIL);
-
         Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
-        long id = testProduct.getId();
+      Long id= testProduct.getId();
 
         mockMvc.perform(
                         MockMvcRequestBuilders.get("/products/change-pic/{id}", id))
@@ -124,7 +122,10 @@ class ProductControllerTest {
     @WithMockUser(username = USER_EMAIL, roles = {"USER"})
     void shouldDeleteProduct() throws Exception {
         userTestData.createTestUser(USER_EMAIL);
-        long id = 1L;
+
+        Product testProduct = testData.createProduct(2L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
+        Long id = testProduct.getId();
+//        when(productRepository.findById(id)).thenReturn(Optional.empty());
 
         doNothing().when(productRepository).deleteById(id);
         mockMvc.perform(
@@ -132,7 +133,7 @@ class ProductControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/products/all"));
 
-        when(productRepository.findById(id)).thenReturn(Optional.empty());
+
     }
 
     @Test
@@ -140,7 +141,9 @@ class ProductControllerTest {
     void testBuyProduct() throws Exception {
         userTestData.createTestUser(USER_EMAIL);
 
-        Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
+
+        Product testProduct = testData.createProduct(3L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
+
         long id = testProduct.getId();
 
 
@@ -156,7 +159,8 @@ class ProductControllerTest {
     @WithMockUser(username = ADMIN_EMAIL, roles = {"ADMIN"})
     void changePriceTest() throws Exception {
         userTestData.createTestAdmin(ADMIN_EMAIL);
-        Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
+
+        Product testProduct = testData.createProduct(4L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
         long id = testProduct.getId();
 
         mockMvc.perform(
@@ -170,8 +174,10 @@ class ProductControllerTest {
     @WithMockUser(username = ADMIN_EMAIL, roles = {"ADMIN"})
     void changePrice() throws Exception {
         userTestData.createTestAdmin(ADMIN_EMAIL);
-        Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
-        long id = testProduct.getId();
+
+        Product testProduct = testData.createProduct(5L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
+
+       Long id = testProduct.getId();
 
         mockMvc.perform(
                         MockMvcRequestBuilders.post("/products/{id}", id))

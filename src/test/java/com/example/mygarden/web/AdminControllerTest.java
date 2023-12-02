@@ -33,8 +33,7 @@ class AdminControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private UserTestData userTestData;
-    @Mock
-    private UserService userService;
+
 
     @BeforeEach
     void setUp() {
@@ -42,11 +41,7 @@ class AdminControllerTest {
         userTestData.cleanAllTestData();
 
     }
-    @AfterEach
-    void tearDown() {
-        userTestData.cleanAllTestData();
 
-    }
 
     @Test
     @WithMockUser(username = ADMIN_EMAIL, roles = {"ADMIN"})

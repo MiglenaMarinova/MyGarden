@@ -21,12 +21,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class GalleryControllerTest {
 
-    @Autowired
-    private TestData testData;
+
     @Autowired
     private MockMvc mockMvc;
-    @Mock
-    private PictureService pictureService;
 
     @Test
     void allUploadedPicTest() throws Exception {

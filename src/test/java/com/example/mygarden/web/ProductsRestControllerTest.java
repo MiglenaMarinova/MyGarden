@@ -1,6 +1,9 @@
 package com.example.mygarden.web;
+
+import com.example.mygarden.model.entity.Order;
 import com.example.mygarden.model.entity.Picture;
 import com.example.mygarden.model.entity.Product;
+import com.example.mygarden.repository.OrderRepository;
 import com.example.mygarden.repository.ProductRepository;
 import com.example.mygarden.service.ProductService;
 import com.example.mygarden.testUtil.TestData;
@@ -43,22 +46,22 @@ class ProductsRestControllerTest {
     private ObjectMapper objectMapper;
     @Mock
     private ProductRepository productRepository;
-    @Mock
-    private ProductService productServiceMock;
 
-//    @BeforeEach
-//    void setUp(){
-//        testData.cleanAllTestData();
-//    }
+
+    @BeforeEach
+    void setUp() {
+        testData.cleanAllTestData();
+    }
+
     @AfterEach
-    void tearDown(){
+    void tearDown() {
         testData.cleanAllTestData();
     }
 
     @Test
     public void testGetAll() throws Exception {
         Set<Picture> pictureSet = new HashSet<>();
-       testData.createProduct(1L, "Name1", BigDecimal.valueOf(1.00), pictureSet);
+        testData.createProduct(1L, "Name1", BigDecimal.valueOf(1.00), pictureSet);
 
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/api/products"))
@@ -67,9 +70,11 @@ class ProductsRestControllerTest {
                 .andExpect(jsonPath("$.[0].name", is("Name1")));
 
     }
+
     @Test
     public void testFindById() throws Exception {
         Set<Picture> pictureSet = new HashSet<>();
+
         Product test1 = testData.createProduct(1L, "Name1", BigDecimal.valueOf(1.00), pictureSet);
         long id = 1L;
 
@@ -91,15 +96,17 @@ class ProductsRestControllerTest {
                 .andExpect(status().isNotFound());
 
     }
+
     @Test
     void testUpdateProduct() throws Exception {
-        long id = 1L;
-        Set<Picture> pictureSet = new HashSet<>();
-        Product test1 = testData.createProduct(id, "Name1", BigDecimal.valueOf(1.00), pictureSet);
-        Product updatedProduct = testData.createProduct(id, "Name1", BigDecimal.valueOf(3.00), pictureSet);
 
+        Set<Picture> pictureSet = new HashSet<>();
+
+        Product test1 = testData.createProduct(2L, "Name1", BigDecimal.valueOf(1.00), pictureSet);
+        Product updatedProduct = testData.createProduct(2L, "Name1", BigDecimal.valueOf(3.00), pictureSet);
+        long id = 2L;
         when(productRepository.findById(id)).thenReturn(Optional.of(test1));
-        when(productRepository.save(any(Product.class))).thenReturn(updatedProduct);
+        when(productRepository.save(updatedProduct)).thenReturn(updatedProduct);
 
         this.mockMvc.perform(MockMvcRequestBuilders.put("/api/products/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -108,11 +115,8 @@ class ProductsRestControllerTest {
                 .andExpect(jsonPath("$.name").value(updatedProduct.getName()))
                 .andExpect(jsonPath("$.price").value(updatedProduct.getPrice()));
 
-
-
+        System.out.println();
     }
-
-
 
 
 }
