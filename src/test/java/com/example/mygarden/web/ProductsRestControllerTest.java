@@ -76,7 +76,7 @@ class ProductsRestControllerTest {
         Set<Picture> pictureSet = new HashSet<>();
 
         Product test1 = testData.createProduct(1L, "Name1", BigDecimal.valueOf(1.00), pictureSet);
-        long id = 1L;
+        long id = test1.getId();
 
         when(productRepository.findById(id)).thenReturn(Optional.of(test1));
 
@@ -104,7 +104,7 @@ class ProductsRestControllerTest {
 
         Product test1 = testData.createProduct(2L, "Name1", BigDecimal.valueOf(1.00), pictureSet);
         Product updatedProduct = testData.createProduct(2L, "Name1", BigDecimal.valueOf(3.00), pictureSet);
-        long id = 2L;
+        long id = test1.getId();
         when(productRepository.findById(id)).thenReturn(Optional.of(test1));
         when(productRepository.save(updatedProduct)).thenReturn(updatedProduct);
 

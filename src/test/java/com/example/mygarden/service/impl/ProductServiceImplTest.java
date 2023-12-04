@@ -1,10 +1,13 @@
 package com.example.mygarden.service.impl;
 
 import com.example.mygarden.model.dto.ProductAddDto;
+import com.example.mygarden.model.dto.ProductViewDto;
 import com.example.mygarden.model.entity.*;
 import com.example.mygarden.model.enums.CategoryEnum;
+import com.example.mygarden.model.enums.RoleEnum;
 import com.example.mygarden.repository.CategoryRepository;
 import com.example.mygarden.repository.ProductRepository;
+import com.example.mygarden.repository.UserRepository;
 import com.example.mygarden.service.OrderService;
 import com.example.mygarden.service.PictureService;
 import com.example.mygarden.service.UserService;
@@ -17,9 +20,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.*;
 
@@ -39,8 +46,10 @@ public class ProductServiceImplTest {
     private UserService userService;
     @Mock
     private OrderService orderService;
-
-
+    @Mock
+    private AppUserDetailsServiceImpl appUserDetailsService;
+    @Mock
+    private UserRepository userRepository;
 
 
     @InjectMocks
@@ -49,40 +58,37 @@ public class ProductServiceImplTest {
     @BeforeEach
     void setUp() {
 
-       productService = new ProductServiceImpl(modelMapper, productRepository,
+        productService = new ProductServiceImpl(modelMapper, productRepository,
                 categoryRepository, pictureService, userService, orderService);
+
+        appUserDetailsService = new AppUserDetailsServiceImpl(userRepository);
+
     }
 
     @Test
-     void shouldAddProduct(){
+    void shouldAddProduct() {
+
         ProductAddDto addDto = new ProductAddDto();
         addDto.setPrice(BigDecimal.valueOf(2.00));
         addDto.setName("TestName");
+        Category category = new Category();
+        when(categoryRepository.findByName(CategoryEnum.OTHER)).thenReturn(Optional.of(category));
+        Optional<Category> category1 = categoryRepository.findByName(CategoryEnum.OTHER);
         addDto.setCategory(CategoryEnum.OTHER);
 
-        Product testProduct = new Product();
-        testProduct.setId(1L);
-        testProduct.setName(addDto.getName());
-        testProduct.setPrice(addDto.getPrice());
-        Set<Picture> pictureSet = new HashSet<>();
-        testProduct.setPictures(pictureSet);
-        Category category = new Category();
-        category.setName(addDto.getCategory());
+        when(modelMapper.map(addDto, Product.class)).thenReturn(new Product());
+        Product testProduct = modelMapper.map(addDto, Product.class);
+        testProduct.setCategory(category1.get());
 
+        productService.addProduct(addDto);
 
-        when(productRepository.save(any(Product.class))).thenReturn(testProduct);
+        verify(productRepository).save(any());
 
-        Product savedProduct = productRepository.save(testProduct);
-
-
-        Assertions.assertNotNull(savedProduct);
-        Assertions.assertEquals(testProduct.getName(), "TestName");
-        verify(productRepository, times(1)).save(testProduct);
 
     }
 
     @Test
-    public void testFindAllProducts(){
+    public void testFindAllProducts() {
 
         Product testProduct1 = new Product();
         testProduct1.setId(1L);
@@ -94,16 +100,18 @@ public class ProductServiceImplTest {
         testProduct1.setPrice(BigDecimal.valueOf(2.00));
 
         when(productRepository.findAll()).thenReturn(List.of(testProduct1));
-
+        when(modelMapper.map(testProduct1, ProductViewDto.class)).thenReturn(new ProductViewDto());
 
         List<Product> result = productRepository.findAll();
+        List<ProductViewDto> productViewDtoList = productService.findAll();
 
-        Assertions.assertEquals(1 , result.size());
+        Assertions.assertEquals(1, result.size());
+        Assertions.assertEquals(result.size(), productViewDtoList.size());
 
     }
 
     @Test
-    public void findByIdTest(){
+    public void findByIdTest() {
         Product testProduct1 = new Product();
         testProduct1.setId(1L);
         testProduct1.setName("TestName");
@@ -113,20 +121,26 @@ public class ProductServiceImplTest {
         category.setName(CategoryEnum.OTHER);
         testProduct1.setPrice(BigDecimal.valueOf(2.00));
 
-        when(productRepository.findById(1L)).thenReturn(Optional.of(testProduct1));
+        Long id = testProduct1.getId();
 
-       Long id = testProduct1.getId();
-        Product result = productService.findProduct(id);
+        when(productRepository.findById(id)).thenReturn(Optional.of(testProduct1));
+        when(modelMapper.map(testProduct1, ProductViewDto.class)).thenReturn(new ProductViewDto());
 
-        Assertions.assertEquals(testProduct1, result);
+        ProductViewDto resultView = productService.findById(testProduct1.getId());
+
+        verify(productRepository, atLeastOnce()).findById(any());
+
+
     }
-    @Test
-    public void shouldTrowException(){
 
-       Assertions.assertThrows(ObjectNotFoundException.class, ()-> productService.findProduct(3L));
-    }
     @Test
-    public void changePicTest(){
+    public void shouldTrowException() {
+
+        Assertions.assertThrows(ObjectNotFoundException.class, () -> productService.findProduct(3L));
+    }
+
+    @Test
+    public void changePicTest() {
 
         Long id = 1L;
 
@@ -141,7 +155,7 @@ public class ProductServiceImplTest {
 
         when(productRepository.findById(id)).thenReturn(Optional.of(testProduct1));
 
-        Product product = productRepository.findById(id).get();
+        productService.changePic(testProduct1.getId());
 
         Picture picture = new Picture();
         picture.setId(2L);
@@ -149,15 +163,20 @@ public class ProductServiceImplTest {
         when(pictureService.findAllByTittle(testProduct1.getName())).thenReturn(List.of(picture));
 
         List<Picture> result = pictureService.findAllByTittle(picture.getTitle());
+        Assertions.assertTrue(result.contains(picture));
+        Assertions.assertNotNull(result);
 
-        product.getPictures().addAll(result);
 
-        Assertions.assertEquals(result.size(), product.getPictures().size());
+
+        testProduct1.getPictures().addAll(result);
+
+        Assertions.assertEquals(result.size(), testProduct1.getPictures().size());
+        verify(productRepository).save(any());
 
     }
 
     @Test
-    void shouldDeleteProduct(){
+    void shouldDeleteProduct() {
         Product testProduct1 = new Product();
         testProduct1.setId(1L);
         testProduct1.setName("TestName");
@@ -175,13 +194,131 @@ public class ProductServiceImplTest {
 
     }
 
+    @Test
+    void shouldSaveChangesTest() {
+        Product testProduct1 = new Product();
+        testProduct1.setId(1L);
+        testProduct1.setName("TestName");
+        Set<Picture> pictureSet = new HashSet<>();
+        testProduct1.setPictures(pictureSet);
+        Category category = new Category();
+        category.setName(CategoryEnum.OTHER);
+        testProduct1.setPrice(BigDecimal.valueOf(2.00));
+
+        productService.saveChanges(testProduct1);
+
+        verify(productRepository).save(any());
+    }
+
+    @Test
+    void shouldUpdateProduct() {
+        ProductViewDto viewDto = new ProductViewDto();
+        viewDto.setPrice(BigDecimal.valueOf(2.00));
+        viewDto.setName("TestName");
+
+        when(modelMapper.map(viewDto, Product.class)).thenReturn(new Product());
+        Product testProduct = modelMapper.map(viewDto, Product.class);
+
+        productService.update(viewDto);
+
+        verify(productRepository).save(any());
+    }
+
+    @Test
+    void addProductToTestExistingOrder() {
+        String email = "testEmail@test.com";
+
+        Role userRole = new Role();
+        userRole.setName(RoleEnum.USER);
+        User user = new User();
+        user.setEmail(email);
+        user.setId(1L);
+        user.setRoles(List.of(userRole));
+        user.setPassword("testPassword");
+        when(userService.findByEmail(email)).thenReturn(user);
+        User buyer = userService.findByEmail(email);
+        long id = buyer.getId();
+
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withUsername(email)
+                .password(user.getPassword())
+                .authorities(user.getRoles()
+                        .stream()
+                        .map(ProductServiceImplTest::map)
+                        .collect(Collectors.toList()))
+                .build();
+
+        Order existingOrder = new Order();
+        existingOrder.setId(1L);
+        existingOrder.setPlacedBy(buyer);
+        existingOrder.setPlaced(false);
+        List<Product> ordered = new ArrayList<>();
+        existingOrder.setOrderedProducts(ordered);
+        when(orderService.findByUser(id)).thenReturn(existingOrder);
+        Product toBuy = new Product();
+        toBuy.setId(1L);
+        when(productRepository.findById(toBuy.getId())).thenReturn(Optional.of(toBuy));
+
+        productService.buy(toBuy.getId(), userDetails);
+
+        verify(productRepository).save(any());
+        verify(orderService, atLeastOnce()).save(any());
+
+
+    }
+    @Test
+    void shouldCreateNewOrder(){
+
+        String email = "testEmail@test.com";
+
+        Role userRole = new Role();
+        userRole.setName(RoleEnum.USER);
+        List<Order> orders = new ArrayList<>();
+        User user = new User();
+        user.setOrders(orders);
+        user.setEmail(email);
+        user.setId(1L);
+        user.setRoles(List.of(userRole));
+        user.setPassword("testPassword");
+        when(userService.findByEmail(email)).thenReturn(user);
+        User buyer = userService.findByEmail(email);
+        long id = buyer.getId();
+
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withUsername(email)
+                .password(user.getPassword())
+                .authorities(user.getRoles()
+                        .stream()
+                        .map(ProductServiceImplTest::map)
+                        .collect(Collectors.toList()))
+                .build();
+
+        Order notExistingOrder = new Order();
+
+        List<Product> ordered = new ArrayList<>();
+
+        orderService.save(notExistingOrder);
+        notExistingOrder.setOrderedProducts(ordered);
+        notExistingOrder.setPlacedBy(buyer);
+
+        Product toBuy = new Product();
+        toBuy.setId(1L);
+        when(productRepository.findById(toBuy.getId())).thenReturn(Optional.of(toBuy));
+
+        productService.buy(toBuy.getId(), userDetails);
+
+        verify(productRepository).save(any());
+        verify(orderService, atLeastOnce()).save(any());
+        verify(userService).save(any());
+
+    }
 
 
 
 
-
-
-
+    private static GrantedAuthority map(Role role) {
+        return new SimpleGrantedAuthority("ROLE_" + role.getName().name());
+    }
 
 
 }
