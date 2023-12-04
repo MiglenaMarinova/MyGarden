@@ -110,10 +110,7 @@ public class OrderServiceImpl implements OrderService {
 //        }
 //    }
 
-    @Override
-    public boolean isOwner(Order order, UserDetails buyer) {
-        return false;
-    }
+
 
     @Override
     public void placeOrder(Long id, UserDetails buyer) {

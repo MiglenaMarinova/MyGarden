@@ -18,7 +18,7 @@ public interface OrderService {
 
 //    void delete(Long id, UserDetails buyer);
 
-    boolean isOwner(Order order, UserDetails buyer);
+
 
     void placeOrder(Long id, UserDetails buyer);
 

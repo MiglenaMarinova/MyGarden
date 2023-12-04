@@ -115,7 +115,9 @@ public class ProductServiceImpl implements com.example.mygarden.service.ProductS
             product.setOrder(order);
             productRepository.save(product);
             order.getOrderedProducts().add(product);
+            order.setPlacedBy(userBuyer);
             orderService.save(order);
+
         }else if (order == null){
             Order newOrder = new Order();
             List<Product> products = new ArrayList<>();

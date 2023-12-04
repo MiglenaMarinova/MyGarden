@@ -1,5 +1,7 @@
 package com.example.mygarden.service.impl;
 
+import com.example.mygarden.model.dto.OrderViewDto;
+import com.example.mygarden.model.dto.ProductViewDto;
 import com.example.mygarden.model.entity.Order;
 import com.example.mygarden.model.entity.Product;
 import com.example.mygarden.model.entity.Role;
@@ -21,12 +23,15 @@ import org.mockito.stubbing.OngoingStubbing;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -146,102 +151,148 @@ class OrderServiceImplTest {
     @Test
     void findAllOpenOrdersByUserTest() {
 
-        User user2 = new User();
-        user2.setId(2L);
-        user2.setFirstName("User1");
-        user2.setLastName("Userov1");
-        user2.setPassword("123");
-        user2.setEmail("user1@user1.com");
-        user2.setAddress("Userova 22");
+        String email = "testEmail@test.com";
+
+        Role userRole = new Role();
+        userRole.setName(RoleEnum.USER);
+        User user = new User();
+        user.setEmail(email);
+        user.setId(1L);
+        user.setRoles(List.of(userRole));
+        user.setPassword("testPassword");
+        when(userService.findByEmail(email)).thenReturn(user);
+        User buyer = userService.findByEmail(email);
+        long id = buyer.getId();
+
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withUsername(email)
+                .password(user.getPassword())
+                .authorities(user.getRoles()
+                        .stream()
+                        .map(OrderServiceImplTest::map)
+                        .collect(Collectors.toList()))
+                .build();
+
 
         List<Product> orderedProducts = new ArrayList<>();
 
         Order order1 = new Order();
         order1.setId(1L);
         order1.setOrderedProducts(orderedProducts);
-        order1.setPlacedBy(user2);
+        order1.setPlacedBy(user);
         order1.setPlaced(false);
 
         Order order2 = new Order();
         order2.setId(2L);
         order2.setOrderedProducts(orderedProducts);
-        order2.setPlacedBy(user2);
+        order2.setPlacedBy(user);
         order2.setPlaced(false);
 
-        when(orderRepository.findAllOpenOrdersByUser(user2.getId())).thenReturn(List.of(order1, order2));
+        when(orderRepository.findAllOpenOrdersByUser(user.getId())).thenReturn(List.of(order1, order2));
+        when(modelMapper.map(order1, OrderViewDto.class)).thenReturn(new OrderViewDto());
+        when(modelMapper.map(order2, OrderViewDto.class)).thenReturn(new OrderViewDto());
 
-        List<Order> result = orderRepository.findAllOpenOrdersByUser(user2.getId());
+        List<Order> result = orderRepository.findAllOpenOrdersByUser(user.getId());
+        List<OrderViewDto> list = orderService.findAllOpenOrdersByUser(userDetails);
 
         Assertions.assertEquals(2, result.size());
-        verify(orderRepository, times(1)).findAllOpenOrdersByUser(user2.getId());
+        Assertions.assertEquals(result.size(), list.size());
+        verify(orderRepository, atLeastOnce()).findAllOpenOrdersByUser(user.getId());
 
     }
 
     @Test
     void findAllPlacedOrdersByUserTest() {
 
-        User user2 = new User();
-        user2.setId(2L);
-        user2.setFirstName("User1");
-        user2.setLastName("Userov1");
-        user2.setPassword("123");
-        user2.setEmail("user1@user1.com");
-        user2.setAddress("Userova 22");
+        String email = "testEmail@test.com";
+
+        Role userRole = new Role();
+        userRole.setName(RoleEnum.USER);
+        User user = new User();
+        user.setEmail(email);
+        user.setId(1L);
+        user.setRoles(List.of(userRole));
+        user.setPassword("testPassword");
+        when(userService.findByEmail(email)).thenReturn(user);
+        User buyer = userService.findByEmail(email);
+        long id = buyer.getId();
+
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withUsername(email)
+                .password(user.getPassword())
+                .authorities(user.getRoles()
+                        .stream()
+                        .map(OrderServiceImplTest::map)
+                        .collect(Collectors.toList()))
+                .build();
+
 
         List<Product> orderedProducts = new ArrayList<>();
 
         Order order1 = new Order();
         order1.setId(1L);
         order1.setOrderedProducts(orderedProducts);
-        order1.setPlacedBy(user2);
+        order1.setPlacedBy(user);
         order1.setPlaced(true);
 
         Order order2 = new Order();
         order2.setId(2L);
         order2.setOrderedProducts(orderedProducts);
-        order2.setPlacedBy(user2);
+        order2.setPlacedBy(user);
         order2.setPlaced(false);
 
-        when(orderRepository.findAllPlacedOrdersByUser(user2.getId())).thenReturn(List.of(order1));
+        when(orderRepository.findAllPlacedOrdersByUser(user.getId())).thenReturn(List.of(order1));
+        when(modelMapper.map(order1, OrderViewDto.class)).thenReturn(new OrderViewDto());
+//        when(modelMapper.map(order2, ProductViewDto.class)).thenReturn(new ProductViewDto());
 
-        List<Order> result = orderRepository.findAllPlacedOrdersByUser(user2.getId());
+        List<Order> result = orderRepository.findAllPlacedOrdersByUser(user.getId());
+        List<OrderViewDto> orderViewDtoList = orderService.findAllPlacedOrdersByUser(userDetails);
 
         Assertions.assertEquals(1, result.size());
-        verify(orderRepository, times(1)).findAllPlacedOrdersByUser(user2.getId());
+        verify(orderRepository, atLeastOnce()).findAllPlacedOrdersByUser(user.getId());
 
     }
 
     @Test
     void placeOrder() {
 
-        User user2 = new User();
-        user2.setId(2L);
-        user2.setFirstName("User1");
-        user2.setLastName("Userov1");
-        user2.setPassword("123");
-        user2.setEmail("user1@user1.com");
-        user2.setAddress("Userova 22");
+        String email = "testEmail@test.com";
 
+        Role userRole = new Role();
+        userRole.setName(RoleEnum.USER);
+        User user = new User();
+        user.setEmail(email);
+        user.setId(1L);
+        user.setRoles(List.of(userRole));
+        user.setPassword("testPassword");
+        when(userService.findByEmail(email)).thenReturn(user);
+        User buyer = userService.findByEmail(email);
+        long id = buyer.getId();
+
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withUsername(email)
+                .password(user.getPassword())
+                .authorities(user.getRoles()
+                        .stream()
+                        .map(OrderServiceImplTest::map)
+                        .collect(Collectors.toList()))
+                .build();
         List<Product> orderedProducts = new ArrayList<>();
 
         Order order1 = new Order();
         order1.setId(1L);
         order1.setOrderedProducts(orderedProducts);
-        order1.setPlacedBy(user2);
+        order1.setPlacedBy(user);
         order1.setPlaced(false);
 
-        when(orderRepository.findByPlacedBy(user2.getId())).thenReturn(order1);
+        when(orderRepository.findByPlacedBy(user.getId())).thenReturn(order1);
         when(orderRepository.save(any(Order.class))).thenReturn(order1);
 
-        Order beforePlace= orderRepository.findByPlacedBy(user2.getId());
-        beforePlace.setPlaced(true);
-        Order afterPlace= orderRepository.save(beforePlace);
+        orderService.placeOrder(order1.getId(), userDetails);
 
-
-        Assertions.assertEquals(true, afterPlace.isPlaced());
-        verify(orderRepository, times(1)).findByPlacedBy(user2.getId());
-        verify(orderRepository, times(1)).save(beforePlace);
-
+        Assertions.assertEquals(true, order1.isPlaced());
+        verify(orderRepository, times(1)).findByPlacedBy(user.getId());
+        verify(orderRepository, times(1)).save(order1);
 
     }
 
@@ -268,9 +319,13 @@ class OrderServiceImplTest {
         Order placedOrder = orderService.findByPlacedBy(user2.getId());
 
         Assertions.assertNotNull(placedOrder);
+        verify(orderRepository, times(1)).findByPlacedBy(user2.getId());
 
 
     }
 
 
+    private static GrantedAuthority map(Role role) {
+        return new SimpleGrantedAuthority("ROLE_" + role.getName().name());
+    }
 }
