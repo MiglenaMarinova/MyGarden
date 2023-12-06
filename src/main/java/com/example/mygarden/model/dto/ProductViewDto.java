@@ -14,7 +14,7 @@ public class ProductViewDto {
     private String name;
     private BigDecimal price;
 
-   private List<PictureViewDto> pictureViewList = new ArrayList<>();
+    private List<PictureViewDto> pictureViewList = new ArrayList<>();
 
 
     public ProductViewDto() {

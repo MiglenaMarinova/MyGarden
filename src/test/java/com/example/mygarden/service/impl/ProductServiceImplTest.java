@@ -225,7 +225,7 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    void addProductToTestExistingOrder() {
+    void addProductToExistingOrderTest() {
         String email = "testEmail@test.com";
 
         Role userRole = new Role();
@@ -261,7 +261,6 @@ public class ProductServiceImplTest {
 
         productService.buy(toBuy.getId(), userDetails);
 
-        verify(productRepository).save(any());
         verify(orderService, atLeastOnce()).save(any());
 
 
@@ -307,7 +306,6 @@ public class ProductServiceImplTest {
 
         productService.buy(toBuy.getId(), userDetails);
 
-        verify(productRepository).save(any());
         verify(orderService, atLeastOnce()).save(any());
         verify(userService).save(any());
 

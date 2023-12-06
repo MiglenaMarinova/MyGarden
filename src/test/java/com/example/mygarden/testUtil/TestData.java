@@ -23,13 +23,17 @@ public class TestData {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private UserTestData userTestData;
 
-    public Product createProduct(long id, String name, BigDecimal price, Set<Picture> pictureSet){
+
+    public Product createProduct(long id, String name, BigDecimal price, Set<Picture> pictureSet, List<Order> orders){
         Product testProduct = new Product();
         testProduct.setId(id);
         testProduct.setName(name);
         testProduct.setPrice(price);
         testProduct.setPictures(pictureSet);
+        testProduct.setOrders(orders);
 
         productRepository.save(testProduct);
 
@@ -57,6 +61,7 @@ public class TestData {
 
     }
     public Order creatOrder(long id, User placedBy, List<Product> orderedProducts, boolean isPlaced){
+
         Order testOrder = new Order();
         testOrder.setId(id);
         testOrder.setOrderedProducts(orderedProducts);

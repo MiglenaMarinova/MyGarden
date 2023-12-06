@@ -18,14 +18,14 @@ public class User extends BaseEntity{
     private String password;
     private String address;
 
-    private boolean isEnabled;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
-    joinColumns =@JoinColumn(name = "user_id", referencedColumnName = "id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+            joinColumns =@JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "placedBy", fetch = FetchType.EAGER )
+    @OneToMany(mappedBy = "placedBy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Order> orders;
 
 
@@ -80,13 +80,6 @@ public class User extends BaseEntity{
         this.roles = roles;
     }
 
-    public boolean isEnabled() {
-        return isEnabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        isEnabled = enabled;
-    }
 
     public List<Order> getOrders() {
         return orders;

@@ -24,13 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ProductsAllControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private UserTestData userTestData;
-    @Autowired
-    private TestData testData;
 
-    @Mock
-    private ProductRepository productRepository;
 
 
     @Test

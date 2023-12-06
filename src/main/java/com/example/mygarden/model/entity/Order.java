@@ -8,41 +8,43 @@ import java.util.List;
 @Table(name = "orders")
 public class Order extends BaseEntity {
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+   @ManyToMany(fetch = FetchType.EAGER)
+   @JoinTable(name = "orders_products",
+           joinColumns =@JoinColumn(name = "order_id", referencedColumnName = "id"),
+           inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
     private List<Product> orderedProducts;
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User placedBy;
 
     private boolean isPlaced;
 
-
-
     public Order() {
     }
-
 
     public List<Product> getOrderedProducts() {
         return orderedProducts;
     }
 
-    public void setOrderedProducts(List<Product> orderedProducts) {
+    public Order setOrderedProducts(List<Product> orderedProducts) {
         this.orderedProducts = orderedProducts;
+        return this;
     }
 
     public User getPlacedBy() {
         return placedBy;
     }
 
-    public void setPlacedBy(User placedBy) {
+    public Order setPlacedBy(User placedBy) {
         this.placedBy = placedBy;
+        return this;
     }
 
     public boolean isPlaced() {
         return isPlaced;
     }
 
-    public void setPlaced(boolean placed) {
+    public Order setPlaced(boolean placed) {
         isPlaced = placed;
+        return this;
     }
 }

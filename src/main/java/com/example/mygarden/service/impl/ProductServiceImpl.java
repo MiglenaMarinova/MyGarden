@@ -41,6 +41,7 @@ public class ProductServiceImpl implements com.example.mygarden.service.ProductS
         this.pictureService = pictureService;
         this.userService = userService;
         this.orderService = orderService;
+
     }
 
     public void addProduct(ProductAddDto productAddDto) {
@@ -104,34 +105,6 @@ public class ProductServiceImpl implements com.example.mygarden.service.ProductS
         productRepository.save(product);
     }
 
-    @Override
-    public void buy(Long id, UserDetails buyer) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Product not available."));
-        User userBuyer = userService.findByEmail(buyer.getUsername());
-        Order order = orderService.findByUser(userBuyer.getId());
-
-        if (order != null && !order.isPlaced()) {
-            product.setOrder(order);
-            productRepository.save(product);
-            order.getOrderedProducts().add(product);
-            order.setPlacedBy(userBuyer);
-            orderService.save(order);
-
-        }else if (order == null){
-            Order newOrder = new Order();
-            List<Product> products = new ArrayList<>();
-            products.add(product);
-            newOrder.setOrderedProducts(products);
-            newOrder.setPlacedBy(userBuyer);
-            orderService.save(newOrder);
-            product.setOrder(newOrder);
-            productRepository.save(product);
-            userBuyer.getOrders().add(newOrder);
-            userService.save(userBuyer);
-        }
-
-    }
 
     @Override
     @Transactional
@@ -163,6 +136,66 @@ public class ProductServiceImpl implements com.example.mygarden.service.ProductS
     @Override
     public void saveChanges(Product existingProduct) {
         productRepository.save(existingProduct);
+    }
+
+//    @Override
+//    public void buy(Long id, UserDetails buyer) {
+//        Product product = productRepository.findById(id)
+//                .orElseThrow(() -> new ObjectNotFoundException("Product not available."));
+//        User userBuyer = userService.findByEmail(buyer.getUsername());
+//        Order order = orderService.findByUser(userBuyer.getId());
+//
+//
+//        if (order != null && !order.isPlaced()) {
+//            product.getOrders().add(order);
+//            productRepository.save(product);
+//            order.getOrderedProducts().add(product);
+//            order.setPlacedBy(userBuyer);
+//            orderService.save(order);
+//        } else if (order == null) {
+//            Order newOrder = new Order();
+//            List<Product> products = new ArrayList<>();
+//            products.add(product);
+//            newOrder.setOrderedProducts(products);
+//            newOrder.setPlacedBy(userBuyer);
+//            orderService.save(newOrder);
+//            List<Order> orders = new ArrayList<>();
+//            orders.add(newOrder);
+//            product.setOrders(orders);
+//            productRepository.save(product);
+//            userBuyer.getOrders().add(newOrder);
+//            userService.save(userBuyer);
+//        }
+//
+//    }
+
+    //
+    @Override
+    public void buy(Long id, UserDetails buyer) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Product not available."));
+        User userBuyer = userService.findByEmail(buyer.getUsername());
+        Order order = orderService.findByUser(userBuyer.getId());
+
+        if (order != null && !order.isPlaced()) {
+
+            order.getOrderedProducts().add(product);
+            order.setPlacedBy(userBuyer);
+            orderService.save(order);
+
+        }else if (order == null){
+            Order newOrder = new Order();
+            List<Product> products = new ArrayList<>();
+            products.add(product);
+            newOrder.setOrderedProducts(products);
+            newOrder.setPlacedBy(userBuyer);
+            orderService.save(newOrder);
+//            product.setOrder(newOrder);
+//            productRepository.save(product);
+            userBuyer.getOrders().add(newOrder);
+            userService.save(userBuyer);
+        }
+
     }
 
 

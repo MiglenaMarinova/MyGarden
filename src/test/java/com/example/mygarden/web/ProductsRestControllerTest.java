@@ -7,6 +7,7 @@ import com.example.mygarden.repository.OrderRepository;
 import com.example.mygarden.repository.ProductRepository;
 import com.example.mygarden.service.ProductService;
 import com.example.mygarden.testUtil.TestData;
+import com.example.mygarden.testUtil.UserTestData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,9 +22,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -42,26 +41,19 @@ class ProductsRestControllerTest {
 
     @Autowired
     private TestData testData;
+
     @Autowired
     private ObjectMapper objectMapper;
+
     @Mock
     private ProductRepository productRepository;
 
 
-    @BeforeEach
-    void setUp() {
-        testData.cleanAllTestData();
-    }
-
-    @AfterEach
-    void tearDown() {
-        testData.cleanAllTestData();
-    }
-
     @Test
     public void testGetAll() throws Exception {
         Set<Picture> pictureSet = new HashSet<>();
-        testData.createProduct(1L, "Name1", BigDecimal.valueOf(1.00), pictureSet);
+
+        Product test1 = testData.createProduct(1L, "Name1", BigDecimal.valueOf(1.00), pictureSet, new ArrayList<>());
 
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/api/products"))
@@ -75,7 +67,7 @@ class ProductsRestControllerTest {
     public void testFindById() throws Exception {
         Set<Picture> pictureSet = new HashSet<>();
 
-        Product test1 = testData.createProduct(1L, "Name1", BigDecimal.valueOf(1.00), pictureSet);
+        Product test1 = testData.createProduct(1L, "Name1", BigDecimal.valueOf(1.00), pictureSet, new ArrayList<>());
         long id = test1.getId();
 
         when(productRepository.findById(id)).thenReturn(Optional.of(test1));
@@ -102,8 +94,8 @@ class ProductsRestControllerTest {
 
         Set<Picture> pictureSet = new HashSet<>();
 
-        Product test1 = testData.createProduct(2L, "Name1", BigDecimal.valueOf(1.00), pictureSet);
-        Product updatedProduct = testData.createProduct(2L, "Name1", BigDecimal.valueOf(3.00), pictureSet);
+        Product test1 = testData.createProduct(2L, "Name1", BigDecimal.valueOf(1.00), pictureSet, new ArrayList<>());
+        Product updatedProduct = testData.createProduct(2L, "Name1", BigDecimal.valueOf(3.00), pictureSet, new ArrayList<>());
         long id = test1.getId();
         when(productRepository.findById(id)).thenReturn(Optional.of(test1));
         when(productRepository.save(updatedProduct)).thenReturn(updatedProduct);

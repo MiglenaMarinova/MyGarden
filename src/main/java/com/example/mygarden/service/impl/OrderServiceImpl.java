@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderViewDto> findAllOpenOrdersByUser(UserDetails currentUser) {
         User current = userService.findByEmail(currentUser.getUsername());
-        List<OrderViewDto> allOpen = orderRepository.findAllOpenOrdersByUser(current.getId())
+                List<OrderViewDto> allPlaced = orderRepository.findAllOpenOrdersByUser(current.getId())
                 .stream()
                 .map(order -> {
                     OrderViewDto orderViewDto = modelMapper.map(order, OrderViewDto.class);
@@ -59,16 +59,21 @@ public class OrderServiceImpl implements OrderService {
                                     .collect(Collectors.toList());
                     orderViewDto.setProducts(productViewDtoList);
                     BigDecimal total = order.getOrderedProducts()
-                                    .stream()
-                                            .map(product -> product.getPrice())
-                                                    .reduce(BigDecimal::add)
+                            .stream()
+                            .map(product -> product.getPrice())
+                            .reduce(BigDecimal::add)
                             .orElse(BigDecimal.ZERO);
                     orderViewDto.setTotalSum(total);
 
                     return orderViewDto;
                 }).collect(Collectors.toList());
 
-        return allOpen;
+        return allPlaced;
+
+
+
+
+
     }
 
     @Override
@@ -95,20 +100,9 @@ public class OrderServiceImpl implements OrderService {
                 }).collect(Collectors.toList());
 
         return allPlaced;
-    }
 
-//    @Override
-//    @Transactional
-//    public void delete(Long id, UserDetails buyer) {
-//        User userBuyer = userService.findByEmail(buyer.getUsername());
-//        Order order = orderRepository.findByPlacedBy(userBuyer.getId());
-//        Product toDelete = productRepository.findById(id)
-//                .orElseThrow(() -> new ObjectNotFoundException("Product not available."));
-//        if (order != null && !order.isPlaced()) {
-//            order.getOrderedProducts().remove(toDelete);
-//            orderRepository.save(order);
-//        }
-//    }
+
+    }
 
 
 
@@ -134,10 +128,10 @@ public class OrderServiceImpl implements OrderService {
         Product toDelete = productRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Product not available."));
         if (order != null && !order.isPlaced()) {
-            toDelete.setOrder(null);
-            productRepository.save(toDelete);
-            order.getOrderedProducts().remove(toDelete);
-            orderRepository.save(order);
+//            toDelete.setOrder(null);
+//            productRepository.save(toDelete);
+//            order.getOrderedProducts().remove(toDelete);
+//            orderRepository.save(order);
         }
     }
 

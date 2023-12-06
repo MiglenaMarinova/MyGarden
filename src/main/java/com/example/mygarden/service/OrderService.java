@@ -16,7 +16,7 @@ public interface OrderService {
     List<OrderViewDto> findAllPlacedOrdersByUser(UserDetails currentUser);
 
 
-//    void delete(Long id, UserDetails buyer);
+    void delete(Long id, UserDetails buyer);
 
 
 
@@ -24,5 +24,5 @@ public interface OrderService {
 
     Order findByPlacedBy(Long id);
 
-    void delete(Long id, UserDetails buyer);
+//    void delete(Long id, UserDetails buyer);
 }

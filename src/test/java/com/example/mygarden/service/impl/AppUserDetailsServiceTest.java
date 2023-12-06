@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
  class AppUserDetailsServiceTest {
 
-    private AppUserDetailsServiceImpl serviceTest;
+    public AppUserDetailsServiceImpl serviceTest;
     @Mock
     private UserRepository mockUserRepository;
 

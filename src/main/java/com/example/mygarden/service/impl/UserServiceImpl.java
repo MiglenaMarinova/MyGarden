@@ -65,7 +65,7 @@ public class UserServiceImpl implements com.example.mygarden.service.UserService
             admin.setLastName("Adminov");
             admin.setAddress("Garden 21");
             admin.setEmail("admin@admin.com");
-            admin.setEnabled(true);
+
             admin.setPassword(passwordEncoder.encode("123"));
             admin.setRoles(Arrays.asList(adminRole, moderatorRole, userRole));
             userRepository.save(admin);
@@ -75,7 +75,7 @@ public class UserServiceImpl implements com.example.mygarden.service.UserService
             moderator.setLastName("Moderator");
             moderator.setAddress("Garden 22");
             moderator.setEmail("moderator@moderator.com");
-            moderator.setEnabled(true);
+
             moderator.setPassword(passwordEncoder.encode("123"));
             moderator.setRoles(Arrays.asList(moderatorRole, userRole));
             userRepository.save(moderator);
@@ -94,7 +94,7 @@ public class UserServiceImpl implements com.example.mygarden.service.UserService
         List<Role> roles = new ArrayList<>();
         roles.add(userRole);
         user.setRoles(roles);
-        user.setEnabled(false);
+
         userRepository.save(user);
 
         applicationEventPublisher.publishEvent(new UsersRegisteredEvent(

@@ -2,6 +2,7 @@ package com.example.mygarden.web;
 
 import com.example.mygarden.service.CategoryService;
 import com.example.mygarden.testUtil.TestData;
+import com.example.mygarden.testUtil.UserTestData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,8 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class CategoriesControllerTest {
 
-    @Autowired
-    private TestData testData;
+
+
     @Autowired
     private MockMvc mockMvc;
     @Mock
@@ -38,13 +39,10 @@ class CategoriesControllerTest {
                 .standaloneSetup(new CategoriesController(categoryService))
                 .build();
 
+
     }
 
 
-    @AfterEach
-    void tearDown() {
-        testData.cleanAllTestData();
-    }
 
     @Test
     void getVeggiesTest() throws Exception {
@@ -81,4 +79,6 @@ class CategoriesControllerTest {
                 .andExpect(model().attributeExists("allHomemade"))
                 .andExpect(view().name("categories"));
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.example.mygarden.testUtil;
 
+import com.example.mygarden.model.entity.Order;
 import com.example.mygarden.model.entity.Role;
 import com.example.mygarden.model.entity.User;
 import com.example.mygarden.model.enums.RoleEnum;
@@ -8,6 +9,7 @@ import com.example.mygarden.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -21,11 +23,15 @@ public class UserTestData {
 
     public User createTestUser(String email){
         User testUser = new User();
+
         testUser.setFirstName("User");
         testUser.setLastName("Userov");
         testUser.setPassword("123");
         testUser.setEmail(email);
         testUser.setAddress("Userova 22");
+        List<Order> orders = new ArrayList<>();
+        testUser.setOrders(orders);
+
         Role userRole = roleRepository.findRoleByName(RoleEnum.USER).orElse(null);
         assert userRole != null;
         testUser.setRoles(
@@ -63,6 +69,7 @@ public class UserTestData {
     }
 
     public void cleanAllTestData(){
+
         userRepository.deleteAll();
     }
 

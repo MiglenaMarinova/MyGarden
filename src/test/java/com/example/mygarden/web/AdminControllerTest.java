@@ -1,52 +1,45 @@
 package com.example.mygarden.web;
 
-import com.example.mygarden.service.UserService;
-import com.example.mygarden.testUtil.UserTestData;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.example.mygarden.model.entity.Role;
+import com.example.mygarden.model.entity.User;
+import com.example.mygarden.model.enums.RoleEnum;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.annotation.GetMapping;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-class AdminControllerTest {
+public class AdminControllerTest {
 
     public static final String ADMIN_EMAIL = "admin@test.com";
     public static final String USER_EMAIL = "user@test.com";
 
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private UserTestData userTestData;
-
-
-    @BeforeEach
-    void setUp() {
-
-        userTestData.cleanAllTestData();
-
-    }
-
 
     @Test
     @WithMockUser(username = ADMIN_EMAIL, roles = {"ADMIN"})
     void adminPageTest() throws Exception {
-        userTestData.createTestAdmin(ADMIN_EMAIL);
+        User testAdmin = new User();
+        testAdmin.setId(1L);
+        testAdmin.setFirstName("Admin");
+        testAdmin.setLastName("Adminov");
+        testAdmin.setPassword("123");
+        testAdmin.setEmail(ADMIN_EMAIL);
+        testAdmin.setAddress("Userova 22");
+        Role adminRole = new Role();
+        adminRole.setName(RoleEnum.ADMIN);
+        testAdmin.setRoles(
+                List.of(adminRole)
+        );
         mockMvc.perform(get("/admin/manage"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin-page"));
@@ -55,16 +48,37 @@ class AdminControllerTest {
     @Test
     @WithMockUser(username = ADMIN_EMAIL, roles = {"ADMIN"})
     void manageUserTest() throws Exception {
-        userTestData.createTestAdmin(ADMIN_EMAIL);
+        User testAdmin = new User();
+        testAdmin.setId(1L);
+        testAdmin.setFirstName("Admin");
+        testAdmin.setLastName("Adminov");
+        testAdmin.setPassword("123");
+        testAdmin.setEmail(ADMIN_EMAIL);
+        testAdmin.setAddress("Userova 22");
+        Role adminRole = new Role();
+        adminRole.setName(RoleEnum.ADMIN);
+        testAdmin.setRoles(
+                List.of(adminRole)
+        );
         mockMvc.perform(get("/admin/manage/users"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin-page"));
     }
-
     @Test
     @WithMockUser(username = ADMIN_EMAIL, roles = {"ADMIN"})
     void manageProductTest() throws Exception {
-        userTestData.createTestAdmin(ADMIN_EMAIL);
+        User testAdmin = new User();
+        testAdmin.setId(1L);
+        testAdmin.setFirstName("Admin");
+        testAdmin.setLastName("Adminov");
+        testAdmin.setPassword("123");
+        testAdmin.setEmail(ADMIN_EMAIL);
+        testAdmin.setAddress("Userova 22");
+        Role adminRole = new Role();
+        adminRole.setName(RoleEnum.ADMIN);
+        testAdmin.setRoles(
+                List.of(adminRole)
+        );
         mockMvc.perform(get("/admin/manage/products"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/products/all"))
@@ -74,9 +88,28 @@ class AdminControllerTest {
     @Test
     @WithMockUser(username = USER_EMAIL, roles = {"USER"})
     void adminPageShouldReturnError() throws Exception {
-        userTestData.createTestUser(USER_EMAIL);
+        User testUser = new User();
+        testUser.setFirstName("User");
+        testUser.setLastName("Userov");
+        testUser.setPassword("123");
+        testUser.setEmail(USER_EMAIL);
+        testUser.setAddress("Userova 22");
+
+        Role userRole = new Role();
+        userRole.setName(RoleEnum.USER);
+        testUser.setRoles(
+                List.of(userRole)
+        );
         mockMvc.perform(get("/admin/manage"))
                 .andExpect(status().is4xxClientError());
 
     }
+
+
+
+
+
+
+
+
 }

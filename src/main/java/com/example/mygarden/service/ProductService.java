@@ -15,8 +15,6 @@ public interface ProductService {
 
     void changePic(Long id);
 
-    void buy(Long id, UserDetails buyer);
-
     void delete(Long id);
 
     ProductViewDto findById(Long id);
@@ -26,6 +24,8 @@ public interface ProductService {
     Product findProduct(Long id);
 
     void saveChanges(Product existingProduct);
+
+    void buy(Long id, UserDetails buyer);
 
 
 //    void delete(Long id, UserDetails buyer);
