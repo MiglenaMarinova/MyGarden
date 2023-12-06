@@ -48,10 +48,18 @@ class OrderControllerTest {
     @Autowired
     private TestData testData;
 
-//    @BeforeEach
-//    void setUp(){
-//        userTestData.cleanAllTestData();
-//    }
+    @BeforeEach
+    void setUp(){
+        userTestData.cleanAllTestData();
+        testData.cleanAllTestData();
+
+    }
+    @AfterEach
+    void tearDown(){
+        userTestData.cleanAllTestData();
+        testData.cleanAllTestData();
+
+    }
 
 
 

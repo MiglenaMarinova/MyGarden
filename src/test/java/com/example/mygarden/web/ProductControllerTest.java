@@ -62,6 +62,12 @@ class ProductControllerTest {
         testData.cleanAllTestData();
 
     }
+    @AfterEach
+    void tearDown(){
+        userTestData.cleanAllTestData();
+        testData.cleanAllTestData();
+
+    }
 
 
 

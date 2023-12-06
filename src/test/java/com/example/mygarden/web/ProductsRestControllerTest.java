@@ -48,6 +48,18 @@ class ProductsRestControllerTest {
     @Mock
     private ProductRepository productRepository;
 
+    @BeforeEach
+    void setUp() {
+        testData.cleanAllTestData();
+
+    }
+
+    @AfterEach
+    void tearDown() {
+        testData.cleanAllTestData();
+
+    }
+
 
     @Test
     public void testGetAll() throws Exception {
