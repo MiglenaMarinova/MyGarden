@@ -2,17 +2,21 @@ package com.example.mygarden.model.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
 public class Order extends BaseEntity {
 
-   @ManyToMany(fetch = FetchType.EAGER)
-   @JoinTable(name = "orders_products",
-           joinColumns =@JoinColumn(name = "order_id", referencedColumnName = "id"),
-           inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
-    private List<Product> orderedProducts;
+    private BigDecimal total;
+
+
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+    private List<ShoppingBasket> shoppingBaskets = new ArrayList<>();
+
+
     @ManyToOne
     private User placedBy;
 
@@ -21,14 +25,6 @@ public class Order extends BaseEntity {
     public Order() {
     }
 
-    public List<Product> getOrderedProducts() {
-        return orderedProducts;
-    }
-
-    public Order setOrderedProducts(List<Product> orderedProducts) {
-        this.orderedProducts = orderedProducts;
-        return this;
-    }
 
     public User getPlacedBy() {
         return placedBy;
@@ -45,6 +41,24 @@ public class Order extends BaseEntity {
 
     public Order setPlaced(boolean placed) {
         isPlaced = placed;
+        return this;
+    }
+
+     public BigDecimal getTotal() {
+        return total;
+    }
+
+    public Order setTotal(BigDecimal total) {
+        this.total = total;
+        return this;
+    }
+
+    public List<ShoppingBasket> getShoppingBaskets() {
+        return shoppingBaskets;
+    }
+
+    public Order setShoppingBaskets(List<ShoppingBasket> shoppingBaskets) {
+        this.shoppingBaskets = shoppingBaskets;
         return this;
     }
 }

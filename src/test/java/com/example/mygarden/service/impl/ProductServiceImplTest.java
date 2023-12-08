@@ -253,13 +253,13 @@ public class ProductServiceImplTest {
         existingOrder.setPlacedBy(buyer);
         existingOrder.setPlaced(false);
         List<Product> ordered = new ArrayList<>();
-        existingOrder.setOrderedProducts(ordered);
-        when(orderService.findByUser(id)).thenReturn(existingOrder);
-        Product toBuy = new Product();
-        toBuy.setId(1L);
-        when(productRepository.findById(toBuy.getId())).thenReturn(Optional.of(toBuy));
-
-        productService.buy(toBuy.getId(), userDetails);
+//        existingOrder.setOrderedProducts(ordered);
+//        when(orderService.findByUser(id)).thenReturn(existingOrder);
+//        Product toBuy = new Product();
+//        toBuy.setId(1L);
+//        when(productRepository.findById(toBuy.getId())).thenReturn(Optional.of(toBuy));
+//
+//        productService.buy(toBuy.getId(), userDetails);
 
         verify(orderService, atLeastOnce()).save(any());
 
@@ -295,16 +295,16 @@ public class ProductServiceImplTest {
         Order notExistingOrder = new Order();
 
         List<Product> ordered = new ArrayList<>();
-
-        orderService.save(notExistingOrder);
-        notExistingOrder.setOrderedProducts(ordered);
-        notExistingOrder.setPlacedBy(buyer);
-
-        Product toBuy = new Product();
-        toBuy.setId(1L);
-        when(productRepository.findById(toBuy.getId())).thenReturn(Optional.of(toBuy));
-
-        productService.buy(toBuy.getId(), userDetails);
+//
+//        orderService.save(notExistingOrder);
+//        notExistingOrder.setOrderedProducts(ordered);
+//        notExistingOrder.setPlacedBy(buyer);
+//
+//        Product toBuy = new Product();
+//        toBuy.setId(1L);
+//        when(productRepository.findById(toBuy.getId())).thenReturn(Optional.of(toBuy));
+//
+//        productService.buy(toBuy.getId(), userDetails);
 
         verify(orderService, atLeastOnce()).save(any());
         verify(userService).save(any());

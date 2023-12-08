@@ -10,17 +10,15 @@ import java.util.Set;
 @Table(name = "products")
 public class Product extends BaseEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
     @ManyToOne
     private Category category;
 
     private BigDecimal price;
     private Integer amount;
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL ,fetch = FetchType.EAGER)
     private Set<Picture> pictures;
-    @ManyToMany(mappedBy = "orderedProducts", fetch = FetchType.EAGER)
-    private List<Order> orders;
 
     public Product() {
     }
@@ -70,12 +68,12 @@ public class Product extends BaseEntity {
         return this;
     }
 
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public Product setOrders(List<Order> orders) {
-        this.orders = orders;
-        return this;
-    }
+//    public List<Order> getOrders() {
+//        return orders;
+//    }
+//
+//    public Product setOrders(List<Order> orders) {
+//        this.orders = orders;
+//        return this;
+//    }
 }

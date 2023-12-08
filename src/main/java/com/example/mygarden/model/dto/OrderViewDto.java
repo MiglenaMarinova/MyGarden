@@ -6,9 +6,10 @@ import java.util.List;
 
 public class OrderViewDto {
     private Long Id;
-    private List<ProductViewDto> products = new ArrayList<>();
 
-    private BigDecimal totalSum;
+   private List<ShoppingBasketViewDto> basketViewDtoList = new ArrayList<>();
+
+    private BigDecimal total;
 
     public OrderViewDto() {
     }
@@ -17,23 +18,26 @@ public class OrderViewDto {
         return Id;
     }
 
-    public void setId(Long id) {
+    public OrderViewDto setId(Long id) {
         Id = id;
+        return this;
     }
 
-    public List<ProductViewDto> getProducts() {
-        return products;
+    public List<ShoppingBasketViewDto> getBasketViewDtoList() {
+        return basketViewDtoList;
     }
 
-    public void setProducts(List<ProductViewDto> products) {
-        this.products = products;
+    public OrderViewDto setBasketViewDtoList(List<ShoppingBasketViewDto> basketViewDtoList) {
+        this.basketViewDtoList = basketViewDtoList;
+        return this;
     }
 
-    public BigDecimal getTotalSum() {
-        return totalSum;
+    public BigDecimal getTotal() {
+        return total;
     }
 
-    public void setTotalSum(BigDecimal totalSum) {
-        this.totalSum = totalSum;
+    public OrderViewDto setTotal(BigDecimal total) {
+        this.total = total;
+        return this;
     }
 }

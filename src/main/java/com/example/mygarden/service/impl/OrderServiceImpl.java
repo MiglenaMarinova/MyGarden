@@ -2,12 +2,15 @@ package com.example.mygarden.service.impl;
 
 import com.example.mygarden.model.dto.OrderViewDto;
 import com.example.mygarden.model.dto.ProductViewDto;
-import com.example.mygarden.model.entity.Order;
-import com.example.mygarden.model.entity.Product;
-import com.example.mygarden.model.entity.User;
+import com.example.mygarden.model.dto.ShoppingBasketViewDto;
+import com.example.mygarden.model.dto.ShoppingItemViewDto;
+import com.example.mygarden.model.entity.*;
 import com.example.mygarden.repository.OrderRepository;
 import com.example.mygarden.repository.ProductRepository;
+import com.example.mygarden.repository.ShoppingBasketRepository;
+import com.example.mygarden.repository.ShoppingItemRepository;
 import com.example.mygarden.service.OrderService;
+import com.example.mygarden.service.ShoppingBasketService;
 import com.example.mygarden.service.UserService;
 import com.example.mygarden.service.exeption.ObjectNotFoundException;
 import jakarta.transaction.Transactional;
@@ -26,12 +29,20 @@ public class OrderServiceImpl implements OrderService {
     private final UserService userService;
     private final ModelMapper modelMapper;
     private final ProductRepository productRepository;
+    private final ShoppingItemRepository shoppingItemRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository, UserService userService, ModelMapper modelMapper, ProductRepository productRepository) {
+    private final ShoppingBasketRepository shoppingBasketRepository;
+
+    public OrderServiceImpl(OrderRepository orderRepository, UserService userService,
+                            ModelMapper modelMapper, ShoppingItemRepository shoppingItemRepository,
+                            ShoppingBasketRepository shoppingBasketRepository,
+                            ProductRepository productRepository) {
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.modelMapper = modelMapper;
         this.productRepository = productRepository;
+        this.shoppingItemRepository = shoppingItemRepository;
+        this.shoppingBasketRepository = shoppingBasketRepository;
     }
 
 
@@ -48,60 +59,80 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderViewDto> findAllOpenOrdersByUser(UserDetails currentUser) {
         User current = userService.findByEmail(currentUser.getUsername());
-                List<OrderViewDto> allPlaced = orderRepository.findAllOpenOrdersByUser(current.getId())
-                .stream()
-                .map(order -> {
-                    OrderViewDto orderViewDto = modelMapper.map(order, OrderViewDto.class);
-                    List<ProductViewDto> productViewDtoList =
-                            order.getOrderedProducts()
+
+                List<OrderViewDto> allOpen = orderRepository.findAllOpenOrdersByUser(current.getId())
+                        .stream()
+                        .map(order -> {
+                            OrderViewDto orderViewDto = modelMapper.map(order, OrderViewDto.class);
+                            List<ShoppingBasketViewDto> basketViewDtoList = order.getShoppingBaskets()
                                     .stream()
-                                    .map(product -> modelMapper.map(product, ProductViewDto.class))
-                                    .collect(Collectors.toList());
-                    orderViewDto.setProducts(productViewDtoList);
-                    BigDecimal total = order.getOrderedProducts()
+                                    .map(shoppingBasket -> {
+                                        ShoppingBasketViewDto shoppingBasketViewDto = modelMapper.map(shoppingBasket, ShoppingBasketViewDto.class);
+                                        List<ShoppingItemViewDto> shoppingItemViewDtoList = shoppingBasket.getShoppingItems()
+                                                .stream()
+                                                .map(shoppingItem -> {
+                                                    ShoppingItemViewDto shoppingItemViewDto = modelMapper.map(shoppingItem, ShoppingItemViewDto.class);
+                                                    shoppingItemViewDto.setName(shoppingItem.getName());
+                                                    return shoppingItemViewDto;
+                                                }).collect(Collectors.toList());
+
+                                        shoppingBasketViewDto.setItemList(shoppingItemViewDtoList);
+                                        return shoppingBasketViewDto;
+                                    }).collect(Collectors.toList());
+
+                            BigDecimal total = order.getShoppingBaskets()
                             .stream()
-                            .map(product -> product.getPrice())
+                            .map(shoppingBasket -> shoppingBasket.getTotalSum())
                             .reduce(BigDecimal::add)
                             .orElse(BigDecimal.ZERO);
-                    orderViewDto.setTotalSum(total);
+                    orderViewDto.setTotal(total);
 
-                    return orderViewDto;
-                }).collect(Collectors.toList());
+                            orderViewDto.setBasketViewDtoList(basketViewDtoList);
+                            return orderViewDto;
 
-        return allPlaced;
+                        }).collect(Collectors.toList());
 
-
-
-
+        return allOpen;
 
     }
 
     @Override
     public List<OrderViewDto> findAllPlacedOrdersByUser(UserDetails currentUser) {
         User current = userService.findByEmail(currentUser.getUsername());
-        List<OrderViewDto> allPlaced = orderRepository.findAllPlacedOrdersByUser(current.getId())
+
+        List<OrderViewDto> placedOrders = orderRepository.findAllPlacedOrdersByUser(current.getId())
                 .stream()
                 .map(order -> {
                     OrderViewDto orderViewDto = modelMapper.map(order, OrderViewDto.class);
-                    List<ProductViewDto> productViewDtoList =
-                            order.getOrderedProducts()
-                                    .stream()
-                                    .map(product -> modelMapper.map(product, ProductViewDto.class))
-                                    .collect(Collectors.toList());
-                    orderViewDto.setProducts(productViewDtoList);
-                    BigDecimal total = order.getOrderedProducts()
+                    List<ShoppingBasketViewDto> basketViewDtoList = order.getShoppingBaskets()
                             .stream()
-                            .map(product -> product.getPrice())
+                            .map(shoppingBasket -> {
+                                ShoppingBasketViewDto shoppingBasketViewDto = modelMapper.map(shoppingBasket, ShoppingBasketViewDto.class);
+                                List<ShoppingItemViewDto> shoppingItemViewDtoList = shoppingBasket.getShoppingItems()
+                                        .stream()
+                                        .map(shoppingItem -> {
+                                            ShoppingItemViewDto shoppingItemViewDto = modelMapper.map(shoppingItem, ShoppingItemViewDto.class);
+                                            shoppingItemViewDto.setName(shoppingItem.getName());
+                                            return shoppingItemViewDto;
+                                                }).collect(Collectors.toList());
+
+                                shoppingBasketViewDto.setItemList(shoppingItemViewDtoList);
+                                return shoppingBasketViewDto;
+                            }).collect(Collectors.toList());
+
+                    BigDecimal total = order.getShoppingBaskets()
+                            .stream()
+                            .map(shoppingBasket -> shoppingBasket.getTotalSum())
                             .reduce(BigDecimal::add)
                             .orElse(BigDecimal.ZERO);
-                    orderViewDto.setTotalSum(total);
+                    orderViewDto.setTotal(total);
 
+                    orderViewDto.setBasketViewDtoList(basketViewDtoList);
                     return orderViewDto;
+
                 }).collect(Collectors.toList());
 
-        return allPlaced;
-
-
+            return placedOrders;
     }
 
 
@@ -125,13 +156,26 @@ public class OrderServiceImpl implements OrderService {
     public void delete(Long id, UserDetails buyer) {
         User userBuyer = userService.findByEmail(buyer.getUsername());
         Order order = orderRepository.findByPlacedBy(userBuyer.getId());
-        Product toDelete = productRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Product not available."));
+        ShoppingItem toDelete = shoppingItemRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Product not found."));
         if (order != null && !order.isPlaced()) {
-//            toDelete.setOrder(null);
-//            productRepository.save(toDelete);
-//            order.getOrderedProducts().remove(toDelete);
-//            orderRepository.save(order);
+            ShoppingBasket shoppingBasket = shoppingBasketRepository.findByOrder(order.getId()).orElse(null);
+            toDelete.setShoppingBasket(null);
+
+            assert shoppingBasket != null;
+            shoppingBasket.getShoppingItems().remove(toDelete);
+            shoppingItemRepository.delete(toDelete);
+            BigDecimal totalSum = shoppingBasket
+                    .getShoppingItems()
+                    .stream()
+                    .map(ShoppingItem::getTotalPrice)
+                    .reduce(BigDecimal::add)
+                    .orElse(BigDecimal.ZERO);
+            shoppingBasket.setTotalSum(totalSum);
+
+            shoppingBasketRepository.save(shoppingBasket);
+            order.setTotal(totalSum);
+            orderRepository.save(order);
         }
     }
 

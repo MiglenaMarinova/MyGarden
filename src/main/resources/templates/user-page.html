@@ -9,40 +9,46 @@
 <main role="main" class="bg-light">
 
     <div class="container-fluid bg-blur rounded mt-1 mb-4 d-flex justify-content-center" id="big-div">
-            <div class="col-5">
-                <h1 class="bg-gray text-dark  mb-0 mt-2"><strong class="bg-blur rounded">All open</strong></h1>
-                <div class= "bg-light rounded m-auto" style="overflow: auto">
-                        <div th:each="o : ${allOpenOrders}" th:object="${o}" class="mt-3 rounded badge-info p-3">
-                            <div th:each="p : ${o.getProducts()}" th:object="${p}">
-                                <span class="p-3" th:text="*{name}">Name</span>
-                                <span class="p-3" th:text="*{price}">Price</span>
+        <div class="col-5">
+            <h1 class="bg-gray text-dark  mb-0 mt-2"><strong class="bg-blur rounded">All open</strong></h1>
+            <div class="bg-light rounded m-auto" style="overflow: auto">
+                <div th:each="o : ${allOpenOrders}" th:object="${o}" class="mt-3 rounded badge-info p-3">
+                    <div th:each="basket : ${o.getBasketViewDtoList()}" th:object="${basket}">
+                        <div th:each="itemList : ${basket}" th:object="${itemList}">
+                            <div th:each="item : ${basket.getItemList()}" th:object="${item}">
+                                <span class="p-3" th:text="${item.name}">Name</span>
+                                <span class="p-3" th:text="${item.getTotalPrice()}">Price</span>
                                 <span class="ml-3 p-3 text-warning">
-                                <form th:method="delete" th:action="@{/orders/delete/{id}(id = *{id})}">
+                                <form th:method="delete" th:object="${item}" th:action="@{/orders/delete/{id}(id = ${item.id})}">
                                     <input type="submit" class="btn btn-link" value="Delete">
                                 </form>
-                                 </span>
+                                </span>
                             </div>
-                            <h3 th:text="|Total sum: ${o.getTotalSum()}|" class="bg-gray text-dark  mb-0 mt-2">Total sum</h3>
-                            <a class="ml-3 p-3 text-warning" th:href="@{/orders/place-order/{id}(id = *{id})}">Place Order</a>
                         </div>
-                </div>
-
-
-            </div>
-
-            <div class="col-5">
-                <h1 class="bg-gray text-dark  mb-0 mt-2"><strong class="bg-blur rounded">Placed Orders</strong></h1>
-                <div class= "bg-light rounded m-auto" style="overflow: auto">
-                    <div th:each="placed : ${allPlacedOrders}" th:object="${placed}" class="mt-3 rounded badge-info p-3">
-                        <div th:each="product : ${placed.getProducts()}" th:object="${product}">
-                            <span class="p-3" th:text="${product.name}">Name</span>
-                            <span class="p-3" th:text="${product.price}">Price</span>
-                        </div>
-                        <h3 th:text="|Total sum: ${placed.totalSum}|" class="bg-gray text-dark  mb-0 mt-2">Total sum</h3>
                     </div>
+                    <h3 th:text="|Total sum: ${o.getTotal()}|" class="bg-gray text-dark  mb-0 mt-2">Total sum</h3>
+                    <a class="ml-3 p-3 text-warning" th:href="@{/orders/place-order/{id}(id = *{id})}">Place Order</a>
                 </div>
             </div>
         </div>
+
+        <div class="col-5">
+            <h1 class="bg-gray text-dark  mb-0 mt-2"><strong class="bg-blur rounded">Placed Orders</strong></h1>
+            <div class="bg-light rounded m-auto" style="overflow: auto">
+                <div th:each="placedOrder : ${allPlacedOrders}" th:object="${placedOrder}" class="mt-3 rounded badge-info p-3">
+                    <div th:each="placedBasket : ${placedOrder.getBasketViewDtoList()}" th:object="${placedBasket}">
+                        <div th:each="placedItemList : ${placedBasket}" th:object="${placedItemList}">
+                            <div th:each="placedItem : ${placedBasket.getItemList()}" th:object="${placedItem}">
+                                <span class="p-3" th:text="${placedItem.getName()}">Name</span>
+                                <span class="p-3" th:text="${placedItem.totalPrice}">Price</span>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 th:text="|Total sum: ${placedOrder.getTotal()}|" class="bg-gray text-dark  mb-0 mt-2">Total sum</h3>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </main>
 </body>

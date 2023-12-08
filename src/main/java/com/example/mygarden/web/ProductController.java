@@ -4,6 +4,7 @@ import com.example.mygarden.model.dto.ProductAddDto;
 import com.example.mygarden.model.dto.ProductViewDto;
 import com.example.mygarden.model.entity.Product;
 import com.example.mygarden.service.ProductService;
+import com.example.mygarden.service.ShoppingBasketService;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,12 +20,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ProductController {
 
     private final ProductService productService;
+    private final ShoppingBasketService shoppingBasketService;
 
 
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService,
+                             ShoppingBasketService shoppingBasketService) {
         this.productService = productService;
-
+        this.shoppingBasketService = shoppingBasketService;
     }
 
     @GetMapping("/add")
@@ -67,7 +70,8 @@ public class ProductController {
     public String buy(@PathVariable Long id,
                       @AuthenticationPrincipal UserDetails buyer){
 
-        this.productService.buy(id, buyer);
+//        this.productService.buy(id, buyer);
+        this.shoppingBasketService.buy(id, buyer);
 
         return "redirect:/user/orders";
     }

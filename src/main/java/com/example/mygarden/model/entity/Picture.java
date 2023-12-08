@@ -9,6 +9,7 @@ public class Picture extends BaseEntity{
     private String title;
     private String imgUrl;
     @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
 

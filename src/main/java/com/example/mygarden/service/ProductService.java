@@ -25,7 +25,7 @@ public interface ProductService {
 
     void saveChanges(Product existingProduct);
 
-    void buy(Long id, UserDetails buyer);
+
 
 
 //    void delete(Long id, UserDetails buyer);
