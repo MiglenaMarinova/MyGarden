@@ -44,8 +44,6 @@ class ProductControllerTest {
     @Mock
     private ProductRepository productRepository;
 
-
-
     @BeforeEach
     void setUp(){
         userTestData.cleanAllTestData();

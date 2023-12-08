@@ -276,5 +276,46 @@ body > div.container > div > div:nth-child(2) > div > div > p:nth-child(4){
     width: fit-content;
 }
 
+/*My Orders View*/
+
+#big-div{
+    width: 800px;
+}
+#big-div > div:nth-child(1) > div > div{
+    background-color: #b1dfbb;
+}
+#big-div > div:nth-child(1) > div > div > div > div > div > span:nth-child(1){
+    font-size: 25px;
+    color: green;
+}
+#big-div > div:nth-child(1) > div > div > div > div > div > span:nth-child(2){
+    font-size: 25px;
+    color: green;
+}
+#big-div > div:nth-child(1) > div > div > div > div > div > span.ml-3.p-3.text-warning > form > input.btn.btn-link{
+    color: red;
+}
+#big-div > div:nth-child(1) > div > div > h3{
+    font-size: 15px;
+    color: green;
+}
+#big-div > div:nth-child(1) > div > div > a{
+    font-size: 20px;
+}
+
+
+#big-div > div:nth-child(2) > div > div{
+    background-color: #b1dfbb;
+}
+#big-div > div:nth-child(2) > div > div > div > div > div > span:nth-child(1){
+    font-size: 25px;
+    color: green;
+}
+#big-div > div:nth-child(2) > div > div > div > div > div > span:nth-child(2){
+    font-size: 25px;
+    color: green;
+}
+
+
 
 
