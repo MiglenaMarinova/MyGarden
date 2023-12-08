@@ -1,20 +1,10 @@
 package com.example.mygarden.web;
 
-import com.example.mygarden.dto.ProductRequestBuilder;
-import com.example.mygarden.model.dto.ProductAddDto;
-import com.example.mygarden.model.entity.Category;
-import com.example.mygarden.model.entity.Order;
-import com.example.mygarden.model.entity.Picture;
 import com.example.mygarden.model.entity.Product;
-import com.example.mygarden.model.entity.User;
 import com.example.mygarden.model.enums.CategoryEnum;
-import com.example.mygarden.repository.PictureRepository;
 import com.example.mygarden.repository.ProductRepository;
-import com.example.mygarden.service.PictureService;
-import com.example.mygarden.service.ProductService;
 import com.example.mygarden.testUtil.TestData;
 import com.example.mygarden.testUtil.UserTestData;
-import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -112,7 +102,7 @@ class ProductControllerTest {
     @WithMockUser(username = MODERATOR_EMAIL, roles = {"MODERATOR"})
     void testChangeProductPic() throws Exception {
         userTestData.createTestModerator(MODERATOR_EMAIL);
-        Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>(), new ArrayList<>());
+        Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
       Long id= testProduct.getId();
 
         mockMvc.perform(
@@ -129,7 +119,7 @@ class ProductControllerTest {
     void shouldDeleteProduct() throws Exception {
         userTestData.createTestUser(USER_EMAIL);
 
-        Product testProduct = testData.createProduct(2L, "Name", BigDecimal.valueOf(2.00), new HashSet<>(), new ArrayList<>());
+        Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
         Long id = testProduct.getId();
 //        when(productRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -148,7 +138,7 @@ class ProductControllerTest {
         userTestData.createTestUser(USER_EMAIL);
 
 
-        Product testProduct = testData.createProduct(3L, "Name", BigDecimal.valueOf(2.00), new HashSet<>(), new ArrayList<>());
+        Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
 
         long id = testProduct.getId();
 
@@ -166,7 +156,7 @@ class ProductControllerTest {
     void changePriceTest() throws Exception {
         userTestData.createTestAdmin(ADMIN_EMAIL);
 
-        Product testProduct = testData.createProduct(4L, "Name", BigDecimal.valueOf(2.00), new HashSet<>(), new ArrayList<>());
+        Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
         long id = testProduct.getId();
 
         mockMvc.perform(
@@ -181,7 +171,7 @@ class ProductControllerTest {
     void changePrice() throws Exception {
         userTestData.createTestAdmin(ADMIN_EMAIL);
 
-        Product testProduct = testData.createProduct(5L, "Name", BigDecimal.valueOf(2.00), new HashSet<>(), new ArrayList<>());
+        Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
 
        Long id = testProduct.getId();
 

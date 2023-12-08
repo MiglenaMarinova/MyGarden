@@ -13,7 +13,7 @@ public class Order extends BaseEntity {
     private BigDecimal total;
 
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ShoppingBasket> shoppingBaskets = new ArrayList<>();
 
 

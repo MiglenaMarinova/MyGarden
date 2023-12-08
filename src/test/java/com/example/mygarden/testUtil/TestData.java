@@ -22,18 +22,22 @@ public class TestData {
     private CategoryRepository categoryRepository;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private ShoppingBasketRepository shoppingBasketRepository;
+    @Autowired
+    private ShoppingItemRepository shoppingItemRepository;
 
     @Autowired
     private UserTestData userTestData;
 
 
-    public Product createProduct(long id, String name, BigDecimal price, Set<Picture> pictureSet, List<Order> orders){
+    public Product createProduct(long id, String name, BigDecimal price, Set<Picture> pictureSet){
         Product testProduct = new Product();
         testProduct.setId(id);
         testProduct.setName(name);
         testProduct.setPrice(price);
         testProduct.setPictures(pictureSet);
-        testProduct.setOrders(orders);
+
 
         productRepository.save(testProduct);
 
@@ -60,11 +64,11 @@ public class TestData {
         return testCategory;
 
     }
-    public Order creatOrder(long id, User placedBy, List<Product> orderedProducts, boolean isPlaced){
+    public Order creatOrder(long id, User placedBy, List<ShoppingBasket> shoppingBasketList, boolean isPlaced){
 
         Order testOrder = new Order();
         testOrder.setId(id);
-        testOrder.setOrderedProducts(orderedProducts);
+        testOrder.setShoppingBaskets(shoppingBasketList);
         testOrder.setPlacedBy(placedBy);
         testOrder.setPlaced(false);
         orderRepository.save(testOrder);
@@ -73,13 +77,40 @@ public class TestData {
 
     }
 
+    public ShoppingBasket creatShoppingBasket(long id, User buyer,
+                                              Set<ShoppingItem> shoppingItemSet,BigDecimal totalSum, Order order){
 
+
+        ShoppingBasket testBasket = new ShoppingBasket();
+        testBasket.setId(id);
+        testBasket.setBuyer(buyer);
+        testBasket.setShoppingItems(shoppingItemSet);
+        testBasket.setTotalSum(totalSum);
+        testBasket.setOrder(order);
+        shoppingBasketRepository.save(testBasket);
+
+        return testBasket;
+
+    }
+
+    public ShoppingItem createShoppingItem(long id, String name, BigDecimal totalPrice){
+
+        ShoppingItem testItem = new ShoppingItem();
+        testItem.setId(id);
+        testItem.setName(name);
+        testItem.setTotalPrice(totalPrice);
+        shoppingItemRepository.save(testItem);
+
+        return testItem;
+
+    }
 
 
     public void cleanAllTestData(){
 
         productRepository.deleteAll();
         orderRepository.deleteAll();
-
+        shoppingBasketRepository.deleteAll();
+        shoppingItemRepository.deleteAll();
     }
 }

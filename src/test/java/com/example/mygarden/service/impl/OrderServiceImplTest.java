@@ -2,13 +2,12 @@ package com.example.mygarden.service.impl;
 
 import com.example.mygarden.model.dto.OrderViewDto;
 import com.example.mygarden.model.dto.ProductViewDto;
-import com.example.mygarden.model.entity.Order;
-import com.example.mygarden.model.entity.Product;
-import com.example.mygarden.model.entity.Role;
-import com.example.mygarden.model.entity.User;
+import com.example.mygarden.model.entity.*;
 import com.example.mygarden.model.enums.RoleEnum;
 import com.example.mygarden.repository.OrderRepository;
 import com.example.mygarden.repository.ProductRepository;
+import com.example.mygarden.repository.ShoppingBasketRepository;
+import com.example.mygarden.repository.ShoppingItemRepository;
 import com.example.mygarden.service.UserService;
 import com.example.mygarden.testUtil.TestData;
 import com.example.mygarden.testUtil.UserTestData;
@@ -47,6 +46,10 @@ class OrderServiceImplTest {
     private ModelMapper modelMapper;
     @Mock
     private ProductRepository productRepository;
+    @Mock
+    private  ShoppingItemRepository shoppingItemRepository;
+    @Mock
+    private  ShoppingBasketRepository shoppingBasketRepository;
 
     private OrderServiceImpl orderService;
 
@@ -54,7 +57,7 @@ class OrderServiceImplTest {
     void setUp() {
 
         orderService = new OrderServiceImpl(orderRepository,
-                userService, modelMapper, productRepository);
+                userService, modelMapper, shoppingItemRepository, shoppingBasketRepository,productRepository);
     }
 
     @Test
@@ -67,11 +70,11 @@ class OrderServiceImplTest {
         buyer.setEmail("user@user.com");
         buyer.setAddress("Userova 22");
 
-        List<Product> orderedProducts = new ArrayList<>();
+        List<ShoppingBasket> shoppingBasketList = new ArrayList<>();
 
         Order order = new Order();
         order.setId(1L);
-        order.setOrderedProducts(orderedProducts);
+        order.setShoppingBaskets(shoppingBasketList);
         order.setPlacedBy(buyer);
         order.setPlaced(false);
 
@@ -102,11 +105,11 @@ class OrderServiceImplTest {
         buyer1.setEmail("user1@user1.com");
         buyer1.setAddress("Userova 22");
 
-        List<Product> orderedProducts = new ArrayList<>();
+        List<ShoppingBasket> shoppingBasketList = new ArrayList<>();
 
         Order order = new Order();
         order.setId(1L);
-        order.setOrderedProducts(orderedProducts);
+        order.setShoppingBaskets(shoppingBasketList);
         order.setPlacedBy(buyer1);
         order.setPlaced(false);
 
@@ -131,11 +134,11 @@ class OrderServiceImplTest {
         user2.setEmail("user1@user1.com");
         user2.setAddress("Userova 22");
 
-        List<Product> orderedProducts = new ArrayList<>();
+        List<ShoppingBasket> shoppingBasketList = new ArrayList<>();
 
         Order order = new Order();
         order.setId(1L);
-        order.setOrderedProducts(orderedProducts);
+        order.setShoppingBaskets(shoppingBasketList);
         order.setPlacedBy(user2);
         order.setPlaced(false);
 
@@ -174,17 +177,17 @@ class OrderServiceImplTest {
                 .build();
 
 
-        List<Product> orderedProducts = new ArrayList<>();
+        List<ShoppingBasket> shoppingBasketList = new ArrayList<>();
 
         Order order1 = new Order();
         order1.setId(1L);
-        order1.setOrderedProducts(orderedProducts);
+        order1.setShoppingBaskets(shoppingBasketList);
         order1.setPlacedBy(user);
         order1.setPlaced(false);
 
         Order order2 = new Order();
         order2.setId(2L);
-        order2.setOrderedProducts(orderedProducts);
+        order2.setShoppingBaskets(shoppingBasketList);
         order2.setPlacedBy(user);
         order2.setPlaced(false);
 
@@ -227,17 +230,17 @@ class OrderServiceImplTest {
                 .build();
 
 
-        List<Product> orderedProducts = new ArrayList<>();
+        List<ShoppingBasket> shoppingBasketList = new ArrayList<>();
 
         Order order1 = new Order();
         order1.setId(1L);
-        order1.setOrderedProducts(orderedProducts);
+        order1.setShoppingBaskets(shoppingBasketList);
         order1.setPlacedBy(user);
         order1.setPlaced(true);
 
         Order order2 = new Order();
         order2.setId(2L);
-        order2.setOrderedProducts(orderedProducts);
+        order2.setShoppingBaskets(shoppingBasketList);
         order2.setPlacedBy(user);
         order2.setPlaced(false);
 
@@ -277,11 +280,11 @@ class OrderServiceImplTest {
                         .map(OrderServiceImplTest::map)
                         .collect(Collectors.toList()))
                 .build();
-        List<Product> orderedProducts = new ArrayList<>();
+        List<ShoppingBasket> shoppingBasketList = new ArrayList<>();
 
         Order order1 = new Order();
         order1.setId(1L);
-        order1.setOrderedProducts(orderedProducts);
+        order1.setShoppingBaskets(shoppingBasketList);
         order1.setPlacedBy(user);
         order1.setPlaced(false);
 
@@ -306,11 +309,11 @@ class OrderServiceImplTest {
         user2.setEmail("user1@user1.com");
         user2.setAddress("Userova 22");
 
-        List<Product> orderedProducts = new ArrayList<>();
+        List<ShoppingBasket> shoppingBasketList = new ArrayList<>();
 
         Order order1 = new Order();
         order1.setId(1L);
-        order1.setOrderedProducts(orderedProducts);
+        order1.setShoppingBaskets(shoppingBasketList);
         order1.setPlacedBy(user2);
         order1.setPlaced(false);
 

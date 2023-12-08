@@ -11,11 +11,12 @@ import java.util.Set;
 public class ShoppingBasket extends BaseEntity{
     @ManyToOne
     private User buyer;
-    @OneToMany(mappedBy = "shoppingBasket", fetch = FetchType.EAGER )
+    @OneToMany(mappedBy = "shoppingBasket", fetch = FetchType.EAGER, cascade = CascadeType.ALL )
     private Set<ShoppingItem> shoppingItems = new HashSet<>();
 
     private BigDecimal totalSum;
     @ManyToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
     private Order order;
 
     public ShoppingBasket() {

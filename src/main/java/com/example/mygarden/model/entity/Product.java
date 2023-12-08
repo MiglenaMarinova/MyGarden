@@ -3,7 +3,6 @@ package com.example.mygarden.model.entity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -68,12 +67,4 @@ public class Product extends BaseEntity {
         return this;
     }
 
-//    public List<Order> getOrders() {
-//        return orders;
-//    }
-//
-//    public Product setOrders(List<Order> orders) {
-//        this.orders = orders;
-//        return this;
-//    }
 }

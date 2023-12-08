@@ -65,7 +65,7 @@ class ProductsRestControllerTest {
     public void testGetAll() throws Exception {
         Set<Picture> pictureSet = new HashSet<>();
 
-        Product test1 = testData.createProduct(1L, "Name1", BigDecimal.valueOf(1.00), pictureSet, new ArrayList<>());
+        Product test1 = testData.createProduct(1L, "Name1", BigDecimal.valueOf(1.00), pictureSet);
 
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/api/products"))
@@ -79,7 +79,7 @@ class ProductsRestControllerTest {
     public void testFindById() throws Exception {
         Set<Picture> pictureSet = new HashSet<>();
 
-        Product test1 = testData.createProduct(1L, "Name1", BigDecimal.valueOf(1.00), pictureSet, new ArrayList<>());
+        Product test1 = testData.createProduct(1L, "Name1", BigDecimal.valueOf(1.00), pictureSet);
         long id = test1.getId();
 
         when(productRepository.findById(id)).thenReturn(Optional.of(test1));
@@ -106,8 +106,11 @@ class ProductsRestControllerTest {
 
         Set<Picture> pictureSet = new HashSet<>();
 
-        Product test1 = testData.createProduct(2L, "Name1", BigDecimal.valueOf(1.00), pictureSet, new ArrayList<>());
-        Product updatedProduct = testData.createProduct(2L, "Name1", BigDecimal.valueOf(3.00), pictureSet, new ArrayList<>());
+        Product test1 = testData.createProduct(2L, "Name1", BigDecimal.valueOf(1.00), pictureSet);
+        Product updatedProduct = new Product();
+        updatedProduct.setId(2L);
+        updatedProduct.setName("Name1");
+        updatedProduct.setPrice(BigDecimal.valueOf(2.00));
         long id = test1.getId();
         when(productRepository.findById(id)).thenReturn(Optional.of(test1));
         when(productRepository.save(updatedProduct)).thenReturn(updatedProduct);

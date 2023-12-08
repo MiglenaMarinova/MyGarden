@@ -12,7 +12,6 @@ public class ShoppingItem extends BaseEntity {
     @JoinColumn(name = "shopping_basket_id", referencedColumnName = "id")
     private ShoppingBasket shoppingBasket;
 
-
     private String name;
 
     private Integer amount;

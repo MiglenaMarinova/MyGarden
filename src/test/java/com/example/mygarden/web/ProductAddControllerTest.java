@@ -3,6 +3,7 @@ package com.example.mygarden.web;
 import com.example.mygarden.dto.ProductRequestBuilder;
 import com.example.mygarden.model.dto.ProductAddDto;
 import com.example.mygarden.service.ProductService;
+import com.example.mygarden.service.ShoppingBasketService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +22,7 @@ public class ProductAddControllerTest {
 
     private ProductRequestBuilder requestBuilder;
     private ProductService productService;
+    private  ShoppingBasketService shoppingBasketService;
 
 
     @BeforeEach
@@ -28,7 +30,7 @@ public class ProductAddControllerTest {
         productService = mock(ProductService.class);
 
         MockMvc mockMvc = MockMvcBuilders
-                .standaloneSetup(new ProductController(productService))
+                .standaloneSetup(new ProductController(productService, shoppingBasketService))
                 .build();
         requestBuilder = new ProductRequestBuilder(mockMvc);
     }
