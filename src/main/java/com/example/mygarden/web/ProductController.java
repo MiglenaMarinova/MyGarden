@@ -67,14 +67,24 @@ public class ProductController {
         return "redirect:/moderator/manage";
     }
     @GetMapping("buy/{id}")
-    public String buy(@PathVariable Long id,
-                      @AuthenticationPrincipal UserDetails buyer){
+    public String buy(@PathVariable Long id, Model model){
 
-//        this.productService.buy(id, buyer);
-        this.shoppingBasketService.buy(id, buyer);
+        model.addAttribute("product", productService.findById(id));
+
+        return "buy-product";
+    }
+    @PostMapping("buy/{id}")
+    public String buyProduct(@PathVariable Long id,
+                             @AuthenticationPrincipal UserDetails buyer,
+                             @ModelAttribute("product")ProductViewDto productViewDto,
+                             Model model){
+
+
+        this.shoppingBasketService.buy(id, buyer, productViewDto);
 
         return "redirect:/user/orders";
     }
+
 
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable Long id){
@@ -86,6 +96,13 @@ public class ProductController {
 
     @GetMapping("/change-price/{id}")
     public String changePrice(@PathVariable Long id, Model model){
+
+        model.addAttribute("product", productService.findById(id));
+
+        return "update-product";
+    }
+    @GetMapping("/change-amount/{id}")
+    public String changeAmount(@PathVariable Long id, Model model){
 
         model.addAttribute("product", productService.findById(id));
 
@@ -103,10 +120,15 @@ public class ProductController {
         Product existingProduct = productService.findProduct(id);
         existingProduct.setId(productViewDto.getId());
         existingProduct.setPrice(productViewDto.getPrice());
+        existingProduct.setAmount(productViewDto.getAmount());
         productService.saveChanges(existingProduct);
 
         return "redirect:/products/all";
     }
+
+
+
+
 
 
 }

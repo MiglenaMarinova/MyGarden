@@ -18,7 +18,12 @@ public class ShoppingItem extends BaseEntity {
 
     private BigDecimal totalPrice;
 
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id" )
+    private Product product;
+
     public ShoppingItem() {
+        this.amount = 0;
     }
 
     public ShoppingBasket getShoppingBasket() {
@@ -55,6 +60,15 @@ public class ShoppingItem extends BaseEntity {
 
     public ShoppingItem setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public ShoppingItem setProduct(Product product) {
+        this.product = product;
         return this;
     }
 }

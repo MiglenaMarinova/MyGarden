@@ -14,6 +14,8 @@ public class ProductViewDto {
     private String name;
     private BigDecimal price;
 
+    private Integer amount;
+
     private List<PictureViewDto> pictureViewList = new ArrayList<>();
 
 
@@ -51,5 +53,14 @@ public class ProductViewDto {
 
     public void setPictureViewList(List<PictureViewDto> pictureViewList) {
         this.pictureViewList = pictureViewList;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public ProductViewDto setAmount(Integer amount) {
+        this.amount = amount;
+        return this;
     }
 }

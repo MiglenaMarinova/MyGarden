@@ -17,6 +17,7 @@
                         <div th:each="itemList : ${basket}" th:object="${itemList}">
                             <div th:each="item : ${basket.getItemList()}" th:object="${item}">
                                 <span class="p-3" th:text="${item.name}">Name</span>
+                                <span class="p-3" th:text="${item.amount}">Amount</span>
                                 <span class="p-3" th:text="${item.getTotalPrice()}">Price</span>
                                 <span class="ml-3 p-3 text-warning">
                                 <form th:method="delete" th:object="${item}" th:action="@{/orders/delete/{id}(id = ${item.id})}">

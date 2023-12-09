@@ -68,10 +68,10 @@ public class ProductServiceImpl implements com.example.mygarden.service.ProductS
                 .map(product -> {
                     ProductViewDto productViewDto = modelMapper.map(product, ProductViewDto.class);
                     List<PictureViewDto> pictureViewDtos =
-                    product.getPictures()
-                            .stream()
-                            .map(picture -> modelMapper.map(picture, PictureViewDto.class))
-                            .collect(Collectors.toList());
+                            product.getPictures()
+                                    .stream()
+                                    .map(picture -> modelMapper.map(picture, PictureViewDto.class))
+                                    .collect(Collectors.toList());
 
                     productViewDto.setPictureViewList(pictureViewDtos);
 
@@ -93,13 +93,13 @@ public class ProductServiceImpl implements com.example.mygarden.service.ProductS
         List<Picture> availablePic = pictureService.findAllByTittle(product.getName());
 
         if(!availablePic.isEmpty()){
-          for (Picture picture : availablePic){
-              product.getPictures().add(picture);
-              picture.setProduct(product);
-          }
+            for (Picture picture : availablePic){
+                product.getPictures().add(picture);
+                picture.setProduct(product);
+            }
 
         }
-        
+
         productRepository.save(product);
     }
 
@@ -135,6 +135,7 @@ public class ProductServiceImpl implements com.example.mygarden.service.ProductS
     public void saveChanges(Product existingProduct) {
         productRepository.save(existingProduct);
     }
+
 
 
 

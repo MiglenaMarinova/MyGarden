@@ -6,6 +6,8 @@ public class PictureViewDto {
     private String title;
     private String imgUrl;
 
+    private Integer amount;
+
     public PictureViewDto() {
     }
 
@@ -31,5 +33,14 @@ public class PictureViewDto {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public PictureViewDto setAmount(Integer amount) {
+        this.amount = amount;
+        return this;
     }
 }

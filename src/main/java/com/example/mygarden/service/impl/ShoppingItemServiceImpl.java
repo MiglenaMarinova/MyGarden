@@ -20,6 +20,12 @@ public class ShoppingItemServiceImpl implements ShoppingItemService {
         shoppingItemRepository.save(shoppingItem);
     }
 
+    @Override
+    public ShoppingItem findByProductAndBasket(Long id, Long id1) {
+
+
+        return shoppingItemRepository.findShoppingItemByProduct_IdAndShoppingBasket_Id(id, id1).orElse(null);
+    }
 
 
 

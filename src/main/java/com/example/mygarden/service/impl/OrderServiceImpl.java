@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,37 +61,37 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderViewDto> findAllOpenOrdersByUser(UserDetails currentUser) {
         User current = userService.findByEmail(currentUser.getUsername());
 
-                List<OrderViewDto> allOpen = orderRepository.findAllOpenOrdersByUser(current.getId())
-                        .stream()
-                        .map(order -> {
-                            OrderViewDto orderViewDto = modelMapper.map(order, OrderViewDto.class);
-                            List<ShoppingBasketViewDto> basketViewDtoList = order.getShoppingBaskets()
-                                    .stream()
-                                    .map(shoppingBasket -> {
-                                        ShoppingBasketViewDto shoppingBasketViewDto = modelMapper.map(shoppingBasket, ShoppingBasketViewDto.class);
-                                        List<ShoppingItemViewDto> shoppingItemViewDtoList = shoppingBasket.getShoppingItems()
-                                                .stream()
-                                                .map(shoppingItem -> {
-                                                    ShoppingItemViewDto shoppingItemViewDto = modelMapper.map(shoppingItem, ShoppingItemViewDto.class);
-                                                    shoppingItemViewDto.setName(shoppingItem.getName());
-                                                    return shoppingItemViewDto;
-                                                }).collect(Collectors.toList());
+        List<OrderViewDto> allOpen = orderRepository.findAllOpenOrdersByUser(current.getId())
+                .stream()
+                .map(order -> {
+                    OrderViewDto orderViewDto = modelMapper.map(order, OrderViewDto.class);
+                    List<ShoppingBasketViewDto> basketViewDtoList = order.getShoppingBaskets()
+                            .stream()
+                            .map(shoppingBasket -> {
+                                ShoppingBasketViewDto shoppingBasketViewDto = modelMapper.map(shoppingBasket, ShoppingBasketViewDto.class);
+                                List<ShoppingItemViewDto> shoppingItemViewDtoList = shoppingBasket.getShoppingItems()
+                                        .stream()
+                                        .map(shoppingItem -> {
+                                            ShoppingItemViewDto shoppingItemViewDto = modelMapper.map(shoppingItem, ShoppingItemViewDto.class);
+                                            shoppingItemViewDto.setName(shoppingItem.getName());
+                                            return shoppingItemViewDto;
+                                        }).collect(Collectors.toList());
 
-                                        shoppingBasketViewDto.setItemList(shoppingItemViewDtoList);
-                                        return shoppingBasketViewDto;
-                                    }).collect(Collectors.toList());
+                                shoppingBasketViewDto.setItemList(shoppingItemViewDtoList);
+                                return shoppingBasketViewDto;
+                            }).collect(Collectors.toList());
 
-                            BigDecimal total = order.getShoppingBaskets()
+                    BigDecimal total = order.getShoppingBaskets()
                             .stream()
                             .map(shoppingBasket -> shoppingBasket.getTotalSum())
                             .reduce(BigDecimal::add)
                             .orElse(BigDecimal.ZERO);
                     orderViewDto.setTotal(total);
 
-                            orderViewDto.setBasketViewDtoList(basketViewDtoList);
-                            return orderViewDto;
+                    orderViewDto.setBasketViewDtoList(basketViewDtoList);
+                    return orderViewDto;
 
-                        }).collect(Collectors.toList());
+                }).collect(Collectors.toList());
 
         return allOpen;
 
@@ -114,7 +115,7 @@ public class OrderServiceImpl implements OrderService {
                                             ShoppingItemViewDto shoppingItemViewDto = modelMapper.map(shoppingItem, ShoppingItemViewDto.class);
                                             shoppingItemViewDto.setName(shoppingItem.getName());
                                             return shoppingItemViewDto;
-                                                }).collect(Collectors.toList());
+                                        }).collect(Collectors.toList());
 
                                 shoppingBasketViewDto.setItemList(shoppingItemViewDtoList);
                                 return shoppingBasketViewDto;
@@ -132,7 +133,7 @@ public class OrderServiceImpl implements OrderService {
 
                 }).collect(Collectors.toList());
 
-            return placedOrders;
+        return placedOrders;
     }
 
 
@@ -141,6 +142,16 @@ public class OrderServiceImpl implements OrderService {
     public void placeOrder(Long id, UserDetails buyer) {
         User userBuyer = userService.findByEmail(buyer.getUsername());
         Order order = orderRepository.findByPlacedBy(userBuyer.getId());
+        ShoppingBasket shoppingBasket = shoppingBasketRepository.findByOrder(order.getId()).orElse(null);
+        assert shoppingBasket != null;
+        Set<ShoppingItem> ordered = shoppingBasket.getShoppingItems();
+        for (ShoppingItem item : ordered){
+            Product product = productRepository.findById(item.getProduct().getId()).get();
+
+            product.setAmount(product.getAmount() - item.getAmount());
+            productRepository.save(product);
+        }
+
         order.setPlaced(true);
         orderRepository.save(order);
 
@@ -174,10 +185,14 @@ public class OrderServiceImpl implements OrderService {
             shoppingBasket.setTotalSum(totalSum);
 
             shoppingBasketRepository.save(shoppingBasket);
+
             order.setTotal(totalSum);
             orderRepository.save(order);
+
+
+
+
         }
     }
-
 
 }

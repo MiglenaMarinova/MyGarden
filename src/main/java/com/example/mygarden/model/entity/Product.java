@@ -20,6 +20,7 @@ public class Product extends BaseEntity {
     private Set<Picture> pictures;
 
     public Product() {
+        this.amount = 0;
     }
 
     public String getName() {

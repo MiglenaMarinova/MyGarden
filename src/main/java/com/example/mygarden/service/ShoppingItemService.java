@@ -6,5 +6,5 @@ public interface ShoppingItemService {
     void save(ShoppingItem shoppingItem);
 
 
-
+    ShoppingItem findByProductAndBasket(Long id, Long id1);
 }

@@ -31,6 +31,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET,"/admin/manage/**").hasRole("ADMIN")
                         .requestMatchers("/pictures/add", "/moderator/manage").hasRole("MODERATOR")
                         .requestMatchers("/products/all", "/pictures/all").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/products/buy/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/about").permitAll()
                         .requestMatchers(HttpMethod.GET, ("/api/products/**")).permitAll()

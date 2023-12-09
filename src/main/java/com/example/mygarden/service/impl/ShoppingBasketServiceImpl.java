@@ -1,5 +1,6 @@
 package com.example.mygarden.service.impl;
 
+import com.example.mygarden.model.dto.ProductViewDto;
 import com.example.mygarden.model.entity.*;
 import com.example.mygarden.repository.ProductRepository;
 import com.example.mygarden.repository.ShoppingBasketRepository;
@@ -8,6 +9,7 @@ import com.example.mygarden.service.ShoppingBasketService;
 import com.example.mygarden.service.ShoppingItemService;
 import com.example.mygarden.service.UserService;
 import com.example.mygarden.service.exeption.ObjectNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -41,13 +43,16 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
     }
 
     @Override
-    public void buy(Long id, UserDetails buyer) {
+    @Transactional
+    public void buy(Long id, UserDetails buyer, ProductViewDto productViewDto) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Product not available."));
 
         User userBuyer = userService.findByEmail(buyer.getUsername());
 
         Order order = orderService.findByPlacedBy(userBuyer.getId());
+
+        Integer quantity = productViewDto.getAmount();
 
 
         if (order == null) {
@@ -56,10 +61,10 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
             orderService.save(order);
         }
 
-
         List<ShoppingBasket> shoppingBasketList = order.getShoppingBaskets();
 
-        ShoppingBasket shoppingBasket = shoppingBasketRepository.findByOrder(order.getId()).orElse(null);
+        ShoppingBasket shoppingBasket = shoppingBasketRepository
+                .findShoppingBasketByOrder_IdAndBuyer_Id(order.getId(), userBuyer.getId()).orElse(null);
 
         if (shoppingBasket == null) {
             shoppingBasket = new ShoppingBasket();
@@ -71,16 +76,26 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
 
         Set<ShoppingItem> shoppingItems = shoppingBasket.getShoppingItems();
 
-        ShoppingItem shoppingItem = new ShoppingItem();
+        ShoppingItem shoppingItem = shoppingItemService.findByProductAndBasket(product.getId(), shoppingBasket.getId());
 
-        shoppingItem.setTotalPrice(product.getPrice());
-        shoppingItem.setName(product.getName());
-        shoppingItem.setShoppingBasket(shoppingBasket);
+        if (shoppingItem == null){
+            shoppingItem = new ShoppingItem();
+            shoppingItem.setProduct(product);
 
+            shoppingItem.setName(product.getName());
+            shoppingItem.setAmount(quantity);
+            BigDecimal totalPrice = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+            shoppingItem.setTotalPrice(totalPrice);
+            shoppingItem.setShoppingBasket(shoppingBasket);
+
+        }else{
+            shoppingItem.setTotalPrice(shoppingItem.getTotalPrice().add(product.getPrice().multiply(BigDecimal.valueOf(quantity))));
+            Integer totalAmount = shoppingItem.getAmount() + quantity;
+            shoppingItem.setAmount(totalAmount);
+        }
         shoppingItemService.save(shoppingItem);
 
         shoppingItems.add(shoppingItem);
-
 
         shoppingBasket.setShoppingItems(shoppingItems);
 
@@ -107,9 +122,8 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
 
         orderService.save(order);
 
-
-
     }
+
 
 
 }

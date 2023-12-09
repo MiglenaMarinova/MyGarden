@@ -10,11 +10,9 @@ import java.util.Optional;
 @Repository
 public interface ShoppingBasketRepository extends JpaRepository<ShoppingBasket, Long> {
 
-    @Query("SELECT b from ShoppingBasket b " +
-            "WHERE b.buyer.id = :id")
-    Optional<ShoppingBasket> findByUser(Long id);
-
     @Query("SELECT b FROM ShoppingBasket  b " +
             "WHERE b.order.id = :id")
     Optional<ShoppingBasket> findByOrder(Long id);
+
+    Optional<ShoppingBasket> findShoppingBasketByOrder_IdAndBuyer_Id(Long order_id, Long buyer_id);
 }

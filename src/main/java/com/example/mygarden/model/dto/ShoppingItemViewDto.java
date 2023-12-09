@@ -10,6 +10,8 @@ public class ShoppingItemViewDto {
 
     private BigDecimal totalPrice;
 
+    private Integer amount;
+
     public ShoppingItemViewDto() {
     }
 
@@ -37,6 +39,15 @@ public class ShoppingItemViewDto {
 
     public ShoppingItemViewDto setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
+        return this;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public ShoppingItemViewDto setAmount(Integer amount) {
+        this.amount = amount;
         return this;
     }
 }
