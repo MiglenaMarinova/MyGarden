@@ -1,8 +1,6 @@
 package com.example.mygarden.model.dto;
 
 
-import com.example.mygarden.model.entity.Category;
-import com.example.mygarden.model.enums.CategoryEnum;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

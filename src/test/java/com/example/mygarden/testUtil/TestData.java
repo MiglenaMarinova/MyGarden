@@ -93,12 +93,13 @@ public class TestData {
 
     }
 
-    public ShoppingItem createShoppingItem(long id, String name, BigDecimal totalPrice){
+    public ShoppingItem createShoppingItem(long id, String name, BigDecimal totalPrice, Product product){
 
         ShoppingItem testItem = new ShoppingItem();
         testItem.setId(id);
         testItem.setName(name);
-        testItem.setTotalPrice(totalPrice);
+        testItem.setTotalPrice(product.getPrice());
+        testItem.setProduct(product);
         shoppingItemRepository.save(testItem);
 
         return testItem;

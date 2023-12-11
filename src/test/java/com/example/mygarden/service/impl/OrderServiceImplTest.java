@@ -27,9 +27,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -280,7 +279,28 @@ class OrderServiceImplTest {
                         .map(OrderServiceImplTest::map)
                         .collect(Collectors.toList()))
                 .build();
+
+        Product product = new Product();
+        product.setId(1L);
+        product.setAmount(10);
+        product.setPrice(BigDecimal.valueOf(2.00));
+        product.setName("TestProduct");
+
+
+
+        Set<ShoppingItem> items = new HashSet<>();
+        ShoppingItem item = new ShoppingItem();
+        item.setId(1L);
+        item.setProduct(product);
+        items.add(item);
+
+        ShoppingBasket shoppingBasket = new ShoppingBasket();
+        shoppingBasket.setId(1L);
+        shoppingBasket.setShoppingItems(items);
+
+
         List<ShoppingBasket> shoppingBasketList = new ArrayList<>();
+
 
         Order order1 = new Order();
         order1.setId(1L);
@@ -290,6 +310,9 @@ class OrderServiceImplTest {
 
         when(orderRepository.findByPlacedBy(user.getId())).thenReturn(order1);
         when(orderRepository.save(any(Order.class))).thenReturn(order1);
+
+        when(productRepository.findById(product.getId())).thenReturn(Optional.of(product));
+        when(shoppingBasketRepository.findByOrder(order1.getId())).thenReturn(Optional.of(shoppingBasket));
 
         orderService.placeOrder(order1.getId(), userDetails);
 

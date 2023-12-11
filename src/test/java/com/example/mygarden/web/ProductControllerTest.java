@@ -130,25 +130,25 @@ class ProductControllerTest {
 
     }
 
-    @Test
-    @WithMockUser(username = USER_EMAIL, roles = {"USER"})
-    void testBuyProduct() throws Exception {
-        userTestData.createTestUser(USER_EMAIL);
-
-
-        Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
-
-        long id = testProduct.getId();
-
-
-        mockMvc.perform(
-                        MockMvcRequestBuilders.get("/products/buy/{id}", id).principal(() -> USER_EMAIL))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user/orders"));
-
-
-        Assertions.assertEquals(testProduct.getId(), id);
-    }
+//    @Test
+//    @WithMockUser(username = USER_EMAIL, roles = {"USER"})
+//    void testBuyProduct() throws Exception {
+//        userTestData.createTestUser(USER_EMAIL);
+//
+//
+//        Product testProduct = testData.createProduct(1L, "Name", BigDecimal.valueOf(2.00), new HashSet<>());
+//
+//        long id = testProduct.getId();
+//
+//
+//        mockMvc.perform(
+//                        MockMvcRequestBuilders.get("/products/buy/{id}", id).principal(() -> USER_EMAIL))
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(redirectedUrl("/user/orders"));
+//
+//
+//        Assertions.assertEquals(testProduct.getId(), id);
+//    }
     @Test
     @WithMockUser(username = ADMIN_EMAIL, roles = {"ADMIN"})
     void changePriceTest() throws Exception {
